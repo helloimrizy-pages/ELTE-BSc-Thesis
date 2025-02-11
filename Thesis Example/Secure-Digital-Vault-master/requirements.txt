@@ -1,0 +1,18 @@
+# GUI Libs
+PyQt6==6.7.0
+PyQt6-Qt6==6.7.0
+PyQt6-sip==13.6.0
+
+# Crypto Libs
+pycryptodome==3.20.0
+
+# Utils
+setuptools==69.5.1
+
+# Tests
+pytest==8.2.1
+pytest-html==4.1.1
+
+# Build
+pyqt-tools==1.0.0
+pyinstaller==6.7.0
