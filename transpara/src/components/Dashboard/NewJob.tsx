@@ -22,6 +22,9 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
 }) => {
   const [jobTitle, setJobTitle] = useState("");
   const [jobDescription, setJobDescription] = useState("");
+  const [jobLocation, setJobLocation] = useState("");
+  const [jobType, setJobType] = useState("");
+  const [jobCategory, setJobCategory] = useState("");
   const [generatedLink, setGeneratedLink] = useState<string | null>(null);
 
   const handlePublish = async () => {
@@ -89,6 +92,36 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
               variant="outlined"
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Location(s)"
+              variant="outlined"
+              multiline
+              rows={4}
+              value={jobLocation}
+              onChange={(e) => setJobLocation(e.target.value)}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Job Type"
+              variant="outlined"
+              multiline
+              rows={4}
+              value={jobType}
+              onChange={(e) => setJobType(e.target.value)}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Job Category"
+              variant="outlined"
+              multiline
+              rows={4}
+              value={jobCategory}
+              onChange={(e) => setJobCategory(e.target.value)}
               sx={{ mb: 2 }}
             />
             <TextField
