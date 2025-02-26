@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
-import { TransparaAppBar } from "../AppBar/TransparaAppBar";
+import { AppBar } from "../AppBar/AppBar";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
 import { NewJobDialog } from "./NewJob.tsx";
@@ -14,7 +14,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <Box>
-      <TransparaAppBar onLogout={handleLogout} />
+      <AppBar onLogout={handleLogout} />
       <Box sx={{ p: 3 }}>
         <Typography variant="h4" sx={{ mb: 2 }}>
           Dashboard Content
