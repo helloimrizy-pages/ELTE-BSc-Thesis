@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-// src/components/Auth/AuthPage.tsx
-=======
->>>>>>> aec407536805ea8610bf96b876efdd671b37f5d9
 import React, { useState } from "react";
 import {
   Grid,
