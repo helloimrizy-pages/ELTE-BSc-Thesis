@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-// src/components/Dashboard/Dashboard.tsx
-=======
->>>>>>> aec407536805ea8610bf96b876efdd671b37f5d9
 import React, { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { TransparaAppBar } from "../AppBar/TransparaAppBar";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
-<<<<<<< HEAD
-import { NewJobDialog } from "./NewJob"; // <-- We'll create this
-=======
-import { NewJobDialog } from "./NewJob";
->>>>>>> aec407536805ea8610bf96b876efdd671b37f5d9
+import { NewJobDialog } from "./NewJob.tsx";
 
 const Dashboard: React.FC = () => {
   const [openNewJob, setOpenNewJob] = useState(false);
