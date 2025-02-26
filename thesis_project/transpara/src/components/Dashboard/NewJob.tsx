@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-// src/components/Dashboard/NewJobDialog.tsx
-=======
->>>>>>> aec407536805ea8610bf96b876efdd671b37f5d9
 import React, { useState } from "react";
 import {
   Dialog,
@@ -41,10 +37,6 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
         return;
       }
 
-<<<<<<< HEAD
-      // Create a new document with a custom ID (optional)
-=======
->>>>>>> aec407536805ea8610bf96b876efdd671b37f5d9
       const docRef = await addDoc(collection(db, "jobs"), {
         title: jobTitle,
         description: jobDescription || "",
@@ -52,10 +44,6 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
         createdAt: Timestamp.now(),
       });
 
-<<<<<<< HEAD
-      // Sanity check the document ID
-=======
->>>>>>> aec407536805ea8610bf96b876efdd671b37f5d9
       if (docRef.id.includes("/")) {
         throw new Error("Invalid document ID generated");
       }
@@ -69,11 +57,7 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
   };
 
   const handleCloseDialog = () => {
-<<<<<<< HEAD
-    setGeneratedLink(null); // reset link
-=======
     setGeneratedLink(null);
->>>>>>> aec407536805ea8610bf96b876efdd671b37f5d9
     setJobTitle("");
     setJobDescription("");
     onClose();
