@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // Jobs collection
+    match /jobs/{jobId} {
+      // Anyone can read job listings
+      allow read: if true;
+      
+      // Only authenticated users can create jobs
+      allow create: if isAuthenticated();
+      
+      // Only job owner can update or delete
+      allow update, delete: if isAuthenticated() && 
+        resource.data.ownerUid == request.auth.uid;
+
+      // Applications subcollection
+      match /applications/{applicationId} {
+        // Job owner can read all applications
+        allow read: if isAuthenticated() && 
+          get(/databases/$(database)/documents/jobs/$(jobId)).data.ownerUid == request.auth.uid;
+        
+        // Anyone can create an application
+        allow create: if true;
+        
+        // Applications cannot be modified or deleted once submitted
+        allow update, delete: if false;
+      }
+    }
+
+    // Users collection (if you decide to store additional user data)
+    match /users/{userId} {
+      // Users can read their own data
+      allow read: if isAuthenticated() && isOwner(userId);
+      
+      // Users can only write their own data
+      allow write: if isAuthenticated() && isOwner(userId);
+    }
+  }
+}
