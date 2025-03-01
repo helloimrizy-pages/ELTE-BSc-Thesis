@@ -7,9 +7,14 @@ import {
   TextField,
   Button,
   Typography,
+  Box,
 } from "@mui/material";
 import { db, auth } from "../../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { EditorState, convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 interface NewJobDialogProps {
   open: boolean;
@@ -21,7 +26,7 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
   onClose,
 }) => {
   const [jobTitle, setJobTitle] = useState("");
-  const [jobDescription, setJobDescription] = useState("");
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [jobLocation, setJobLocation] = useState("");
   const [jobType, setJobType] = useState("");
   const [jobCategory, setJobCategory] = useState("");
@@ -40,9 +45,16 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
         return;
       }
 
+      // Convert the editor's content to HTML.
+      const rawContentState = convertToRaw(editorState.getCurrentContent());
+      const descriptionHTML = draftToHtml(rawContentState);
+
       const docRef = await addDoc(collection(db, "jobs"), {
         title: jobTitle,
-        description: jobDescription || "",
+        description: descriptionHTML,
+        location: jobLocation || "",
+        type: jobType || "",
+        category: jobCategory || "",
         ownerUid: user.uid,
         createdAt: Timestamp.now(),
       });
@@ -51,7 +63,8 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
         throw new Error("Invalid document ID generated");
       }
 
-      const link = `${window.location.origin}/apply/${docRef.id}`;
+      const link = `${window.location.origin}/job/${docRef.id}`;
+
       setGeneratedLink(link);
     } catch (error) {
       console.error("Error creating job:", error);
@@ -62,16 +75,29 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
   const handleCloseDialog = () => {
     setGeneratedLink(null);
     setJobTitle("");
-    setJobDescription("");
+    setEditorState(EditorState.createEmpty());
+    setJobLocation("");
+    setJobType("");
+    setJobCategory("");
     onClose();
   };
 
   return (
-    <Dialog open={open} onClose={handleCloseDialog} fullWidth maxWidth="sm">
+    <Dialog
+      open={open}
+      onClose={handleCloseDialog}
+      sx={{
+        "& .MuiDialog-container": {
+          "& .MuiPaper-root": {
+            width: "95vw",
+            height: "95vh",
+            maxWidth: "none",
+          },
+        },
+      }}
+    >
       <DialogTitle>Create a New Job</DialogTitle>
-
       <DialogContent>
-        {/* If we haven't published yet, show the form. Otherwise, show the link */}
         {generatedLink ? (
           <>
             <Typography variant="body1" sx={{ mb: 2 }}>
@@ -99,7 +125,7 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
               label="Location(s)"
               variant="outlined"
               multiline
-              rows={4}
+              rows={2}
               value={jobLocation}
               onChange={(e) => setJobLocation(e.target.value)}
               sx={{ mb: 2 }}
@@ -108,8 +134,6 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
               fullWidth
               label="Job Type"
               variant="outlined"
-              multiline
-              rows={4}
               value={jobType}
               onChange={(e) => setJobType(e.target.value)}
               sx={{ mb: 2 }}
@@ -118,27 +142,107 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
               fullWidth
               label="Job Category"
               variant="outlined"
-              multiline
-              rows={4}
               value={jobCategory}
               onChange={(e) => setJobCategory(e.target.value)}
               sx={{ mb: 2 }}
             />
-            <TextField
-              fullWidth
-              label="Job Description"
-              variant="outlined"
-              multiline
-              rows={4}
-              value={jobDescription}
-              onChange={(e) => setJobDescription(e.target.value)}
-              sx={{ mb: 2 }}
-            />
+            <Typography variant="body1" sx={{ mb: 1 }}>
+              Job Description
+            </Typography>
+            <Box
+              sx={{
+                resize: "both",
+                overflow: "auto",
+                border: "1px solid #e0e0e0",
+                borderRadius: 2,
+                minWidth: 300,
+                minHeight: 150,
+                p: 1,
+                mb: 2,
+              }}
+            >
+              <Editor
+                editorState={editorState}
+                onEditorStateChange={setEditorState}
+                toolbar={{
+                  options: [
+                    "inline",
+                    "blockType",
+                    "fontSize",
+                    "list",
+                    "textAlign",
+                    "colorPicker",
+                    "link",
+                    "emoji",
+                    "embedded",
+                    "remove",
+                    "history",
+                  ],
+                  inline: {
+                    inDropdown: false,
+                    options: [
+                      "bold",
+                      "italic",
+                      "underline",
+                      "strikethrough",
+                      "monospace",
+                    ],
+                  },
+                  blockType: {
+                    inDropdown: true,
+                    options: ["Normal", "H1", "H2", "H3", "Blockquote", "Code"],
+                  },
+                  fontSize: {
+                    options: [
+                      8, 9, 10, 11, 12, 14, 16, 18, 24, 30, 36, 48, 60, 72, 96,
+                    ],
+                  },
+                  textAlign: {
+                    inDropdown: true,
+                    options: ["left", "center", "right", "justify"],
+                  },
+                  colorPicker: {
+                    colors: [
+                      "rgb(97,189,109)",
+                      "rgb(26,188,156)",
+                      "rgb(84,172,210)",
+                      "rgb(44,130,201)",
+                      "rgb(147,101,184)",
+                      "rgb(71,85,119)",
+                      "rgb(204,204,204)",
+                    ],
+                  },
+                  link: {
+                    inDropdown: false,
+                    showOpenOptionOnHover: true,
+                    defaultTargetOption: "_self",
+                  },
+                  emoji: {
+                    emojis: [
+                      "😀",
+                      "😁",
+                      "😂",
+                      "🤣",
+                      "😃",
+                      "😄",
+                      "😅",
+                      "😆",
+                      "😉",
+                      "😊",
+                    ],
+                  },
+                }}
+                editorStyle={{
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                  outline: "none",
+                }}
+              />
+            </Box>
           </>
         )}
       </DialogContent>
-
-      {/* Only show actions if we haven't published yet */}
       {!generatedLink && (
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
