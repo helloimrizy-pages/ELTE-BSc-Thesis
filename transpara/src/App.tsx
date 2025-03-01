@@ -1,3 +1,4 @@
+import "./setupGlobal";
 import React from "react";
 import AuthPage from "./components/Auth/AuthPage";
 import Dashboard from "./components/Dashboard/Dashboard";
@@ -10,6 +11,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { ApplyPage } from "./pages/ApplyPage";
+import JobPost from "./pages/JobPost";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -19,6 +21,9 @@ function App() {
       <Routes>
         {/* If user is logged in, go to Dashboard, otherwise show Auth Page */}
         <Route path="/" element={user ? <Dashboard /> : <AuthPage />} />
+
+        {/* Job Posting Page */}
+        <Route path="/job/:jobId" element={<JobPost />} />
 
         {/* Applicant Job Application Page */}
         <Route path="/apply/:jobId" element={<ApplyPage />} />
