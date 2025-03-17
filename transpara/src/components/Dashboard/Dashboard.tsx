@@ -66,22 +66,28 @@ const Dashboard: React.FC = () => {
         <Typography variant="h4" sx={{ mb: 2 }}>
           Dashboard
         </Typography>
-        <Button
-          variant="contained"
-          onClick={() => setOpenNewJob(true)}
-          sx={{
-            backgroundColor: "black",
-            "&:hover": { backgroundColor: "#333" },
-            mb: 3,
-          }}
-        >
-          New Job
-        </Button>
 
         <Paper elevation={3} sx={{ p: 2 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Your Job Postings
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              mb: 2,
+            }}
+          >
+            <Typography variant="h6">Your Job Postings</Typography>
+            <Button
+              variant="contained"
+              onClick={() => setOpenNewJob(true)}
+              sx={{
+                backgroundColor: "black",
+                "&:hover": { backgroundColor: "#333" },
+              }}
+            >
+              New Job
+            </Button>
+          </Box>
           <Divider />
           {jobs.length === 0 ? (
             <Typography sx={{ mt: 2 }}>No job postings found.</Typography>
