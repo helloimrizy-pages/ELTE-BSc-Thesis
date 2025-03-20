@@ -17,10 +17,10 @@ if [ -f "$output_file" ]; then
 fi
 
 # List of directories to look for
-directories=("src/components" "src/utils" "src/pages")
+directories=("src/components" "src/utils" "src/pages" "src/constants" "src/types")
 
 # List of specific files to include
-specific_files=("src/App.tsx" "src/firebase.ts")
+specific_files=("src/App.tsx" "src/firebase.ts" "src/setupGlobal.ts")
 
 # List of file types to ignore
 ignore_files=("*.ico" "*.png" "*.jpg" "*.jpeg" "*.gif" "*.svg")
