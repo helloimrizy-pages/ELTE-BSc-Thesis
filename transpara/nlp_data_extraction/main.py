@@ -1,57 +1,64 @@
 import pdfplumber
 import os
+import pytesseract
+from pdf2image import convert_from_path
+from PIL import Image
 
 def is_text_based_pdf(pdf_path):
-    """
-    Check if the PDF is text-based by attempting to extract text from each page.
-    Returns True if at least one page has extractable text.
-    """
+    """Check if PDF contains extractable text."""
     try:
         with pdfplumber.open(pdf_path) as pdf:
             for page in pdf.pages:
-                text = page.extract_text()
-                if text and text.strip():
+                if page.extract_text(strip=True):
                     return True
         return False
     except Exception as e:
-        print(f"Error checking PDF type: {e}")
+        print(f"Error checking PDF: {e}")
         return False
 
-def extract_text_from_pdf(pdf_path):
-    """
-    Extract text from a text-based PDF using pdfplumber.
-    Returns the extracted text as a single string.
-    """
-    extracted_text = ""
+def extract_text_with_ocr(pdf_path):
+    """Extract text from scanned PDF using Tesseract OCR."""
     try:
-        with pdfplumber.open(pdf_path) as pdf:
-            for page in pdf.pages:
-                text = page.extract_text()
-                if text:
-                    extracted_text += text + "\n"
-        return extracted_text
+        text = ""
+        images = convert_from_path(pdf_path)
+        
+        for i, image in enumerate(images):
+            image_path = f"temp_page_{i+1}.jpg"
+            image.save(image_path, "JPEG")
+            
+            page_text = pytesseract.image_to_string(Image.open(image_path))
+            text += page_text + "\n"
+            
+            
+            os.remove(image_path)
+            
+        return text
     except Exception as e:
-        print(f"Error extracting text from PDF: {e}")
+        print(f"OCR Error: {e}")
         return None
 
 def main():
-    # Specify your PDF file path
-    pdf_path = "data/cv.pdf"  # Change this to your actual PDF file path
-
+    pdf_path = "data/cv.pdf"
+    
     if not os.path.exists(pdf_path):
-        print(f"PDF file not found: {pdf_path}")
+        print(f"File not found: {pdf_path}")
         return
 
     if is_text_based_pdf(pdf_path):
-        text = extract_text_from_pdf(pdf_path)
-        if text:
-            print("Extracted text:\n")
-            print(text)
-        else:
-            print("No text could be extracted from the PDF.")
+        print("Text-based PDF detected. Extracting text...")
+        with pdfplumber.open(pdf_path) as pdf:
+            text = ""
+            for page in pdf.pages:
+                text += page.extract_text() + "\n"
     else:
-        print("This PDF does not appear to be text-based. It may be scanned. Consider using OCR methods.")
+        print("Scanned PDF detected. Using OCR...")
+        text = extract_text_with_ocr(pdf_path)
+
+    if text:
+        print("\nExtracted Text:\n")
+        print(text.strip())
+    else:
+        print("Failed to extract text")
 
 if __name__ == "__main__":
     main()
-
