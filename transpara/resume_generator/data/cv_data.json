@@ -1,0 +1,1034 @@
+[
+  {
+    "filename": "Michael_Johnson_CV.pdf",
+    "name": "Michael Johnson",
+    "location": "Berlin, Germany",
+    "email": "michael.johnson@fakeemail.com",
+    "phone": "+49 176 1234 5678",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Technical University of Berlin",
+      "Bachelor of Science in Software Engineering",
+      "Oct 2020 – Sep 2024 (Expected) | Berlin, Germany",
+      "GPA: 4.85/5.00",
+      "Activities: Google Developer Student Club Lead, University Hackathon Organizer, IT Mentor for Freshmen",
+      "Relevant Coursework: Software Architecture, Distributed Systems, Computer Networks, Web Development, Cloud Computing, AI & Machine Learning, Data Structures & Algorithms, Database Management, Functional Programming",
+      "Summer School: University of Cambridge 2023 (GPA: 9.5/10), ETH Zurich 2024 (GPA: 10/10)"
+    ],
+    "experience": [
+      "Software Engineer Intern | Siemens AG | Jun 2023 - Dec 2023 | Berlin, Germany",
+      "- Designed and developed microservices-based applications using Java and Spring Boot, enhancing scalability and maintainability.",
+      "- Implemented CI/CD pipelines using Jenkins and GitHub Actions, reducing deployment time by 40%.",
+      "- Worked on a cloud-native application deployed on AWS (ECS, S3, Lambda) and optimized serverless functions."
+    ],
+    "skills": "Programming: Python, Java, JavaScript, C++, Go, TypeScript\nDevOps Tools: Docker, Kubernetes, Jenkins, Terraform, GitHub Actions\nFrameworks: Spring Boot, Flask, React, Next.js, TailwindCSS\nDatabases: PostgreSQL, Redis, Firebase\nCloud Platforms: AWS (Lambda, DynamoDB, S3), Google Cloud\nMethodologies: Agile (Scrum, Kanban), Design Patterns, Microservices\nOther Skills: RESTful API Design, Cloud-Native Development, Security Best Practices, CI/CD Pipelines",
+    "certificates": [
+      "Udemy: AWS Certified Solutions Architect, Mastering Kubernetes",
+      "LinkedIn Learning: CI/CD with Jenkins, DevSecOps Essentials",
+      "Google Cloud Training: Kubernetes Engine Fundamentals"
+    ],
+    "awards": [
+      "Finalist – Google Cloud Hackathon 2023: Built an AI-powered chatbot for business automation.",
+      "Best Project Award – TU Berlin AI Showcase 2022: Developed a deep learning model for real-time speech recognition.",
+      "DAAD Scholarship Recipient."
+    ]
+  },
+  {
+    "filename": "Sophia_Williams_CV.pdf",
+    "name": "Sophia Williams",
+    "location": "Amsterdam, Netherlands",
+    "email": "sophia.williams@fakeemail.com",
+    "phone": "+31 6 9876 5432",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of Amsterdam",
+      "Master of Science in Artificial Intelligence",
+      "Sep 2023 – Aug 2025 (Expected) | Amsterdam, Netherlands",
+      "GPA: 9.2/10",
+      "Activities: Women in AI Amsterdam Member, Kaggle Grandmaster, AI Ethics Research Group",
+      "Relevant Coursework: Deep Learning, Natural Language Processing, Reinforcement Learning, Cloud AI Services, Distributed Computing, Data Visualization, Advanced Probability and Statistics",
+      "Summer School: Stanford AI Summer School 2024 (GPA: 10/10), MIT AI Research Program 2023 (GPA: 9.8/10)"
+    ],
+    "experience": [
+      "Machine Learning Engineer Intern | Booking.com | Jun 2024 - Present | Amsterdam, Netherlands",
+      "- Developed a recommendation system for personalized travel suggestions using TensorFlow and PyTorch.",
+      "- Implemented an NLP pipeline for analyzing customer reviews, improving sentiment classification accuracy by 20%.",
+      "- Designed an ETL pipeline to process large-scale travel data, integrating with AWS S3 and Redshift for efficient data storage."
+    ],
+    "skills": "Programming: Python, R, JavaScript, SQL, C++\nMachine Learning Tools: TensorFlow, PyTorch, Scikit-learn, Hugging Face Transformers\nDevOps & Cloud: Docker, Kubernetes, AWS (SageMaker, Redshift, Lambda), Google AI Platform\nDatabases: PostgreSQL, MongoDB, BigQuery\nOther Skills: MLOps, A/B Testing, Data Engineering, Feature Engineering, Explainable AI",
+    "certificates": [
+      "DeepLearning.AI: NLP Specialization, TensorFlow for AI",
+      "Google Cloud AI: Machine Learning Engineer Certificate",
+      "Udemy: AI Ethics and Responsible AI Development"
+    ],
+    "awards": [
+      "Top 3 – NeurIPS AI Competition 2023: Developed an energy-efficient GAN model for image synthesis.",
+      "Winner – Amsterdam AI Startup Challenge 2024: Co-founded a startup using AI for personalized e-commerce recommendations.",
+      "Erasmus Mundus Scholarship Recipient."
+    ]
+  },
+  {
+    "filename": "Daniel_Kim_CV.pdf",
+    "name": "Daniel Kim",
+    "location": "Seoul, South Korea",
+    "email": "daniel.kim@fakeemail.com",
+    "phone": "+82 10 1234 5678",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Korea University",
+      "Bachelor of Arts in International Relations",
+      "Mar 2017 – Feb 2021 | Seoul, South Korea",
+      "GPA: 3.87/4.3",
+      "Activities: MUN Club President, Debate Team Captain",
+      "Relevant Coursework: International Law, Political Philosophy, Comparative Politics, Economics, Statistics"
+    ],
+    "experience": [
+      "Policy Analyst | Ministry of Foreign Affairs | Mar 2021 - Present | Seoul, South Korea",
+      "- Conducted quantitative analysis of regional trade agreements in Asia-Pacific using R and Excel.",
+      "- Coordinated bilateral meetings and policy drafts with diplomats from 5+ countries.",
+      "- Published three white papers on geopolitical risks and security strategies."
+    ],
+    "skills": "Languages: Korean (native), English (fluent), Japanese (intermediate)\nTools: R, SPSS, Tableau, Excel\nOther Skills: Policy Writing, Data Analysis, Public Speaking, Stakeholder Management",
+    "certificates": [
+      "Coursera: Data Analysis for Policy Makers",
+      "UN Training: International Conflict Resolution Workshop"
+    ],
+    "awards": [
+      "Best Delegate – Harvard WorldMUN 2020",
+      "Presidential Award for Academic Excellence",
+      "Korean Foreign Affairs Fellowship"
+    ]
+  },
+  {
+    "filename": "Aisha_Ahmed_CV.pdf",
+    "name": "Aisha Ahmed",
+    "location": "Cairo, Egypt",
+    "email": "aisha.ahmed@fakeemail.com",
+    "phone": "+20 122 345 6789",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Ain Shams University",
+      "Bachelor of Science in Architecture",
+      "Sep 2016 – Jun 2021 | Cairo, Egypt",
+      "GPA: 3.9/4.0",
+      "Activities: Architecture Club Vice President, Green Urbanism Research Team",
+      "Relevant Coursework: Urban Design, Environmental Planning, Sustainable Materials, AutoCAD, 3D Rendering"
+    ],
+    "experience": [
+      "Junior Architect | GreenBuild Design Studio | Aug 2021 - Present | Cairo, Egypt",
+      "- Designed residential complexes with sustainable features using Revit and SketchUp.",
+      "- Led a team of 4 in redesigning an eco-friendly public park in Giza.",
+      "- Collaborated with civil engineers and city officials for regulatory compliance."
+    ],
+    "skills": "Software: AutoCAD, Revit, SketchUp, Rhino, Adobe Illustrator\nDesign: Sustainable Design, Urban Planning, 3D Modeling\nOther Skills: Technical Drawing, Project Coordination, Client Communication",
+    "certificates": [
+      "LEED Green Associate Certification",
+      "Udemy: Advanced Revit for Professionals"
+    ],
+    "awards": [
+      "1st Place – Egypt Green Architecture Competition 2022",
+      "Top Graduate Project – Faculty of Engineering 2021"
+    ]
+  },
+  {
+    "filename": "Carlos_Romero_CV.pdf",
+    "name": "Carlos Romero",
+    "location": "Buenos Aires, Argentina",
+    "email": "carlos.romero@fakeemail.com",
+    "phone": "+54 9 11 2345 6789",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Universidad de Buenos Aires",
+      "Bachelor of Business Administration",
+      "Mar 2015 – Dec 2019 | Buenos Aires, Argentina",
+      "GPA: 8.7/10",
+      "Activities: Finance Club Member, Start-up Weekend Mentor",
+      "Relevant Coursework: Financial Accounting, Marketing, Operations, Organizational Behavior"
+    ],
+    "experience": [
+      "Marketing Manager | MercadoLibre | Jan 2020 - Present | Buenos Aires, Argentina",
+      "- Launched a customer loyalty program that increased retention by 30%.",
+      "- Managed $2M in digital advertising campaigns across LATAM using Google Ads and Meta.",
+      "- Conducted A/B testing and market segmentation to optimize lead generation."
+    ],
+    "skills": "Marketing Tools: Google Ads, Facebook Business, HubSpot\nBusiness: Strategic Planning, Customer Segmentation, Performance Analytics\nOther Skills: Fluent Spanish/English, Budgeting, Team Leadership",
+    "certificates": [
+      "Google: Digital Marketing Certification",
+      "HubSpot: Inbound Marketing",
+      "Coursera: Brand Management (University of London)"
+    ],
+    "awards": [
+      "Top Marketer Award – MercadoLibre LATAM 2022",
+      "Selected Speaker – Buenos Aires Growth Summit 2023"
+    ]
+  },
+  {
+    "filename": "Emily_Zhang_CV.pdf",
+    "name": "Emily Zhang",
+    "location": "Toronto, Canada",
+    "email": "emily.zhang@fakeemail.com",
+    "phone": "+1 416 555 7890",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of Toronto",
+      "Bachelor of Fine Arts in Visual Studies",
+      "Sep 2018 – May 2022 | Toronto, Canada",
+      "GPA: 3.85/4.0",
+      "Activities: UofT Art Collective, Gallery Volunteer at Art Gallery of Ontario",
+      "Relevant Coursework: Contemporary Art Theory, Photography, Installation Art, Digital Illustration"
+    ],
+    "experience": [
+      "Freelance Visual Artist | Self-employed | Jun 2022 - Present | Remote",
+      "- Commissioned artwork for exhibitions, album covers, and branding campaigns.",
+      "- Collaborated with musicians and small businesses to deliver tailored visual narratives.",
+      "- Exhibited at 5+ local galleries including the Distillery District Art Crawl."
+    ],
+    "skills": "Creative: Adobe Photoshop, Illustrator, InDesign, Procreate\nArt Forms: Digital Art, Printmaking, Photography, Collage\nOther Skills: Portfolio Design, Branding, Social Media Management",
+    "certificates": [
+      "Skillshare: Digital Painting Masterclass",
+      "Udemy: Creative Entrepreneurship Essentials"
+    ],
+    "awards": [
+      "Emerging Artist Grant – Toronto Arts Council 2023",
+      "People's Choice Award – Toronto Indie Art Fair 2022"
+    ]
+  },
+  {
+    "filename": "Thomas_Muller_CV.pdf",
+    "name": "Thomas Müller",
+    "location": "Munich, Germany",
+    "email": "thomas.mueller@fakeemail.com",
+    "phone": "+49 151 2345 6789",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Technical University of Munich (TUM)",
+      "Master of Science in Mechanical Engineering",
+      "Oct 2020 – Mar 2023 | Munich, Germany",
+      "GPA: 1.5 (German grading system)",
+      "Activities: TUM Racing Team, Robotics Lab Research Assistant",
+      "Relevant Coursework: Fluid Mechanics, Thermodynamics, CAD, Control Systems, Robotics"
+    ],
+    "experience": [
+      "Mechanical Design Engineer | BMW Group | Apr 2023 - Present | Munich, Germany",
+      "- Designed engine components and assemblies using SolidWorks and Siemens NX.",
+      "- Performed FEA simulations to ensure compliance with safety and quality standards.",
+      "- Worked in cross-functional teams to prototype electric vehicle parts."
+    ],
+    "skills": "Software: SolidWorks, CATIA, Siemens NX, ANSYS\nEngineering: FEA, CAD, Thermodynamics, Rapid Prototyping\nOther Skills: German (native), English (fluent), Technical Documentation",
+    "certificates": [
+      "TÜV Rheinland: Safety & Risk Analysis",
+      "Coursera: Robotics: Aerial Robotics (Penn Engineering)"
+    ],
+    "awards": [
+      "Best Design Award – Formula Student Germany 2022 (TUM Racing)",
+      "Siemens Innovation Challenge Finalist 2021"
+    ]
+  },
+  {
+    "filename": "Sarah_Johnson_CV.pdf",
+    "name": "Sarah Johnson",
+    "location": "London, United Kingdom",
+    "email": "sarah.johnson@fakeemail.com",
+    "phone": "+44 20 7946 1234",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University College London (UCL)",
+      "Master of Arts in Philosophy",
+      "Sep 2021 – Jun 2023 | London, United Kingdom",
+      "GPA: 3.9/4.0",
+      "Activities: Philosophy Society President, Writing for UCL News",
+      "Relevant Coursework: Ethics, Metaphysics, Epistemology, Philosophy of Mind, Logic"
+    ],
+    "experience": [
+      "Editorial Assistant | The Philosophical Quarterly | Aug 2022 - Present | London, United Kingdom",
+      "- Assisted with the editing and publication of articles, reviewing submissions for clarity and coherence.",
+      "- Coordinated communication between authors, peer reviewers, and editorial staff.",
+      "- Managed social media accounts to promote upcoming publications and conferences."
+    ],
+    "skills": "Writing: Academic Writing, Editing, Copywriting\nPhilosophy: Argumentation, Critical Thinking, Research Methodology\nLanguages: English (native), French (intermediate), German (beginner)",
+    "certificates": [
+      "Coursera: Critical Thinking and Problem Solving",
+      "Udemy: Academic Writing Skills"
+    ],
+    "awards": [
+      "Winner – UCL Philosophy Essay Prize 2022",
+      "Best Editorial Assistant – The Philosophical Quarterly 2023"
+    ]
+  },
+  {
+    "filename": "Jack_Thompson_CV.pdf",
+    "name": "Jack Thompson",
+    "location": "Melbourne, Australia",
+    "email": "jack.thompson@fakeemail.com",
+    "phone": "+61 3 9876 5432",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Monash University",
+      "Bachelor of Science in Environmental Science",
+      "Feb 2018 – Nov 2021 | Melbourne, Australia",
+      "GPA: 7.5/10",
+      "Activities: Environmental Club Member, Sustainability Volunteer",
+      "Relevant Coursework: Ecology, Conservation Biology, Environmental Policy, GIS, Climate Change"
+    ],
+    "experience": [
+      "Environmental Consultant | EcoConsult | Jan 2022 - Present | Melbourne, Australia",
+      "- Conducted environmental impact assessments for construction projects.",
+      "- Provided recommendations to minimize ecological footprints for new developments.",
+      "- Collaborated with stakeholders to integrate sustainable practices into project planning."
+    ],
+    "skills": "Software: ArcGIS, QGIS, AutoCAD\nEnvironmental: Environmental Impact Assessment, Sustainability Reporting\nOther Skills: Field Research, Public Speaking, Environmental Policy Analysis",
+    "certificates": [
+      "ISO 14001 Environmental Management Certification",
+      "Coursera: Climate Change Science and Negotiations"
+    ],
+    "awards": [
+      "Green Innovator of the Year – EcoConsult 2023",
+      "Volunteer of the Year – Melbourne Sustainability Initiative 2022"
+    ]
+  },
+  {
+    "filename": "Natalia_Ivanova_CV.pdf",
+    "name": "Natalia Ivanova",
+    "location": "Moscow, Russia",
+    "email": "natalia.ivanova@fakeemail.com",
+    "phone": "+7 495 234 5678",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Moscow State University",
+      "Bachelor of Arts in Linguistics",
+      "Sep 2017 – Jun 2021 | Moscow, Russia",
+      "GPA: 4.8/5.0",
+      "Activities: Linguistics Club Member, Russian Language Tutor",
+      "Relevant Coursework: Phonetics, Syntax, Pragmatics, Computational Linguistics, Psycholinguistics"
+    ],
+    "experience": [
+      "Language Specialist | LinguaTech Solutions | Jul 2021 - Present | Moscow, Russia",
+      "- Translated technical and legal documents for clients in the energy sector.",
+      "- Developed a linguistic model for automatic translation of documents using machine learning techniques.",
+      "- Assisted in improving AI-powered chatbots for customer service in multiple languages."
+    ],
+    "skills": "Languages: Russian (native), English (fluent), French (intermediate)\nLinguistics: Syntax, Phonology, Pragmatics, Computational Linguistics\nTools: Python, SpaCy, NLTK, WordPress",
+    "certificates": [
+      "Coursera: Natural Language Processing Specialization",
+      "Udemy: Machine Translation with Deep Learning"
+    ],
+    "awards": [
+      "Top Translator Award – LinguaTech 2023",
+      "Outstanding Linguistics Research – Moscow State University 2021"
+    ]
+  },
+  {
+    "filename": "Claire_Dubois_CV.pdf",
+    "name": "Claire Dubois",
+    "location": "Paris, France",
+    "email": "claire.dubois@fakeemail.com",
+    "phone": "+33 1 2345 6789",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Sciences Po Paris",
+      "Master of Public Administration",
+      "Sep 2021 – Jun 2023 | Paris, France",
+      "GPA: 3.8/4.0",
+      "Activities: Student Government Representative, French Politics Club Member",
+      "Relevant Coursework: Public Policy Analysis, International Relations, Comparative Political Systems"
+    ],
+    "experience": [
+      "Policy Consultant | French Ministry of the Interior | Jul 2023 - Present | Paris, France",
+      "- Assisted in drafting policies on urban security and crime prevention.",
+      "- Provided analysis on public safety data and proposed actionable recommendations.",
+      "- Participated in a task force on immigration policy reform."
+    ],
+    "skills": "Political Analysis: Policy Writing, Public Safety Research, Legislative Affairs\nLanguages: French (native), English (fluent), Spanish (intermediate)\nSoftware: Stata, Excel, Power BI",
+    "certificates": [
+      "Harvard Kennedy School: Public Policy Analysis",
+      "Coursera: Public Administration and Governance"
+    ],
+    "awards": [
+      "Best Graduate Thesis – Sciences Po 2023",
+      "Top 10 Policy Analyst – French Ministry of the Interior 2024"
+    ]
+  },
+  {
+    "filename": "Michael_OConnor_CV.pdf",
+    "name": "Michael O'Connor",
+    "location": "Dublin, Ireland",
+    "email": "michael.oconnor@fakeemail.com",
+    "phone": "+353 1 234 5678",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Trinity College Dublin",
+      "Bachelor of Science in Psychology",
+      "Sep 2016 – Jun 2020 | Dublin, Ireland",
+      "GPA: 3.6/4.0",
+      "Activities: Psychology Society Treasurer, Volunteer Counselor",
+      "Relevant Coursework: Behavioral Psychology, Cognitive Neuroscience, Developmental Psychology, Statistical Methods"
+    ],
+    "experience": [
+      "Clinical Psychologist | Dublin Mental Health Clinic | Aug 2020 - Present | Dublin, Ireland",
+      "- Provided psychological assessments and therapeutic interventions for patients.",
+      "- Led cognitive-behavioral therapy (CBT) groups for adolescents with anxiety and depression.",
+      "- Conducted research on the effectiveness of CBT in treating PTSD."
+    ],
+    "skills": "Psychological Assessment: Cognitive Behavioral Therapy (CBT), Psychoanalysis\nResearch: Data Collection, Statistical Analysis, SPSS\nLanguages: English (native), Irish (intermediate)",
+    "certificates": [
+      "British Psychological Society: Clinical Psychology Certificate",
+      "Psychology Today: CBT Training Program"
+    ],
+    "awards": [
+      "Mental Health Professional of the Year – Dublin Mental Health Clinic 2023",
+      "Best Research Paper – Trinity College Psychology Department 2020"
+    ]
+  },
+  {
+    "filename": "Liam_Carter_CV.pdf",
+    "name": "Liam Carter",
+    "location": "San Francisco, USA",
+    "email": "liam.carter@fakeemail.com",
+    "phone": "+1 415 123 4567",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of California, Berkeley",
+      "Master of Science in Computer Science",
+      "Sep 2021 – May 2023 | Berkeley, USA",
+      "GPA: 3.9/4.0",
+      "Activities: AI Club President, Hackathon Organizer",
+      "Relevant Coursework: Artificial Intelligence, Algorithms, Machine Learning, Data Structures, Cloud Computing"
+    ],
+    "experience": [
+      "Software Engineer Intern | Google | Jun 2022 - Aug 2022 | Mountain View, USA",
+      "- Developed machine learning models to improve search ranking algorithms.",
+      "- Collaborated with cross-functional teams to design new features for Google Search.",
+      "- Conducted performance benchmarking to optimize query processing speed."
+    ],
+    "skills": "Programming: Python, Java, C++, SQL, JavaScript\nTools: TensorFlow, PyTorch, Kubernetes, Docker, GCP, AWS\nOther Skills: Data Structures, Algorithms, Cloud Computing, Version Control (Git)",
+    "certificates": [
+      "Google Cloud: Professional Cloud Architect",
+      "Udacity: Machine Learning Engineer Nanodegree"
+    ],
+    "awards": [
+      "1st Place – HackathonX 2022: AI-based Image Recognition System",
+      "Top Intern – Google Summer Internship 2022"
+    ]
+  },
+  {
+    "filename": "Zoe_Miller_CV.pdf",
+    "name": "Zoe Miller",
+    "location": "London, United Kingdom",
+    "email": "zoe.miller@fakeemail.com",
+    "phone": "+44 20 7946 7890",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of Cambridge",
+      "Bachelor of Science in Software Engineering",
+      "Sep 2018 – Jun 2021 | Cambridge, UK",
+      "GPA: 3.8/4.0",
+      "Activities: Robotics Club, Women in Tech Committee Member",
+      "Relevant Coursework: Software Development, Databases, Algorithms, Web Development, Software Testing"
+    ],
+    "experience": [
+      "Junior Full Stack Developer | TechSolutions Ltd | Jul 2021 - Present | London, UK",
+      "- Developed dynamic web applications using React and Node.js.",
+      "- Worked on cloud-based services (AWS Lambda, API Gateway) for serverless applications.",
+      "- Automated deployment pipelines using Jenkins and GitLab CI/CD."
+    ],
+    "skills": "Programming: JavaScript, Python, HTML/CSS, SQL, Node.js, React\nCloud: AWS, Azure\nTools: Git, Jenkins, Docker, Kubernetes, PostgreSQL",
+    "certificates": [
+      "AWS Certified Solutions Architect – Associate",
+      "Oracle: Java SE 8 Programmer I"
+    ],
+    "awards": [
+      "Winner – Hackathon London 2022: Built a Collaborative Learning Platform",
+      "Employee of the Month – TechSolutions Ltd, Aug 2022"
+    ]
+  },
+  {
+    "filename": "Ravi_Patel_CV.pdf",
+    "name": "Ravi Patel",
+    "location": "Bangalore, India",
+    "email": "ravi.patel@fakeemail.com",
+    "phone": "+91 80 2345 6789",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Indian Institute of Technology, Bangalore",
+      "Master of Technology in Data Science",
+      "Jul 2020 – Jun 2022 | Bangalore, India",
+      "GPA: 9.2/10",
+      "Activities: Data Science Club Member, Kaggle Competitor",
+      "Relevant Coursework: Machine Learning, Big Data, Natural Language Processing, Data Visualization, Cloud Computing"
+    ],
+    "experience": [
+      "Data Scientist | Flipkart | Jul 2022 - Present | Bangalore, India",
+      "- Built predictive models for customer behavior analysis using Python and Scikit-learn.",
+      "- Worked on big data processing frameworks (Hadoop, Spark) for real-time analytics.",
+      "- Created automated reporting dashboards using Tableau."
+    ],
+    "skills": "Programming: Python, R, SQL, Java\nTools: Hadoop, Spark, TensorFlow, Scikit-learn, Tableau\nCloud: AWS, GCP",
+    "certificates": [
+      "Coursera: Data Science Specialization (Johns Hopkins University)",
+      "Google Cloud: Machine Learning with TensorFlow"
+    ],
+    "awards": [
+      "Kaggle Grandmaster (Top 0.5%)",
+      "Best Data Science Project – Flipkart 2023"
+    ]
+  },
+  {
+    "filename": "Ethan_Scott_CV.pdf",
+    "name": "Ethan Scott",
+    "location": "Toronto, Canada",
+    "email": "ethan.scott@fakeemail.com",
+    "phone": "+1 416 234 5678",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of Toronto",
+      "Bachelor of Science in Computer Science",
+      "Sep 2016 – Jun 2020 | Toronto, Canada",
+      "GPA: 3.7/4.0",
+      "Activities: Competitive Programming Club, Tech Talk Speaker",
+      "Relevant Coursework: Operating Systems, Computer Networks, Cloud Computing, Databases"
+    ],
+    "experience": [
+      "Network Engineer | Cisco Systems | Jul 2020 - Present | Toronto, Canada",
+      "- Designed and optimized network architecture for large enterprise clients.",
+      "- Conducted network security assessments and implemented firewall rules.",
+      "- Collaborated with development teams to integrate network solutions with cloud infrastructure."
+    ],
+    "skills": "Networking: TCP/IP, DNS, HTTP, VPN\nTools: Cisco Packet Tracer, Wireshark, AWS VPC\nProgramming: Python, Bash\nCloud: AWS, Azure",
+    "certificates": [
+      "Cisco Certified Network Associate (CCNA)",
+      "AWS Certified Solutions Architect – Associate"
+    ],
+    "awards": [
+      "Best Network Engineer – Cisco 2022",
+      "Top Performer – Cloud Infrastructure Project at Cisco 2023"
+    ]
+  },
+  {
+    "filename": "Maya_Nguyen_CV.pdf",
+    "name": "Maya Nguyen",
+    "location": "Sydney, Australia",
+    "email": "maya.nguyen@fakeemail.com",
+    "phone": "+61 2 2345 6789",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of Sydney",
+      "Bachelor of Information Technology",
+      "Feb 2017 – Nov 2020 | Sydney, Australia",
+      "GPA: 3.8/4.0",
+      "Activities: Women in Tech Australia Member, Developer Advocate",
+      "Relevant Coursework: Software Engineering, Database Management, Java Programming, Web Development"
+    ],
+    "experience": [
+      "Frontend Developer | Atlassian | Dec 2020 - Present | Sydney, Australia",
+      "- Developed responsive user interfaces for Jira using React and Redux.",
+      "- Worked with UX designers to create seamless and intuitive web experiences.",
+      "- Optimized front-end performance by minimizing load times and reducing JavaScript bundles."
+    ],
+    "skills": "Frontend: React, JavaScript, HTML/CSS, Redux\nBackend: Node.js, Express, REST APIs\nTools: Git, Jenkins, Docker, AWS S3",
+    "certificates": [
+      "Certified JavaScript Developer – JavaScript Institute",
+      "Udemy: React Native Advanced"
+    ],
+    "awards": [
+      "Top Innovator – Atlassian Product Development 2022",
+      "Best Frontend Developer – Atlassian 2023"
+    ]
+  },
+  {
+    "filename": "Samuel_Lee_CV.pdf",
+    "name": "Samuel Lee",
+    "location": "Seoul, South Korea",
+    "email": "samuel.lee@fakeemail.com",
+    "phone": "+82 10 9876 5432",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "KAIST (Korea Advanced Institute of Science and Technology)",
+      "Master of Science in Artificial Intelligence",
+      "Sep 2020 – Aug 2022 | Daejeon, South Korea",
+      "GPA: 4.0/4.0",
+      "Activities: AI Ethics Committee Member, Robotics Club",
+      "Relevant Coursework: Deep Learning, Natural Language Processing, Robotics, Data Structures"
+    ],
+    "experience": [
+      "AI Research Engineer | Samsung Research | Aug 2022 - Present | Seoul, South Korea",
+      "- Conducted deep learning research to improve image recognition models for mobile devices.",
+      "- Developed real-time AI algorithms for voice recognition in Samsung's smart assistant.",
+      "- Worked closely with hardware engineers to integrate AI models into mobile devices."
+    ],
+    "skills": "Programming: Python, C++, TensorFlow, PyTorch\nAI Tools: Keras, OpenCV, NumPy\nCloud: GCP, AWS",
+    "certificates": [
+      "TensorFlow Developer Certificate",
+      "DeepLearning.AI: Deep Learning Specialization"
+    ],
+    "awards": [
+      "Best AI Researcher Award – Samsung Research 2023",
+      "NeurIPS 2022 Best Paper Award"
+    ]
+  },
+  {
+    "filename": "Olivia_Green_CV.pdf",
+    "name": "Olivia Green",
+    "location": "New York, USA",
+    "email": "olivia.green@fakeemail.com",
+    "phone": "+1 212 234 5678",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Columbia University",
+      "Bachelor of Science in Computer Science",
+      "Sep 2016 – May 2020 | New York, USA",
+      "GPA: 3.9/4.0",
+      "Activities: CS Club, AI Club, Volunteer Tutor for Coding",
+      "Relevant Coursework: Algorithms, Databases, Operating Systems, Web Development"
+    ],
+    "experience": [
+      "Backend Developer | Stripe | Jun 2020 - Present | New York, USA",
+      "- Designed and implemented scalable backend systems for processing transactions.",
+      "- Integrated payment gateways into various third-party platforms.",
+      "- Wrote RESTful APIs to manage customer data and handle transaction requests."
+    ],
+    "skills": "Backend: Python, Java, SQL, REST APIs\nTools: Docker, Kubernetes, Redis, AWS Lambda\nDatabases: PostgreSQL, MongoDB",
+    "certificates": [
+      "AWS Certified Developer – Associate",
+      "Udemy: Advanced SQL for Data Science"
+    ],
+    "awards": [
+      "Employee of the Year – Stripe 2022",
+      "Hackathon Winner – Best API Design 2021"
+    ]
+  },
+  {
+    "filename": "Daniel_Foster_CV.pdf",
+    "name": "Daniel Foster",
+    "location": "Los Angeles, USA",
+    "email": "daniel.foster@fakeemail.com",
+    "phone": "+1 323 234 5678",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "California Institute of Technology (Caltech)",
+      "Master of Science in Electrical Engineering",
+      "Sep 2019 – Jun 2021 | Pasadena, USA",
+      "GPA: 3.95/4.0",
+      "Activities: Robotics Club President, IEEE Member",
+      "Relevant Coursework: Embedded Systems, VLSI Design, Circuit Analysis, Robotics"
+    ],
+    "experience": [
+      "Embedded Systems Engineer | Tesla | Jul 2021 - Present | Palo Alto, USA",
+      "- Designed embedded software for autonomous driving systems.",
+      "- Worked on real-time control algorithms for vehicle sensors.",
+      "- Optimized energy efficiency in hardware and software integration."
+    ],
+    "skills": "Embedded Systems: C, C++, RTOS, Embedded Linux\nHardware: FPGA, PCB Design, VHDL\nSoftware: Python, MATLAB, Simulink",
+    "certificates": [
+      "Certified Embedded Systems Engineer – Embedded Systems Institute",
+      "Udemy: Mastering FPGA Design"
+    ],
+    "awards": [
+      "Innovative Engineering Award – Tesla 2023",
+      "Best Paper – Caltech Robotics Symposium 2020"
+    ]
+  },
+  {
+    "filename": "Emma_Cooper_CV.pdf",
+    "name": "Emma Cooper",
+    "location": "Berlin, Germany",
+    "email": "emma.cooper@fakeemail.com",
+    "phone": "+49 30 1234 5678",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Technical University of Berlin",
+      "Bachelor of Science in Software Engineering",
+      "Sep 2017 – Jun 2021 | Berlin, Germany",
+      "GPA: 1.7 (German Grading System)",
+      "Activities: Tech Meetups, Volunteer at Coding Bootcamp",
+      "Relevant Coursework: Web Development, Database Management, Software Architecture"
+    ],
+    "experience": [
+      "Web Developer | Zalando | Jul 2021 - Present | Berlin, Germany",
+      "- Developed and maintained Zalando's e-commerce platform using React and Node.js.",
+      "- Implemented microservices to improve the scalability of backend services.",
+      "- Worked with UX/UI teams to improve customer experience on the web and mobile applications."
+    ],
+    "skills": "Frontend: React, JavaScript, HTML/CSS, Redux\nBackend: Node.js, Express, MongoDB\nDevOps: Docker, Kubernetes, Jenkins, Git",
+    "certificates": [
+      "Google: Web Development Professional Certificate",
+      "Udemy: Mastering React Native"
+    ],
+    "awards": [
+      "Top Performer – Zalando Web Development Team 2022",
+      "Hackathon Winner – Best E-Commerce Solution 2021"
+    ]
+  },
+  {
+    "filename": "Jennifer_Clarke_CV.pdf",
+    "name": "Jennifer Clarke",
+    "location": "Chicago, USA",
+    "email": "jennifer.clarke@fakeemail.com",
+    "phone": "+1 312 123 4567",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Northwestern University",
+      "Master of Science in Cybersecurity",
+      "Sep 2019 – Dec 2021 | Chicago, USA",
+      "GPA: 3.8/4.0",
+      "Activities: Women in Cybersecurity, CTF Competitions Coordinator",
+      "Relevant Coursework: Network Security, Cryptography, Information Assurance, Secure Software Design"
+    ],
+    "experience": [
+      "Security Analyst | AllState | Jan 2022 - Present | Northbrook, USA",
+      "- Led the female cybersecurity team in conducting vulnerability assessments.",
+      "- Implemented secure coding practices across software development lifecycles.",
+      "- Organized monthly security workshops for women in technology at the company."
+    ],
+    "skills": "Cybersecurity: Ethical Hacking, Incident Response, Vulnerability Management\nProgramming: Python, Java, Bash\nTools: Kali Linux, Wireshark, OWASP ZAP",
+    "certificates": [
+      "Certified Information Systems Security Professional (CISSP)",
+      "EC-Council Certified Ethical Hacker (CEH)"
+    ],
+    "awards": [
+      "Women in Technology Rising Star Award 2022",
+      "Best Female Cybersecurity Professional – AllState 2023"
+    ]
+  },
+  {
+    "filename": "David_Johnson_CV.pdf",
+    "name": "David Johnson",
+    "location": "San Diego, USA",
+    "email": "david.johnson@fakeemail.com",
+    "phone": "+1 619 234 5678",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of California, San Diego",
+      "Bachelor of Science in Computer Science",
+      "Sep 2016 – Jun 2020 | San Diego, USA",
+      "GPA: 3.9/4.0",
+      "Activities: Men in Software Engineering, ACM Student Chapter Vice President",
+      "Relevant Coursework: Software Development, Machine Learning, Systems Programming, Data Visualization"
+    ],
+    "experience": [
+      "Software Developer | Intuit | Jul 2020 - Present | San Diego, USA",
+      "- Mentored young male software engineers in best coding practices.",
+      "- Developed high-performance financial software solutions.",
+      "- Led the men's group in software design contests."
+    ],
+    "skills": "Programming: Python, C#, JavaScript, SQL\nFrameworks: .NET, React, Node.js\nTools: Docker, Azure, Git",
+    "certificates": [
+      "Microsoft Certified: Azure Developer Associate",
+      "Scrum Master Certified (SMC)"
+    ],
+    "awards": [
+      "Men in Tech Excellence Award 2021",
+      "Intuit Developer of the Year 2022"
+    ]
+  },
+  {
+    "filename": "Maria_Lopez_CV.pdf",
+    "name": "Maria Lopez",
+    "location": "Miami, USA",
+    "email": "maria.lopez@fakeemail.com",
+    "phone": "+1 305 987 6543",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Florida International University",
+      "Master of Science in Information Systems",
+      "Aug 2018 – May 2020 | Miami, USA",
+      "GPA: 3.7/4.0",
+      "Activities: Society of Hispanic Professional Engineers, Women in IT Panelist",
+      "Relevant Coursework: Database Management, Systems Analysis, Business Intelligence"
+    ],
+    "experience": [
+      "IT Consultant | Accenture | Jun 2020 - Present | Miami, USA",
+      "- Advised major female-led businesses on IT strategy and digital transformation.",
+      "- Designed and deployed enterprise solutions enhancing operational efficiency.",
+      "- Spearheaded diversity initiatives to support women in IT within Accenture."
+    ],
+    "skills": "Databases: SQL Server, Oracle\nTools: SAP, Salesforce, Power BI\nOther: Digital Transformation, IT Strategy, Project Management",
+    "certificates": [
+      "Salesforce Certified Administrator",
+      "Microsoft Certified: Dynamics 365 Fundamentals"
+    ],
+    "awards": [
+      "Top Latina in IT 2022",
+      "Accenture Diversity Advocate of the Year 2023"
+    ]
+  },
+  {
+    "filename": "Benjamin_Clark_CV.pdf",
+    "name": "Benjamin Clark",
+    "location": "New York, USA",
+    "email": "benjamin.clark@fakeemail.com",
+    "phone": "+1 212 123 4567",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "New York University",
+      "Bachelor of Science in Data Science",
+      "Sep 2017 – May 2021 | New York, USA",
+      "GPA: 3.85/4.0",
+      "Activities: Male Leaders in Data, Student Data Science Symposium Organizer",
+      "Relevant Coursework: Statistics, Machine Learning, Data Engineering, Big Data Analytics"
+    ],
+    "experience": [
+      "Data Analyst | Bloomberg | Jun 2021 - Present | New York, USA",
+      "- Led male data scientists in building predictive models for financial trends.",
+      "- Collaborated with senior male analysts on complex data sets.",
+      "- Initiated a mentorship program for men in data science at Bloomberg."
+    ],
+    "skills": "Data Analysis: Python, R, SQL, Tableau\nMachine Learning: Scikit-learn, TensorFlow\nBig Data: Hadoop, Spark, Databricks",
+    "certificates": [
+      "Tableau Desktop Specialist",
+      "Google Data Analytics Professional Certificate"
+    ],
+    "awards": [
+      "Data Science Mentor of the Year 2022",
+      "Bloomberg Newcomer Award 2021"
+    ]
+  },
+  {
+    "filename": "Anna_Schmidt_CV.pdf",
+    "name": "Anna Schmidt",
+    "location": "Berlin, Germany",
+    "email": "anna.schmidt@fakeemail.com",
+    "phone": "+49 30 876 5432",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Technical University of Berlin",
+      "Master of Science in Network Engineering",
+      "Oct 2018 – Jul 2020 | Berlin, Germany",
+      "GPA: 1.3 (German Grading System)",
+      "Activities: Female Engineers Network, IEEE Women in Engineering",
+      "Relevant Coursework: Network Protocols, Wireless Communications, Information Security"
+    ],
+    "experience": [
+      "Network Architect | Deutsche Telekom | Aug 2020 - Present | Berlin, Germany",
+      "- Pioneered the women's networking circle to promote female leadership in network engineering.",
+      "- Designed and implemented robust network solutions for large-scale telecommunications.",
+      "- Facilitated workshops for women in network security."
+    ],
+    "skills": "Networking: Cisco Systems, Juniper Networks, Wireshark\nSecurity: Firewall Management, VPN, Intrusion Detection Systems\nTools: NetSim, GNS3, Packet Tracer",
+    "certificates": [
+      "Cisco Certified Network Professional (CCNP)",
+      "Juniper Networks Certified Internet Specialist (JNCIS)"
+    ],
+    "awards": [
+      "Telekom Women Leader Award 2022",
+      "Best Female Network Engineer – European Networking Awards 2021"
+    ]
+  },
+  {
+    "filename": "Michael_Brooks_CV.pdf",
+    "name": "Michael Brooks",
+    "location": "Austin, USA",
+    "email": "michael.brooks@fakeemail.com",
+    "phone": "+1 512 987 6543",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of Texas at Austin",
+      "Master of Science in Software Engineering",
+      "Sep 2018 – Dec 2020 | Austin, USA",
+      "GPA: 3.9/4.0",
+      "Activities: Male Coders Network, Annual Coding Marathon Organizer",
+      "Relevant Coursework: Advanced Software Design, Agile Methodologies, User-Centered Design"
+    ],
+    "experience": [
+      "Lead Software Engineer | Dell Technologies | Jan 2021 - Present | Austin, USA",
+      "- Managed a male-dominated software development team.",
+      "- Enhanced software architectures and optimized deployment processes.",
+      "- Initiated and led a coding workshop series for men in technology at Dell."
+    ],
+    "skills": "Software Development: Java, .NET, Python\nAgile Tools: Jira, Confluence, Trello\nDevOps: Jenkins, Docker, Kubernetes",
+    "certificates": [
+      "Certified ScrumMaster (CSM)",
+      "AWS Certified DevOps Engineer – Professional"
+    ],
+    "awards": [
+      "Best Male Software Engineer – Dell Technologies 2022",
+      "Leadership Excellence in Software Engineering – Austin Tech Awards 2021"
+    ]
+  },
+  {
+    "filename": "Olivia_James_CV.pdf",
+    "name": "Olivia James",
+    "location": "Los Angeles, USA",
+    "email": "olivia.james@fakeemail.com",
+    "phone": "+1 323 345 6789",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of Southern California",
+      "Master of Science in Artificial Intelligence",
+      "Sep 2019 – Dec 2021 | Los Angeles, USA",
+      "GPA: 3.8/4.0",
+      "Activities: Women in AI, AI Research Club Vice President",
+      "Relevant Coursework: Deep Learning, Natural Language Processing, AI Ethics, Reinforcement Learning"
+    ],
+    "experience": [
+      "AI Engineer | NVIDIA | Jan 2022 - Present | Santa Clara, USA",
+      "- Developed AI-based video editing tools with a focus on empowering female content creators.",
+      "- Worked with male colleagues to integrate AI models into real-time video processing pipelines.",
+      "- Led internal women's group to discuss and promote gender inclusion in AI."
+    ],
+    "skills": "AI Tools: TensorFlow, PyTorch, OpenCV\nProgramming: Python, C++, JavaScript\nCloud: AWS, Azure",
+    "certificates": [
+      "Google Cloud Certified: Professional Machine Learning Engineer",
+      "Udacity: Deep Learning Nanodegree"
+    ],
+    "awards": [
+      "Top Female AI Engineer – NVIDIA 2023",
+      "Winner – Global AI Hackathon 2022"
+    ]
+  },
+  {
+    "filename": "Ethan_Matthews_CV.pdf",
+    "name": "Ethan Matthews",
+    "location": "Dallas, USA",
+    "email": "ethan.matthews@fakeemail.com",
+    "phone": "+1 214 123 4567",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of Texas at Austin",
+      "Bachelor of Science in Information Systems",
+      "Sep 2015 – May 2019 | Austin, USA",
+      "GPA: 3.7/4.0",
+      "Activities: Men in Technology, Tech Startup Club Member",
+      "Relevant Coursework: Web Development, Cloud Computing, Information Security"
+    ],
+    "experience": [
+      "Cloud Solutions Architect | IBM | Jun 2019 - Present | Dallas, USA",
+      "- Designed and deployed cloud solutions for male-led tech startups.",
+      "- Led workshops on cloud architecture for male engineers within the company.",
+      "- Collaborated with female engineers on cutting-edge projects to create diverse solutions."
+    ],
+    "skills": "Cloud: AWS, Google Cloud Platform, Azure\nProgramming: Python, JavaScript, Terraform\nDevOps: Docker, Kubernetes, CI/CD",
+    "certificates": [
+      "AWS Certified Solutions Architect – Professional",
+      "Google Cloud Certified: Professional Cloud Architect"
+    ],
+    "awards": [
+      "IBM Leadership Excellence Award 2022",
+      "Employee of the Year – Cloud Engineering Team 2023"
+    ]
+  },
+  {
+    "filename": "Clara_Wang_CV.pdf",
+    "name": "Clara Wang",
+    "location": "Singapore",
+    "email": "clara.wang@fakeemail.com",
+    "phone": "+65 8765 4321",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "National University of Singapore",
+      "Bachelor of Computing in Computer Science",
+      "Sep 2016 – Jun 2020 | Singapore",
+      "GPA: 4.0/4.0",
+      "Activities: Women in Tech Singapore, Robotics Club President",
+      "Relevant Coursework: Software Engineering, Algorithms, AI, Web Development"
+    ],
+    "experience": [
+      "Software Engineer | Google | Jul 2020 - Present | Singapore",
+      "- Developed tools for promoting female representation in tech teams.",
+      "- Worked on large-scale data processing systems, collaborating with diverse gender teams.",
+      "- Implemented software solutions for improving team collaboration among female and male engineers."
+    ],
+    "skills": "Programming: Python, Java, C++, JavaScript\nFrameworks: Angular, React, Django\nCloud: Google Cloud Platform, AWS",
+    "certificates": [
+      "Google Cloud Certified – Associate Cloud Engineer",
+      "Udacity: AI for Everyone"
+    ],
+    "awards": [
+      "Top Female Engineer – Google 2022",
+      "Winner – Code for Good Hackathon 2021"
+    ]
+  },
+  {
+    "filename": "Lucas_Stewart_CV.pdf",
+    "name": "Lucas Stewart",
+    "location": "London, United Kingdom",
+    "email": "lucas.stewart@fakeemail.com",
+    "phone": "+44 20 7987 6543",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "Imperial College London",
+      "Master of Science in Data Science",
+      "Sep 2018 – Jul 2020 | London, UK",
+      "GPA: 3.8/4.0",
+      "Activities: Male Data Science Society, Data Science Conference Speaker",
+      "Relevant Coursework: Machine Learning, Data Visualization, Data Mining, Cloud Computing"
+    ],
+    "experience": [
+      "Data Scientist | Spotify | Aug 2020 - Present | London, UK",
+      "- Led data science initiatives, mentoring junior male data scientists.",
+      "- Built recommendation algorithms and personalized playlists for millions of users.",
+      "- Worked on increasing male and female diversity in data science hiring at Spotify."
+    ],
+    "skills": "Data Science: Python, R, SQL, TensorFlow\nData Visualization: Tableau, Power BI, matplotlib\nCloud: AWS, GCP",
+    "certificates": [
+      "AWS Certified Machine Learning – Specialty",
+      "Coursera: Data Science Specialization"
+    ],
+    "awards": [
+      "Best Data Scientist – Spotify 2022",
+      "Male Data Science Leader – Data Science Association 2023"
+    ]
+  },
+  {
+    "filename": "Isabella_Evans_CV.pdf",
+    "name": "Isabella Evans",
+    "location": "Vancouver, Canada",
+    "email": "isabella.evans@fakeemail.com",
+    "phone": "+1 604 234 5678",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "education": [
+      "University of British Columbia",
+      "Bachelor of Computer Science",
+      "Sep 2017 – Jun 2021 | Vancouver, Canada",
+      "GPA: 3.9/4.0",
+      "Activities: Women in Computer Science Club, Coding Bootcamp Volunteer",
+      "Relevant Coursework: Software Engineering, Web Development, Algorithms, Data Structures"
+    ],
+    "experience": [
+      "Frontend Developer | Shopify | Jul 2021 - Present | Vancouver, Canada",
+      "- Led a female team of developers to redesign the Shopify admin dashboard.",
+      "- Created new features to improve accessibility for both male and female entrepreneurs.",
+      "- Promoted inclusivity by organizing women-only tech meetups at Shopify."
+    ],
+    "skills": "Frontend: JavaScript, React, HTML/CSS\nTools: Git, Webpack, npm\nCloud: AWS, GCP",
+    "certificates": [
+      "React Native Development Certification",
+      "Google Cloud Certified – Associate Cloud Engineer"
+    ],
+    "awards": [
+      "Best Female Developer – Shopify 2023",
+      "Top Innovator – Women in Tech Conference 2022"
+    ]
+  }
+]
