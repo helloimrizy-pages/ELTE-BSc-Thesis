@@ -17,3 +17,6 @@ transpara/nlp_data_extraction/matching_ver3.py
 transpara/nlp_data_extraction/matching_ver1.py
 transpara/nlp_data_extraction/generate_fake_cv/main.py
 transpara/nlp_data_extraction/main.py
+transpara/resume_ranking/.env
+transpara/resume_ranking/code_context.txt
+*.pyc
