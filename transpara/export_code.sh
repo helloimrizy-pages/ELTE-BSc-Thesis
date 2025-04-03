@@ -17,13 +17,16 @@ if [ -f "$output_file" ]; then
 fi
 
 # List of directories to look for
-directories=("src/components" "src/utils" "src/pages" "src/constants" "src/types")
+directories=("src/components" "src/pages" "src/services" "resume_ranking/api" "resume_ranking/backend" "resume_ranking/config" "resume_ranking/src")
 
 # List of specific files to include
-specific_files=("src/App.tsx" "src/firebase.ts" "src/setupGlobal.ts")
+specific_files=("src/App.tsx" "src/firebase.ts" "src/setupGlobal.ts" "resume_ranking/main.py" "src/types/analysisService.d.ts")
 
 # List of file types to ignore
-ignore_files=("*.ico" "*.png" "*.jpg" "*.jpeg" "*.gif" "*.svg")
+ignore_files=("*.ico" "*.png" "*.jpg" "*.jpeg" "*.gif" "*.svg" "*.pyc")
+
+# List of files to exclude (provide relative paths from the project root)
+exclude_files=()  # Modify as needed
 
 # Function to append file content
 append_file_content() {
@@ -42,6 +45,22 @@ read_files() {
       # If entry is a directory, call this function recursively
       read_files "$entry"
     elif [ -f "$entry" ]; then
+      # Compute the file's relative path from the project root
+      local relative_path=${entry#"$project_dir/"}
+      
+      # Check if the file is in the exclusion list
+      should_exclude=false
+      for exclude_pattern in "${exclude_files[@]}"; do
+        if [[ "$relative_path" == $exclude_pattern ]]; then
+          should_exclude=true
+          break
+        fi
+      done
+
+      if $should_exclude; then
+        continue
+      fi
+
       # Check if the file type should be ignored
       should_ignore=false
       for ignore_pattern in "${ignore_files[@]}"; do
@@ -51,7 +70,7 @@ read_files() {
         fi
       done
 
-      # If the file type should not be ignored, append its relative path and content to the output file
+      # If the file is not ignored, append its content
       if ! $should_ignore; then
         append_file_content "$entry"
       fi
