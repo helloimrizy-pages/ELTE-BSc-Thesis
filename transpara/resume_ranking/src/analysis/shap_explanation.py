@@ -1,0 +1,117 @@
+import numpy as np
+import pandas as pd
+import shap
+from typing import Dict, List, Tuple, Optional, Any, Union
+
+from config.settings import MODEL_SETTINGS
+
+def generate_model_explanations(
+    model: Any,
+    feature_names: List[str],
+    X: pd.DataFrame,
+    skill_keywords: Optional[List[str]] = None
+) -> Tuple[List[Dict[str, Any]], np.ndarray, pd.DataFrame]:
+
+    explainer = shap.TreeExplainer(model)
+    
+    shap_values = explainer.shap_values(X)
+    
+    base_value = explainer.expected_value
+    
+    if len(feature_names) != shap_values.shape[1]:
+        print(f"Warning: Mismatch between feature_names ({len(feature_names)}) and shap_values shape ({shap_values.shape[1]})")
+        feature_names = X.columns.tolist()
+        print(f"Using DataFrame columns as feature names ({len(feature_names)})")
+    
+    shap_df = pd.DataFrame(shap_values, columns=feature_names)
+    
+    explanations = []
+    for idx, row in enumerate(shap_values):
+        sorted_idx = np.argsort(-np.abs(row))
+        top_contributors = []
+        
+        for i in sorted_idx[:MODEL_SETTINGS['top_contributors']]:
+            feature_name = feature_names[i]
+            shap_value = row[i]
+            feature_value = X.iloc[idx, i]
+            
+            display_name = _get_descriptive_feature_name(feature_name, skill_keywords)
+            
+            top_contributors.append({
+                "feature": display_name,
+                "impact": float(shap_value),
+                "value": float(feature_value),
+                "positive": bool(shap_value > 0)
+            })
+        
+        if isinstance(base_value, np.ndarray):
+            base_value_scalar = base_value.item() if base_value.size == 1 else base_value[0]
+        else:
+            base_value_scalar = base_value
+            
+        row_sum = np.sum(row)
+        if isinstance(row_sum, np.ndarray):
+            row_sum = row_sum.item() if row_sum.size == 1 else row_sum[0]
+            
+        final_prediction = float(base_value_scalar) + float(row_sum)
+        
+        explanations.append({
+            "base_value": base_value_scalar,
+            "prediction": final_prediction,
+            "contributors": top_contributors
+        })
+    
+    return explanations, shap_values, shap_df
+
+def _get_descriptive_feature_name(feature_name: str, skill_keywords: Optional[List[str]] = None) -> str:
+    if feature_name.startswith("skill_") and skill_keywords is not None:
+        skill_name = feature_name.replace("skill_", "")
+        return f"Skill: {skill_name.capitalize()}"
+    elif feature_name == "cosine_similarity":
+        return "Overall CV-Job Similarity"
+    elif feature_name == "gender_bias_score":
+        return "Gender Neutrality Score"
+    elif feature_name.startswith("embed_dim_"):
+        dim_num = feature_name.replace("embed_dim_", "")
+        return f"Semantic Context Factor {dim_num}"
+    elif feature_name.startswith("embed_diff_"):
+        dim_num = feature_name.replace("embed_diff_", "")
+        return f"Concept Gap {dim_num}"
+    else:
+        return f"Feature: {feature_name.replace('_', ' ').title()}"
+
+def format_explanation_for_hr(
+    explanation: Dict[str, Any],
+    candidate_name: str,
+    job_title: str
+) -> str:
+    base_value = explanation["base_value"]
+    prediction = explanation["prediction"]
+    contributors = explanation["contributors"]
+    
+    if hasattr(base_value, '__iter__'):
+        base_value = float(base_value[0] if len(base_value) > 0 else 0)
+    
+    if hasattr(prediction, '__iter__'):
+        prediction = float(prediction[0] if len(prediction) > 0 else 0)
+    
+    positive_factors = [c for c in contributors if c["positive"]]
+    negative_factors = [c for c in contributors if not c["positive"]]
+    
+    explanation_text = f"Candidate: {candidate_name}\n"
+    explanation_text += f"Position: {job_title}\n"
+    explanation_text += f"Match Score: {prediction:.2f} (average is {base_value:.2f})\n\n"
+    
+    explanation_text += _format_factors("Strengths", positive_factors, sign="+")
+    explanation_text += _format_factors("Concerns", negative_factors, sign="-")
+    
+    return explanation_text
+
+def _format_factors(title: str, factors: List[Dict[str, Any]], sign: str = "+") -> str:
+    if not factors:
+        return f"{title}:\n• No significant factors identified\n"
+    output = f"{title}:\n"
+    for factor in factors[:3]:
+        impact = abs(factor["impact"])
+        output += f"• {factor['feature']}: {'Contributes +' if sign == '+' else 'Decreases by '}{impact:.3f}\n"
+    return output
