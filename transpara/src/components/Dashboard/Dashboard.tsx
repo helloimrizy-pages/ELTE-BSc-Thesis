@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
+  Container,
   Typography,
   Button,
   List,
@@ -9,6 +10,7 @@ import {
   ListItemButton,
   Divider,
   Paper,
+  Grid,
 } from "@mui/material";
 import { TransparaAppBar } from "../AppBar/TransparaAppBar";
 import { auth, db } from "../../firebase";
@@ -16,6 +18,7 @@ import { signOut } from "firebase/auth";
 import { NewJobDialog } from "./NewJob";
 import { EditJobDialog } from "../Dashboard/EditJobDialog";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
+import Sidebar from "../AppBar/Sidebar";
 
 interface Job {
   id: string;
@@ -37,7 +40,6 @@ const Dashboard: React.FC = () => {
     await signOut(auth);
   };
 
-  // Fetch jobs created by the current user
   useEffect(() => {
     if (!auth.currentUser) return;
     const q = query(
@@ -62,51 +64,142 @@ const Dashboard: React.FC = () => {
   return (
     <Box>
       <TransparaAppBar onLogout={handleLogout} />
-      <Box sx={{ p: 3 }}>
-        <Typography variant="h4" sx={{ mb: 2 }}>
-          Dashboard
-        </Typography>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+          {}
+          <Grid item xs={12} md={3}>
+            <Sidebar />
 
-        <Paper elevation={3} sx={{ p: 2 }}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              mb: 2,
-            }}
-          >
-            <Typography variant="h6">Your Job Postings</Typography>
-            <Button
-              variant="contained"
-              onClick={() => setOpenNewJob(true)}
-              sx={{
-                backgroundColor: "black",
-                "&:hover": { backgroundColor: "#333" },
-              }}
-            >
-              New Job
-            </Button>
-          </Box>
-          <Divider />
-          {jobs.length === 0 ? (
-            <Typography sx={{ mt: 2 }}>No job postings found.</Typography>
-          ) : (
-            <List>
-              {jobs.map((job) => (
-                <ListItem key={job.id} divider disablePadding>
-                  <ListItemButton onClick={() => handleJobClick(job)}>
-                    <ListItemText
-                      primary={job.title}
-                      secondary={`${window.location.origin}/job/${job.id}`}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          )}
-        </Paper>
-      </Box>
+            {}
+            <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
+              <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                Quick Stats
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+              <Box
+                sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}
+              >
+                <Typography variant="body2" color="text.secondary">
+                  Job Postings:
+                </Typography>
+                <Typography variant="body2" fontWeight="bold">
+                  {jobs.length}
+                </Typography>
+              </Box>
+              <Box
+                sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}
+              >
+                <Typography variant="body2" color="text.secondary">
+                  Applications:
+                </Typography>
+                <Typography variant="body2" fontWeight="bold">
+                  14
+                </Typography>
+              </Box>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography variant="body2" color="text.secondary">
+                  Top Candidate:
+                </Typography>
+                <Typography variant="body2" fontWeight="bold">
+                  Aisha A.
+                </Typography>
+              </Box>
+            </Paper>
+          </Grid>
+
+          {}
+          <Grid item xs={12} md={9}>
+            <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 2 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  mb: 3,
+                }}
+              >
+                <Typography variant="h5">Your Job Postings</Typography>
+                <Button
+                  variant="contained"
+                  onClick={() => setOpenNewJob(true)}
+                  sx={{
+                    backgroundColor: "black",
+                    "&:hover": { backgroundColor: "#333" },
+                  }}
+                >
+                  New Job
+                </Button>
+              </Box>
+
+              {jobs.length === 0 ? (
+                <Box
+                  sx={{
+                    p: 4,
+                    textAlign: "center",
+                    bgcolor: "rgba(0,0,0,0.02)",
+                    borderRadius: 2,
+                  }}
+                >
+                  <Typography sx={{ mb: 2 }}>No job postings found.</Typography>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setOpenNewJob(true)}
+                  >
+                    Create Your First Job
+                  </Button>
+                </Box>
+              ) : (
+                <List>
+                  {jobs.map((job) => (
+                    <ListItem
+                      key={job.id}
+                      divider
+                      disablePadding
+                      sx={{
+                        mb: 1,
+                        border: "1px solid #eee",
+                        borderRadius: 1,
+                        overflow: "hidden",
+                      }}
+                    >
+                      <ListItemButton onClick={() => handleJobClick(job)}>
+                        <ListItemText
+                          primary={
+                            <Typography variant="subtitle1" fontWeight="medium">
+                              {job.title}
+                            </Typography>
+                          }
+                          secondary={
+                            <>
+                              <Typography
+                                variant="body2"
+                                component="span"
+                                color="text.secondary"
+                              >
+                                {job.location} • {job.type}
+                              </Typography>
+                              <Box
+                                component="span"
+                                sx={{
+                                  display: "block",
+                                  mt: 1,
+                                  color: "primary.main",
+                                }}
+                              >
+                                {`${window.location.origin}/job/${job.id}`}
+                              </Box>
+                            </>
+                          }
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
 
       <NewJobDialog open={openNewJob} onClose={() => setOpenNewJob(false)} />
 
