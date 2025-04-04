@@ -21,10 +21,3 @@ def load_candidate_pdfs(directory: str) -> Tuple[List[str], List[str]]:
     if not files:
         raise FileNotFoundError("No PDF files found in candidate directory.")
     return files, texts
-
-def display_ranking(ranking_path: str):
-    with open(ranking_path, "r", encoding="utf-8") as f:
-        ranking = json.load(f)
-    print("\nCandidate Ranking Results:")
-    for result in ranking["ranking"]:
-        print(f"{result['rank']}. {result['candidate']} - Score: {result['score']:.4f}")
