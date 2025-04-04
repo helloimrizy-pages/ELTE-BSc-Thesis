@@ -1,7 +1,11 @@
 import numpy as np
 import pandas as pd
 import shap
+import os
+
 from typing import Dict, List, Tuple, Optional, Any, Union
+from uuid import uuid4
+from src.utils.file_utils import save_to_json, load_from_json, generate_candidate_id
 
 from config.settings import MODEL_SETTINGS
 
@@ -62,6 +66,47 @@ def generate_model_explanations(
         })
     
     return explanations, shap_values, shap_df
+
+def generate_shap_explanations(
+    candidate_files: List[str],
+    explanations: List[Dict[str, Any]],
+    output_folders: Dict[str, str]
+) -> None:
+    """
+    Save SHAP explanations to a JSON report, skipping existing ones based on candidate ID.
+    """
+
+    shap_results_path = os.path.join(output_folders["reports"], "shap_explanations.json")
+
+    if os.path.exists(shap_results_path):
+        existing_shap = load_from_json(shap_results_path)
+        if "analysis_id" not in existing_shap:
+            existing_shap["analysis_id"] = "shap_" + str(uuid4())
+    else:
+        existing_shap = {"analysis_id": "shap_" + str(uuid4()), "shap": []}
+
+    existing_shap_ids = {entry["id"] for entry in existing_shap.get("shap", [])}
+
+    for idx, explanation in enumerate(explanations):
+        candidate_file = candidate_files[idx]
+        candidate_id = generate_candidate_id(candidate_file)
+        candidate_name = os.path.basename(candidate_file).replace(".pdf", "")
+
+        if candidate_id in existing_shap_ids:
+            print(f"SHAP analysis for {candidate_name} already exists, skipping.")
+            continue
+
+        entry = {
+            "id": candidate_id,
+            "candidate_file": candidate_name,
+            "base_value": explanation.get("base_value"),
+            "prediction": explanation.get("prediction"),
+            "contributors": explanation.get("contributors")
+        }
+        existing_shap["shap"].append(entry)
+
+    save_to_json(existing_shap, shap_results_path)
+    print(f"SHAP analysis saved to {shap_results_path}")
 
 def _get_descriptive_feature_name(feature_name: str, skill_keywords: Optional[List[str]] = None) -> str:
     if feature_name.startswith("skill_") and skill_keywords is not None:
