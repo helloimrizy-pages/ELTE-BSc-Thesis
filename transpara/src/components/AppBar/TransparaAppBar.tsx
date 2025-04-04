@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -6,8 +6,8 @@ import {
   IconButton,
   Typography,
   Badge,
-  MenuItem,
   Menu,
+  MenuItem,
   InputBase,
   styled,
   alpha,
@@ -18,22 +18,20 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase"; //
+import { auth } from "../../firebase";
 import { ProfileMenu } from "./ProfileMenu";
 import logo from "../../assets/logo.png";
 
-// Constants
 const NOTIFICATION_COUNTS = {
   MESSAGES: 4,
   NOTIFICATIONS: 17,
 } as const;
 
-// Types
 interface AppBarProps {
   onLogout: () => Promise<void>;
+  onSearch: (value: string) => void;
 }
 
-// Styled Components
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -61,8 +59,9 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
+  color: "black",
   "& .MuiInputBase-input": {
+    color: "black",
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
@@ -70,11 +69,27 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     [theme.breakpoints.up("md")]: {
       width: "20ch",
     },
+    "&::placeholder": {
+      color: "black",
+      opacity: 1,
+    },
   },
 }));
 
-export const TransparaAppBar: React.FC<AppBarProps> = ({ onLogout }) => {
+export const TransparaAppBar: React.FC<AppBarProps> = ({
+  onLogout,
+  onSearch,
+}) => {
   const [user] = useAuthState(auth);
+  const [searchInput, setSearchInput] = useState("");
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      onSearch(searchInput);
+    }, 300);
+
+    return () => clearTimeout(delay);
+  }, [searchInput]);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -156,7 +171,7 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({ onLogout }) => {
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          {/* Left section */}
+          {}
           <Box
             sx={{
               display: "flex",
@@ -168,15 +183,11 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({ onLogout }) => {
             <img
               src={logo}
               alt="Transpara Logo"
-              style={{
-                height: "50px",
-                marginRight: "8px",
-              }}
+              style={{ height: "50px", marginRight: "8px" }}
             />
             <Typography
               variant="h6"
               noWrap
-              component="div"
               sx={{
                 display: { xs: "none", sm: "block" },
                 color: "black",
@@ -187,14 +198,9 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({ onLogout }) => {
             </Typography>
           </Box>
 
-          {/* Center section - Search */}
+          {}
           <Box
-            sx={{
-              flex: 1,
-              display: "flex",
-              justifyContent: "center",
-              px: 2,
-            }}
+            sx={{ flex: 1, display: "flex", justifyContent: "center", px: 2 }}
           >
             <Search
               sx={{
@@ -209,19 +215,24 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({ onLogout }) => {
               </SearchIconWrapper>
               <StyledInputBase
                 placeholder="Type to search"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
                 inputProps={{ "aria-label": "search" }}
                 sx={{
-                  color: "black",
                   width: "100%",
-                  "& .MuiInputBase-input": {
-                    width: "100%",
+                  input: {
+                    color: "black",
+                    "&::placeholder": {
+                      color: "black",
+                      opacity: 1,
+                    },
                   },
                 }}
               />
             </Search>
           </Box>
 
-          {/* Right section */}
+          {}
           <Box
             sx={{
               display: "flex",
@@ -231,13 +242,8 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({ onLogout }) => {
               marginRight: "30px",
             }}
           >
-            {/* Desktop icons */}
             <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-              <IconButton
-                size="large"
-                aria-label="show new items in cart"
-                sx={{ color: "black" }}
-              >
+              <IconButton size="large" sx={{ color: "black" }}>
                 <Badge badgeContent={2} color="error">
                   <svg
                     width="24"
@@ -253,21 +259,12 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({ onLogout }) => {
                   </svg>
                 </Badge>
               </IconButton>
-
-              <IconButton
-                size="large"
-                aria-label="show notifications"
-                sx={{ color: "black" }}
-              >
+              <IconButton size="large" sx={{ color: "black" }}>
                 <NotificationsIcon />
               </IconButton>
-
               <IconButton
                 size="large"
                 edge="end"
-                aria-label="account"
-                aria-controls="primary-search-account-menu"
-                aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
                 sx={{
                   padding: 0,
@@ -280,7 +277,6 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({ onLogout }) => {
                   },
                 }}
               >
-                {/* Show the user's photo if available, else placeholder */}
                 <img
                   src={user?.photoURL || "https://via.placeholder.com/32"}
                   alt="Profile"
@@ -288,7 +284,7 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({ onLogout }) => {
               </IconButton>
             </Box>
 
-            {/* Mobile menu icon */}
+            {}
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
@@ -305,10 +301,8 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({ onLogout }) => {
         </Toolbar>
       </AppBar>
 
-      {/* Mobile Menu */}
+      {}
       {renderMobileMenu}
-
-      {/* Profile Menu */}
       <ProfileMenu
         anchorEl={anchorEl}
         isOpen={isMenuOpen}
