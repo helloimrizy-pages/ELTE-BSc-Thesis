@@ -1,46 +1,36 @@
 import os
-import numpy as np
-import pandas as pd
 import json
-
-from typing import Dict, List, Optional, Any
+from uuid import uuid4
+import numpy as np
 from joblib import load
+from typing import List
 from src.data.embeddings import get_text_embedding, create_feature_vectors_dataset
 from src.models.linguistic_debiasing import mitigate_gender_bias
 from src.models.embedding_debiasing import compute_gender_subspace
 from src.analysis.shap_explanation import generate_model_explanations
 from api.openai_client import initialize_openai_client
+from src.utils.file_utils import save_to_json, load_from_json, generate_candidate_id
 
-
-def load_ranking_model(model_path: str) -> Any:
+def load_ranking_model(model_path: str) -> any:
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model file not found: {model_path}")
     return load(model_path)
 
-
-def predict_with_ranking_model(model: Any, features_df: pd.DataFrame) -> (np.ndarray, pd.DataFrame):
+def predict_with_ranking_model(model: any, features_df) -> (np.ndarray, any):
     X = features_df.drop('target_score', axis=1) if 'target_score' in features_df.columns else features_df
     predictions = model.predict(X)
     result_df = features_df.copy()
     result_df['predicted_score'] = predictions
     return predictions, result_df
 
-
-def enhanced_ranking_pipeline(
+def rank_candidates(
     job_description_text: str,
     candidate_texts: List[str],
     candidate_files: List[str],
     tokenizer,
     model,
-    output_folders: Optional[Dict[str, str]] = None
-) -> Dict[str, Any]:
-    openai_client = initialize_openai_client()
-
-    if output_folders is None:
-        output_folders = {
-            "models": os.path.join("resume_ranking", "output", "models"),
-            "reports": os.path.join("resume_ranking", "output", "reports")
-        }
+    output_folders: dict = None,
+) -> dict:
 
     job_description_text_mitigated = mitigate_gender_bias(job_description_text)
     candidate_texts_mitigated = [mitigate_gender_bias(text) for text in candidate_texts]
@@ -49,7 +39,7 @@ def enhanced_ranking_pipeline(
     skill_keywords = DEFAULT_SKILLS
     gender_directions = compute_gender_subspace(tokenizer, model)
 
-    print("Loading ranking model...")
+    print("Loading ranking model...\n")
     model_path = os.path.join(output_folders['models'], "ranking_model.joblib")
     ranking_model = load_ranking_model(model_path)
 
@@ -62,36 +52,56 @@ def enhanced_ranking_pipeline(
     )
     feature_names = list(test_features.columns)
 
-    print("Predicting match scores...")
+    print("Predicting match scores...\n")
     predictions, results_df = predict_with_ranking_model(ranking_model, test_features)
     ranked_indices = np.argsort(-predictions)
 
-    print("Generating explanations...")
-    explanations, shap_values, _ = generate_model_explanations(
-        ranking_model, feature_names, test_features, skill_keywords
-    )
-
-    ranking_results = {
-        "ranking": [
-            {
-                "rank": rank,
-                "candidate": os.path.basename(candidate_files[idx]),
-                "score": round(predictions[idx], 4)
-            }
-            for rank, idx in enumerate(ranked_indices, start=1)
-        ]
-    }
     ranking_results_path = os.path.join(output_folders['reports'], "ranking_results.json")
-    with open(ranking_results_path, "w", encoding="utf-8") as f:
-        json.dump(ranking_results, f, indent=2)
+    if os.path.exists(ranking_results_path):
+        existing_ranking = load_from_json(ranking_results_path)
+        if "analysis_id" not in existing_ranking:
+            existing_ranking["analysis_id"] = "ranking_" + str(uuid4())
+    else:
+        existing_ranking = {"analysis_id": "ranking_" + str(uuid4()), "ranking": []}
+
+    existing_ids = {entry["id"] for entry in existing_ranking.get("ranking", [])}
+
+    for rank, idx in enumerate(ranked_indices, start=1):
+        candidate_file = candidate_files[idx]
+        candidate_id = generate_candidate_id(candidate_file)
+        candidate_name = os.path.basename(candidate_file).replace('.pdf', '')
+
+        if candidate_id in existing_ids:
+            print(f"Ranking result for {candidate_name} already exists, skipping.")
+            continue
+
+        entry = {
+            "id": candidate_id,
+            "rank": rank,
+            "candidate_file": candidate_name,
+            "score": round(predictions[idx], 4)
+        }
+        existing_ranking["ranking"].append(entry)
+
+    save_to_json(existing_ranking, ranking_results_path)
     print(f"Ranking results saved to {ranking_results_path}")
+
+    explanations, shap_values, shap_df = generate_model_explanations(
+        ranking_model, feature_names, test_features
+    )
 
     return {
         "model": ranking_model,
         "predictions": predictions,
         "ranked_indices": ranked_indices,
-        "explanations": explanations,
-        "shap_values": shap_values,
         "feature_names": feature_names,
-        "output_folders": output_folders
+        "output_folders": output_folders,
+        "explanations": explanations
     }
+
+def display_ranking(ranking_path: str):
+    with open(ranking_path, "r", encoding="utf-8") as f:
+        ranking = json.load(f)
+    print("\nCandidate Ranking Results:")
+    for result in ranking["ranking"]:
+        print(f"{result['rank']}. {result['candidate_file']} - Score: {result['score']:.4f}")
