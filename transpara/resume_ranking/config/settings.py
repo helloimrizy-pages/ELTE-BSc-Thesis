@@ -29,7 +29,7 @@ MODEL_SETTINGS = {
     
     'gpt_model': 'gpt-4o-mini',
     'gpt_temperature': 0.2,
-    'gpt_max_tokens': 350
+    'gpt_max_tokens': 800
 }
 
 DEFAULT_SKILLS = [
