@@ -1,173 +1,208 @@
 {
+  "analysis_id": "ranking_6c48d547-aed1-4dd4-8910-11d59f6fbc3e",
   "ranking": [
     {
+      "id": "125fc8a7605383ac1ddee43c7174ef44",
       "rank": 1,
-      "candidate": "Alfarizy_CV.pdf",
+      "candidate_file": "Alfarizy_CV",
       "score": 0.8516
     },
     {
+      "id": "b73dcc03054fc85adb60b100e58dba47",
       "rank": 2,
-      "candidate": "Sophia_Williams_CV.pdf",
+      "candidate_file": "Sophia_Williams_CV",
       "score": 0.8356
     },
     {
+      "id": "f5433063cfb796103d0cc48dd59cec97",
       "rank": 3,
-      "candidate": "Michael_Johnson_CV.pdf",
+      "candidate_file": "Michael_Johnson_CV",
       "score": 0.8339
     },
     {
+      "id": "a7713dd2078eef942632ee40d49f0226",
       "rank": 4,
-      "candidate": "Samuel_Lee_CV.pdf",
+      "candidate_file": "Samuel_Lee_CV",
       "score": 0.8108
     },
     {
+      "id": "1eb1929ee4746b4b8739ec84aba03dbd",
       "rank": 5,
-      "candidate": "Ethan_Matthews_CV.pdf",
+      "candidate_file": "Ethan_Matthews_CV",
       "score": 0.7982
     },
     {
+      "id": "794879b7912a15e812c6a7333580d965",
       "rank": 6,
-      "candidate": "Carlos_Romero_CV.pdf",
+      "candidate_file": "Carlos_Romero_CV",
       "score": 0.7868
     },
     {
+      "id": "49bea7031a040ca7b751784767e2e7a4",
       "rank": 7,
-      "candidate": "Lucas_Stewart_CV.pdf",
+      "candidate_file": "Lucas_Stewart_CV",
       "score": 0.7847
     },
     {
+      "id": "5a731423f065353c52e3a62dab7f6fc0",
       "rank": 8,
-      "candidate": "Maria_Lopez_CV.pdf",
+      "candidate_file": "Maria_Lopez_CV",
       "score": 0.7841
     },
     {
+      "id": "5d9411881a48633ebe2f5e5bcaeba4ab",
       "rank": 9,
-      "candidate": "Michael_OConnor_CV.pdf",
+      "candidate_file": "Michael_OConnor_CV",
       "score": 0.7834
     },
     {
+      "id": "11ff39187844ba13a1e792ec3c498ce8",
       "rank": 10,
-      "candidate": "Ravi_Patel_CV.pdf",
+      "candidate_file": "Ravi_Patel_CV",
       "score": 0.781
     },
     {
+      "id": "6c3859d7a0d38060f4493c8dd8850631",
       "rank": 11,
-      "candidate": "Claire_Dubois_CV.pdf",
+      "candidate_file": "Claire_Dubois_CV",
       "score": 0.7786
     },
     {
+      "id": "81a75112e9200bf7e4c509649fedd929",
       "rank": 12,
-      "candidate": "Isabella_Evans_CV.pdf",
+      "candidate_file": "Isabella_Evans_CV",
       "score": 0.7761
     },
     {
+      "id": "a680d1188c07b88339354b2b967e1860",
       "rank": 13,
-      "candidate": "Daniel_Foster_CV.pdf",
+      "candidate_file": "Daniel_Foster_CV",
       "score": 0.7754
     },
     {
+      "id": "6074097b108f1a309df388ca06fc15d2",
       "rank": 14,
-      "candidate": "Jack_Thompson_CV.pdf",
+      "candidate_file": "Jack_Thompson_CV",
       "score": 0.7677
     },
     {
+      "id": "7c33270294397d2f07c3789cf330f508",
       "rank": 15,
-      "candidate": "Test_Candidate_CV.pdf",
+      "candidate_file": "Test_Candidate_CV",
       "score": 0.7626
     },
     {
+      "id": "88dadd59259b30c65a0cb91fe47426fd",
       "rank": 16,
-      "candidate": "Maya_Nguyen_CV.pdf",
+      "candidate_file": "Maya_Nguyen_CV",
       "score": 0.7615
     },
     {
+      "id": "af52880300835d75c684694e1b4217db",
       "rank": 17,
-      "candidate": "Natalia_Ivanova_CV.pdf",
+      "candidate_file": "Natalia_Ivanova_CV",
       "score": 0.7565
     },
     {
+      "id": "92b3e8ddbb543dc8e03a25a18b45ccbb",
       "rank": 18,
-      "candidate": "Olivia_James_CV.pdf",
+      "candidate_file": "Olivia_James_CV",
       "score": 0.7528
     },
     {
+      "id": "c33819c2974660cc6e8c0ef0762690e5",
       "rank": 19,
-      "candidate": "Benjamin_Clark_CV.pdf",
+      "candidate_file": "Benjamin_Clark_CV",
       "score": 0.7496
     },
     {
+      "id": "f9c26ef9c78bcadf40478f66b23acd53",
       "rank": 20,
-      "candidate": "Daniel_Kim_CV.pdf",
+      "candidate_file": "Daniel_Kim_CV",
       "score": 0.7487
     },
     {
+      "id": "863e3c6bf96632ce9bd4216159888aee",
       "rank": 21,
-      "candidate": "Jennifer_Clarke_CV.pdf",
+      "candidate_file": "Jennifer_Clarke_CV",
       "score": 0.7477
     },
     {
+      "id": "5e71dd1d34256f18db8abb83cac2be3c",
       "rank": 22,
-      "candidate": "Olivia_Green_CV.pdf",
+      "candidate_file": "Olivia_Green_CV",
       "score": 0.7453
     },
     {
+      "id": "a194ab6fe01a93614a6ca578df6c4e8c",
       "rank": 23,
-      "candidate": "Clara_Wang_CV.pdf",
+      "candidate_file": "Clara_Wang_CV",
       "score": 0.742
     },
     {
+      "id": "5c9f34213912719129fd62521f1d5394",
       "rank": 24,
-      "candidate": "Aisha_Ahmed_CV.pdf",
+      "candidate_file": "Aisha_Ahmed_CV",
       "score": 0.7409
     },
     {
+      "id": "bbe1d96a7f73acf74805445c2f7eb7c7",
       "rank": 25,
-      "candidate": "Ethan_Scott_CV.pdf",
+      "candidate_file": "Ethan_Scott_CV",
       "score": 0.7405
     },
     {
+      "id": "85d34c5970b7f7d4298bf7492768509c",
       "rank": 26,
-      "candidate": "David_Johnson_CV.pdf",
+      "candidate_file": "David_Johnson_CV",
       "score": 0.7341
     },
     {
+      "id": "7c2e51e1563d9f9489129099e8eca579",
       "rank": 27,
-      "candidate": "Liam_Carter_CV.pdf",
+      "candidate_file": "Liam_Carter_CV",
       "score": 0.7304
     },
     {
+      "id": "4a491c85d1e261dd930dd68734404066",
       "rank": 28,
-      "candidate": "Sarah_Johnson_CV.pdf",
+      "candidate_file": "Sarah_Johnson_CV",
       "score": 0.7286
     },
     {
+      "id": "339cd7735caacc502b81902bfd3b2fd2",
       "rank": 29,
-      "candidate": "Emily_Zhang_CV.pdf",
+      "candidate_file": "Emily_Zhang_CV",
       "score": 0.7254
     },
     {
+      "id": "a3649c8c9bd50735a5720b9ddd39a309",
       "rank": 30,
-      "candidate": "Thomas_Muller_CV.pdf",
+      "candidate_file": "Thomas_Muller_CV",
       "score": 0.7234
     },
     {
+      "id": "e50b03a6fa9934b13f058c36c19399aa",
       "rank": 31,
-      "candidate": "Michael_Brooks_CV.pdf",
+      "candidate_file": "Michael_Brooks_CV",
       "score": 0.72
     },
     {
+      "id": "269931d9454dbbf3afa19a1cd4a6666b",
       "rank": 32,
-      "candidate": "Zoe_Miller_CV.pdf",
+      "candidate_file": "Zoe_Miller_CV",
       "score": 0.7185
     },
     {
+      "id": "4122ce37d8fc96842a885bc510eb9c8f",
       "rank": 33,
-      "candidate": "Emma_Cooper_CV.pdf",
+      "candidate_file": "Emma_Cooper_CV",
       "score": 0.7017
     },
     {
+      "id": "a7da25588335efb104c4cbe0feec2cf5",
       "rank": 34,
-      "candidate": "Anna_Schmidt_CV.pdf",
+      "candidate_file": "Anna_Schmidt_CV",
       "score": 0.6994
     }
   ]

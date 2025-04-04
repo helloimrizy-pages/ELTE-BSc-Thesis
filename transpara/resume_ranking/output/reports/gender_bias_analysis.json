@@ -1,0 +1,344 @@
+{
+  "analysis_id": "gender_bias_199dfea4-a1df-46e9-b884-c94307842112",
+  "title": "Gender Bias Analysis Report",
+  "understanding": {
+    "description": "The Gender Bias Score measures the imbalance between masculine and feminine terms in the text. A score of 0 indicates perfect balance, while higher scores indicate more gender-specific language.",
+    "calculation": "(|male_terms - female_terms| / total_words) * 100"
+  },
+  "candidate_analysis": [
+    {
+      "id": "a7da25588335efb104c4cbe0feec2cf5",
+      "candidate_file": "Anna_Schmidt_CV",
+      "gender_bias_score": 3.48,
+      "male_terms": "none",
+      "female_terms": {
+        "female": 3,
+        "women": 4
+      },
+      "recommendation": "This resume shows significant gender imbalance in language usage."
+    },
+    {
+      "id": "b73dcc03054fc85adb60b100e58dba47",
+      "candidate_file": "Sophia_Williams_CV",
+      "gender_bias_score": 0.28,
+      "male_terms": "none",
+      "female_terms": {
+        "women": 1
+      },
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "f9c26ef9c78bcadf40478f66b23acd53",
+      "candidate_file": "Daniel_Kim_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "269931d9454dbbf3afa19a1cd4a6666b",
+      "candidate_file": "Zoe_Miller_CV",
+      "gender_bias_score": 0.47,
+      "male_terms": "none",
+      "female_terms": {
+        "women": 1
+      },
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "a680d1188c07b88339354b2b967e1860",
+      "candidate_file": "Daniel_Foster_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "863e3c6bf96632ce9bd4216159888aee",
+      "candidate_file": "Jennifer_Clarke_CV",
+      "gender_bias_score": 2.59,
+      "male_terms": "none",
+      "female_terms": {
+        "women": 3,
+        "female": 2
+      },
+      "recommendation": "This resume has some gender-specific language, but is generally balanced."
+    },
+    {
+      "id": "794879b7912a15e812c6a7333580d965",
+      "candidate_file": "Carlos_Romero_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "88dadd59259b30c65a0cb91fe47426fd",
+      "candidate_file": "Maya_Nguyen_CV",
+      "gender_bias_score": 0.51,
+      "male_terms": "none",
+      "female_terms": {
+        "women": 1
+      },
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "a194ab6fe01a93614a6ca578df6c4e8c",
+      "candidate_file": "Clara_Wang_CV",
+      "gender_bias_score": 1.61,
+      "male_terms": {
+        "male": 1
+      },
+      "female_terms": {
+        "women": 1,
+        "female": 3
+      },
+      "recommendation": "This resume has some gender-specific language, but is generally balanced."
+    },
+    {
+      "id": "5c9f34213912719129fd62521f1d5394",
+      "candidate_file": "Aisha_Ahmed_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "4122ce37d8fc96842a885bc510eb9c8f",
+      "candidate_file": "Emma_Cooper_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "125fc8a7605383ac1ddee43c7174ef44",
+      "candidate_file": "Alfarizy_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "49bea7031a040ca7b751784767e2e7a4",
+      "candidate_file": "Lucas_Stewart_CV",
+      "gender_bias_score": 1.54,
+      "male_terms": {
+        "male": 4
+      },
+      "female_terms": {
+        "female": 1
+      },
+      "recommendation": "This resume has some gender-specific language, but is generally balanced."
+    },
+    {
+      "id": "6074097b108f1a309df388ca06fc15d2",
+      "candidate_file": "Jack_Thompson_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "7c2e51e1563d9f9489129099e8eca579",
+      "candidate_file": "Liam_Carter_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "e50b03a6fa9934b13f058c36c19399aa",
+      "candidate_file": "Michael_Brooks_CV",
+      "gender_bias_score": 2.06,
+      "male_terms": {
+        "male": 3,
+        "men": 1
+      },
+      "female_terms": "none",
+      "recommendation": "This resume has some gender-specific language, but is generally balanced."
+    },
+    {
+      "id": "af52880300835d75c684694e1b4217db",
+      "candidate_file": "Natalia_Ivanova_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "5e71dd1d34256f18db8abb83cac2be3c",
+      "candidate_file": "Olivia_Green_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "f5433063cfb796103d0cc48dd59cec97",
+      "candidate_file": "Michael_Johnson_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "11ff39187844ba13a1e792ec3c498ce8",
+      "candidate_file": "Ravi_Patel_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "c33819c2974660cc6e8c0ef0762690e5",
+      "candidate_file": "Benjamin_Clark_CV",
+      "gender_bias_score": 2.09,
+      "male_terms": {
+        "male": 3,
+        "men": 1
+      },
+      "female_terms": "none",
+      "recommendation": "This resume has some gender-specific language, but is generally balanced."
+    },
+    {
+      "id": "339cd7735caacc502b81902bfd3b2fd2",
+      "candidate_file": "Emily_Zhang_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "4a491c85d1e261dd930dd68734404066",
+      "candidate_file": "Sarah_Johnson_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "a7713dd2078eef942632ee40d49f0226",
+      "candidate_file": "Samuel_Lee_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "1eb1929ee4746b4b8739ec84aba03dbd",
+      "candidate_file": "Ethan_Matthews_CV",
+      "gender_bias_score": 1.02,
+      "male_terms": {
+        "men": 1,
+        "male": 2
+      },
+      "female_terms": {
+        "female": 1
+      },
+      "recommendation": "This resume has some gender-specific language, but is generally balanced."
+    },
+    {
+      "id": "5d9411881a48633ebe2f5e5bcaeba4ab",
+      "candidate_file": "Michael_OConnor_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "5a731423f065353c52e3a62dab7f6fc0",
+      "candidate_file": "Maria_Lopez_CV",
+      "gender_bias_score": 1.63,
+      "male_terms": "none",
+      "female_terms": {
+        "women": 2,
+        "female": 1
+      },
+      "recommendation": "This resume has some gender-specific language, but is generally balanced."
+    },
+    {
+      "id": "92b3e8ddbb543dc8e03a25a18b45ccbb",
+      "candidate_file": "Olivia_James_CV",
+      "gender_bias_score": 1.46,
+      "male_terms": {
+        "male": 1
+      },
+      "female_terms": {
+        "women": 2,
+        "female": 2
+      },
+      "recommendation": "This resume has some gender-specific language, but is generally balanced."
+    },
+    {
+      "id": "6c3859d7a0d38060f4493c8dd8850631",
+      "candidate_file": "Claire_Dubois_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "a3649c8c9bd50735a5720b9ddd39a309",
+      "candidate_file": "Thomas_Muller_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "85d34c5970b7f7d4298bf7492768509c",
+      "candidate_file": "David_Johnson_CV",
+      "gender_bias_score": 2.08,
+      "male_terms": {
+        "men": 3,
+        "male": 1
+      },
+      "female_terms": "none",
+      "recommendation": "This resume has some gender-specific language, but is generally balanced."
+    },
+    {
+      "id": "bbe1d96a7f73acf74805445c2f7eb7c7",
+      "candidate_file": "Ethan_Scott_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "7c33270294397d2f07c3789cf330f508",
+      "candidate_file": "Test_Candidate_CV",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
+    {
+      "id": "81a75112e9200bf7e4c509649fedd929",
+      "candidate_file": "Isabella_Evans_CV",
+      "gender_bias_score": 2.63,
+      "male_terms": {
+        "male": 1
+      },
+      "female_terms": {
+        "women": 3,
+        "female": 3
+      },
+      "recommendation": "This resume has some gender-specific language, but is generally balanced."
+    }
+  ],
+  "recommendations": [
+    "Use gender-neutral job titles (e.g., 'chairperson' instead of 'chairman/chairwoman').",
+    "Replace gendered pronouns with 'they/them' where possible.",
+    "Focus on skills and achievements rather than personal attributes.",
+    "Review for unconscious bias in language describing leadership, technical skills, etc."
+  ],
+  "summary": {
+    "average_bias": 0.69,
+    "min_bias": 0.0,
+    "max_bias": 3.48,
+    "median_bias": 0.0,
+    "most_neutral_candidate": "Daniel_Kim_CV",
+    "least_neutral_candidate": "Anna_Schmidt_CV"
+  }
+}

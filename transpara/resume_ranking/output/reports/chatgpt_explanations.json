@@ -1,39 +1,448 @@
 {
+  "analysis_id": "chatgpt_f8bb43cd-a24f-4262-a457-4f90a7b84fc6",
   "explanations": [
     {
+      "id": "125fc8a7605383ac1ddee43c7174ef44",
+      "candidate_file": "Alfarizy_CV",
       "rank": 1,
-      "candidate": "Alfarizy_CV.pdf",
       "similarity_score": 0.8516,
       "bias_score": 0.0,
-      "chatgpt_explanation": "**Candidate Evaluation: Alfarizy**\n\n**1. Similarity Score:**  \n- **Score:** 0.85/1.00  \n- This high score indicates a strong match between the candidate's qualifications and the job requirements.\n\n**2. SHAP Analysis Results:**  \n- **Positive Contributors:**\n  - Overall CV-Job Similarity (+0.056): Strong alignment with job description.\n  - Skills in Kubernetes and Docker contribute positively, showcasing familiarity with modern technologies.\n  - Semantic context factors indicate relevance to machine learning and AI concepts.\n- **Negative Contributors:** None identified, suggesting no significant weaknesses.\n\n**3. Direct Observations from Resume:**\n- **Relevant Experience:**\n  - Conducted research on Explainable AI using large language models (LLMs), directly aligning with NLP and machine learning needs.\n  - Experience training LLMs in Python, which is crucial for the role.\n  - Developed automated tools and dashboards using Python, demonstrating practical application of skills.\n- **Education & Projects:**\n  - Pursuing a BSc in Computer Science with relevant coursework in ML/AI, enhancing theoretical knowledge applicable to the role.\n\n**4. Notable Gaps or Missing Requirements:**\n- While the candidate has strong experience in Python and LLMs, there is limited direct mention of deep learning frameworks such as TensorFlow or PyTorch, which could be beneficial for this position.\n\n**5. Gender Bias Score:**  \n- **Score:** 0.0/100 (lower is better)  \n- Indicates no potential gender bias concerns associated with this candidate.\n\n**Conclusion:**  \nAlfarizy presents a compelling case for the Data Scientist position due to their strong technical background in Python, NLP, and related fields."
+      "chatgpt_explanation": {
+        "job_position": "Data Scientist",
+        "similarity": {
+          "score": 0.85,
+          "max_score": 1,
+          "comment": "The candidate demonstrates a strong alignment with the job requirements, particularly in Python and machine learning."
+        },
+        "shap_analysis": {
+          "positive_contributors": [
+            {
+              "feature": "Overall CV-Job Similarity",
+              "impact": "+0.056",
+              "comment": "Indicates a strong overall fit for the role."
+            },
+            {
+              "feature": "Semantic Context Factor 765",
+              "impact": "+0.002",
+              "comment": "Highlights relevant experience in data analysis."
+            },
+            {
+              "feature": "Semantic Context Factor 450",
+              "impact": "+0.002",
+              "comment": "Reflects familiarity with machine learning concepts."
+            },
+            {
+              "feature": "Skill Kubernetes",
+              "impact": "+0.002",
+              "comment": "Shows proficiency in modern deployment practices."
+            },
+            {
+              "feature": "Concept Gap 450",
+              "impact": "+0.002",
+              "comment": "Demonstrates understanding of advanced data science concepts."
+            },
+            {
+              "feature": "Semantic Context Factor 345",
+              "impact": "+0.002",
+              "comment": "Reinforces the relevance of the candidate's background."
+            },
+            {
+              "feature": "Skill Docker",
+              "impact": "+0.002",
+              "comment": "Highlights experience with containerization, beneficial for data science workflows."
+            },
+            {
+              "feature": "Semantic Context Factor 210",
+              "impact": "+0.002",
+              "comment": "Supports the candidate's technical capabilities."
+            },
+            {
+              "feature": "Concept Gap 0",
+              "impact": "+0.002",
+              "comment": "Indicates no significant gaps in required knowledge."
+            },
+            {
+              "feature": "Concept Gap 750",
+              "impact": "+0.001",
+              "comment": "Further supports the candidate's fit for the role."
+            }
+          ],
+          "negative_contributors": []
+        },
+        "direct_observations": {
+          "skills": [
+            "Python",
+            "Machine Learning",
+            "NLP",
+            "Data Analysis",
+            "SQL"
+          ],
+          "experience": [
+            "Data Scientist Intern at The Estée Lauder Companies Inc.",
+            "AI Trainer at Outlier",
+            "Student Researcher at Eötvös Loránd University"
+          ],
+          "education": "Bachelor of Science in Computer Science (Expected Jun 2025)",
+          "comment": "The candidate has relevant internships and projects that showcase their skills in data science and machine learning."
+        },
+        "notable_gaps_and_missing_requirements": "The candidate lacks extensive experience specifically in NLP, which is a key requirement for the role.",
+        "gender_bias": {
+          "score": 0,
+          "max_score": 100,
+          "comment": "No gender bias detected in the evaluation."
+        },
+        "conclusion": "Overall, the candidate is a strong fit for the Data Scientist position, with a solid foundation in Python and machine learning. However, they should enhance their experience in NLP to fully meet the job requirements."
+      }
     },
     {
+      "id": "b73dcc03054fc85adb60b100e58dba47",
+      "candidate_file": "Sophia_Williams_CV",
       "rank": 2,
-      "candidate": "Sophia_Williams_CV.pdf",
       "similarity_score": 0.8356,
       "bias_score": 0.28,
-      "chatgpt_explanation": "**Candidate Evaluation: Sophia Williams**\n\n**1. Similarity Score:**  \n- **Score:** 0.84/1.00  \n- **Interpretation:** This high score indicates a strong match between the candidate's qualifications and the job requirements.\n\n**2. SHAP Analysis Results:**  \n- **Positive Contributors:** \n  - Overall CV-Job Similarity (+0.049)\n  - Multiple semantic context factors and concept gaps indicate that her skills align well with the job description.\n- **Negative Contributors:** None identified, suggesting no significant weaknesses in her profile related to the job.\n\n**3. Direct Observations from Resume:**\n- **Education & Coursework:**\n  - Master’s in Artificial Intelligence with relevant courses in Deep Learning and NLP.\n  - Participation in prestigious summer schools (Stanford, MIT) enhances credibility.\n  \n- **Work Experience:**\n  - Current internship at Booking.com where she developed an NLP pipeline, directly relevant to the role.\n  - Experience with TensorFlow and PyTorch aligns perfectly with required machine learning frameworks.\n\n- **Skills:**\n  - Proficient in Python, a core requirement for the position.\n  - Familiarity with large language models through coursework and practical applications.\n\n**4. Gender Bias Score:**  \n- **Score:** 0.3/100 (lower is better)  \n- Indicates minimal potential gender bias concerns, reflecting positively on diversity considerations.\n\n**Conclusion:**  \nSophia Williams is an excellent match for the Data Scientist position due to her strong educational background, relevant work experience, and technical skills in Python, NLP, and machine learning frameworks. There are no notable gaps or missing requirements that would hinder her suitability for this role."
+      "chatgpt_explanation": {
+        "job_position": "Data Scientist",
+        "similarity": {
+          "score": 0.84,
+          "max_score": 1,
+          "comment": "The candidate demonstrates a strong alignment with the job requirements, particularly in Python, NLP, and machine learning."
+        },
+        "shap_analysis": {
+          "positive_contributors": [
+            {
+              "feature": "Overall CV-Job Similarity",
+              "impact": "+0.049",
+              "comment": "Indicates a strong match between the candidate's qualifications and the job description."
+            },
+            {
+              "feature": "Semantic Context Factor 450",
+              "impact": "+0.002",
+              "comment": "Reflects relevant experience in machine learning."
+            },
+            {
+              "feature": "Semantic Context Factor 765",
+              "impact": "+0.002",
+              "comment": "Highlights familiarity with deep learning frameworks."
+            },
+            {
+              "feature": "Concept Gap 450",
+              "impact": "+0.002",
+              "comment": "Shows understanding of large language models."
+            },
+            {
+              "feature": "Concept Gap 0",
+              "impact": "+0.002",
+              "comment": "Demonstrates foundational knowledge in AI."
+            },
+            {
+              "feature": "Semantic Context Factor 210",
+              "impact": "+0.002",
+              "comment": "Indicates experience in data processing."
+            },
+            {
+              "feature": "Semantic Context Factor 345",
+              "impact": "+0.002",
+              "comment": "Reflects skills in data visualization."
+            },
+            {
+              "feature": "Semantic Context Factor 0",
+              "impact": "+0.001",
+              "comment": "Suggests a broad understanding of AI concepts."
+            },
+            {
+              "feature": "Concept Gap 750",
+              "impact": "+0.001",
+              "comment": "Indicates potential for growth in AI applications."
+            },
+            {
+              "feature": "Concept Gap 720",
+              "impact": "+0.001",
+              "comment": "Highlights engagement with AI research."
+            }
+          ],
+          "negative_contributors": []
+        },
+        "direct_observations": {
+          "skills": [
+            "Python",
+            "NLP",
+            "Machine Learning",
+            "Deep Learning",
+            "Data Engineering"
+          ],
+          "experience": [
+            "Machine Learning Engineer Intern at Booking.com",
+            "Kaggle Grandmaster"
+          ],
+          "education": "Master of Science in Artificial Intelligence (Expected 2025)",
+          "comment": "Sophia has a robust educational background and relevant work experience that aligns well with the job requirements."
+        },
+        "notable_gaps_and_missing_requirements": "The candidate lacks direct experience with large language models, although they have relevant coursework and projects that may compensate for this gap.",
+        "gender_bias": {
+          "score": 0.3,
+          "max_score": 100,
+          "comment": "The low gender bias score indicates a fair evaluation process."
+        },
+        "conclusion": "Sophia Williams is a highly qualified candidate for the Data Scientist position. Her strong academic background, relevant work experience, and demonstrated skills in Python, NLP, and machine learning make her a suitable fit for the role. While there is a minor gap in direct experience with large language models, her coursework and projects suggest she possesses the foundational knowledge necessary to excel. Overall, she is a strong contender for the position."
+      }
     },
     {
+      "id": "f5433063cfb796103d0cc48dd59cec97",
+      "candidate_file": "Michael_Johnson_CV",
       "rank": 3,
-      "candidate": "Michael_Johnson_CV.pdf",
       "similarity_score": 0.8339,
       "bias_score": 0.0,
-      "chatgpt_explanation": "**Candidate Evaluation: Michael Johnson**\n\n**1. Similarity Score:**  \n- **Score:** 0.83/1.00  \n- **Interpretation:** This high score indicates a strong match between the candidate's qualifications and the job requirements.\n\n**2. SHAP Analysis Results:**  \n- **Positive Contributors:**\n  - Overall CV-Job Similarity (+0.051): Suggests alignment with job expectations.\n  - Multiple semantic context factors and concept gaps indicate familiarity with relevant topics, particularly in AI and machine learning.\n- **Negative Contributors:** None identified, reinforcing the candidate's fit.\n\n**3. Direct Observations from Resume:**\n- **Education & Coursework:** \n  - Relevant coursework in AI & Machine Learning aligns well with job needs.\n  - High GPA reflects strong academic performance.\n- **Work Experience:**\n  - Internship at Siemens AG showcases practical experience in software engineering but lacks direct exposure to NLP or large language models.\n- **Skills:**\n  - Proficient in Python, which is essential for data science roles.\n  - Experience with cloud platforms (AWS) and CI/CD pipelines demonstrates technical versatility.\n\n**4. Notable Gaps:**\n- While the candidate has a solid foundation in programming and machine learning, there is no explicit mention of experience with NLP or deep learning frameworks, which are critical for this role.\n\n**5. Gender Bias Score:**  \n- **Score:** 0.0/100  \n- Indicates no potential gender bias concerns regarding hiring decisions based on this resume.\n\n**Conclusion:**  \nMichael Johnson is a strong candidate for the Data Scientist position due to his relevant education, skills in Python, and high similarity score to the job description. However, he should address his lack of specific"
+      "chatgpt_explanation": {
+        "job_position": "Data Scientist",
+        "similarity": {
+          "score": 0.83,
+          "max_score": 1,
+          "comment": "The candidate demonstrates a strong alignment with the job requirements, particularly in programming and machine learning."
+        },
+        "shap_analysis": {
+          "positive_contributors": [
+            {
+              "feature": "Overall CV-Job Similarity",
+              "impact": "+0.051",
+              "comment": "Indicates a strong overall fit for the Data Scientist role."
+            },
+            {
+              "feature": "Semantic Context Factor 450",
+              "impact": "+0.003",
+              "comment": "Highlights relevant experience in AI and machine learning."
+            },
+            {
+              "feature": "Concept Gap 450",
+              "impact": "+0.002",
+              "comment": "Shows familiarity with concepts related to data science."
+            },
+            {
+              "feature": "Semantic Context Factor 765",
+              "impact": "+0.002",
+              "comment": "Reflects understanding of deep learning frameworks."
+            },
+            {
+              "feature": "Concept Gap 0",
+              "impact": "+0.002",
+              "comment": "Demonstrates foundational knowledge in data science."
+            },
+            {
+              "feature": "Semantic Context Factor 210",
+              "impact": "+0.002",
+              "comment": "Indicates exposure to relevant technologies."
+            },
+            {
+              "feature": "Semantic Context Factor 0",
+              "impact": "+0.001",
+              "comment": "Shows potential for growth in data science."
+            },
+            {
+              "feature": "Concept Gap 750",
+              "impact": "+0.001",
+              "comment": "Reveals understanding of large language models."
+            },
+            {
+              "feature": "Concept Gap 720",
+              "impact": "+0.001",
+              "comment": "Highlights knowledge of NLP."
+            },
+            {
+              "feature": "Semantic Context Factor 345",
+              "impact": "+0.001",
+              "comment": "Indicates familiarity with data handling."
+            }
+          ],
+          "negative_contributors": []
+        },
+        "direct_observations": {
+          "skills": ["Python", "NLP", "Machine Learning", "Deep Learning"],
+          "experience": [
+            "Software Engineer Intern at Siemens AG",
+            "AI-powered chatbot development",
+            "Deep learning model for speech recognition"
+          ],
+          "education": "Bachelor of Science in Software Engineering (Expected 2024)",
+          "comment": "The candidate has a solid educational background and relevant internship experience."
+        },
+        "notable_gaps_and_missing_requirements": "While the candidate has strong programming skills and relevant coursework, direct experience with NLP and large language models is not explicitly mentioned.",
+        "gender_bias": {
+          "score": 0,
+          "max_score": 100,
+          "comment": "No gender bias detected in the evaluation."
+        },
+        "conclusion": "Michael Johnson is a promising candidate for the Data Scientist position. He possesses strong programming skills in Python and has relevant experience in machine learning through his academic projects and internship. Although he lacks explicit experience with NLP and large language models, his coursework and project work indicate a solid foundation in AI and machine learning concepts. His high GPA and involvement in extracurricular activities further demonstrate his commitment and capability. Overall, he is a strong fit for the role, with potential for growth in the specific areas mentioned."
+      }
     },
     {
+      "id": "a7713dd2078eef942632ee40d49f0226",
+      "candidate_file": "Samuel_Lee_CV",
       "rank": 4,
-      "candidate": "Samuel_Lee_CV.pdf",
       "similarity_score": 0.8108,
       "bias_score": 0.0,
-      "chatgpt_explanation": "**Candidate Evaluation: Samuel Lee**\n\n**1. Similarity Score:**  \n- **Score:** 0.81/1.00  \n- This high score indicates a strong alignment between the candidate's qualifications and the job requirements.\n\n**2. Key Factors from SHAP Analysis:**  \n- **Positive Contributors:** \n  - Overall CV-Job Similarity (+0.040) suggests a good match.\n  - Multiple semantic context factors indicate relevant knowledge areas, particularly in AI and machine learning.\n  - Skills related to AI positively influence the evaluation, showing familiarity with necessary technologies.\n\n**3. Direct Observations from Resume:**  \n- **Education:** Master’s degree in Artificial Intelligence with a perfect GPA demonstrates strong academic credentials.\n- **Work Experience:**\n  - Current role as an AI Research Engineer at Samsung involves deep learning and voice recognition, closely related to NLP and machine learning.\n  - Collaboration with hardware engineers shows ability to integrate complex systems, which is valuable for practical applications of data science.\n- **Skills:**\n  - Proficient in Python, TensorFlow, and PyTorch—key tools for data scientists.\n  - Holds relevant certifications that enhance credibility in deep learning.\n\n**4. Gender Bias Score:**  \n- **Score:** 0.0/100 (lower is better)  \n- Indicates no potential gender bias concerns associated with this candidate.\n\n**Conclusion:**  \nSamuel Lee is a highly suitable candidate for the Data Scientist position due to his strong educational background, relevant work experience, and proficiency in essential skills such as Python and machine learning frameworks. There are no notable gaps or missing requirements based on the job description provided."
+      "chatgpt_explanation": {
+        "job_position": "Data Scientist",
+        "similarity": {
+          "score": 0.81,
+          "max_score": 1,
+          "comment": "The candidate demonstrates a strong alignment with the job requirements, particularly in Python, NLP, and machine learning."
+        },
+        "shap_analysis": {
+          "positive_contributors": [
+            {
+              "feature": "Overall CV-Job Similarity",
+              "impact": "+0.040",
+              "comment": "Indicates a strong overall match between the candidate's qualifications and the job description."
+            },
+            {
+              "feature": "Semantic Context Factor 210",
+              "impact": "+0.001",
+              "comment": "Reflects relevant contextual knowledge related to the job."
+            },
+            {
+              "feature": "Semantic Context Factor 300",
+              "impact": "+0.001",
+              "comment": "Highlights familiarity with key concepts in data science."
+            },
+            {
+              "feature": "Semantic Context Factor 375",
+              "impact": "+0.001",
+              "comment": "Demonstrates understanding of advanced data science methodologies."
+            },
+            {
+              "feature": "Concept Gap 480",
+              "impact": "+0.001",
+              "comment": "Shows minimal gaps in required concepts."
+            },
+            {
+              "feature": "Semantic Context Factor 450",
+              "impact": "+0.001",
+              "comment": "Reinforces the candidate's expertise in AI."
+            },
+            {
+              "feature": "Concept Gap 60",
+              "impact": "+0.001",
+              "comment": "Indicates a minor gap that does not significantly detract from overall qualifications."
+            },
+            {
+              "feature": "Feature: Skill Ai",
+              "impact": "+0.001",
+              "comment": "Confirms proficiency in AI-related skills."
+            },
+            {
+              "feature": "Semantic Context Factor 225",
+              "impact": "+0.001",
+              "comment": "Supports the candidate's alignment with the job's semantic requirements."
+            },
+            {
+              "feature": "Concept Gap 315",
+              "impact": "+0.001",
+              "comment": "Reinforces the candidate's fit for the role."
+            }
+          ],
+          "negative_contributors": []
+        },
+        "direct_observations": {
+          "skills": ["Python", "C++", "TensorFlow", "PyTorch"],
+          "experience": [
+            "AI Research Engineer at Samsung Research",
+            "Deep learning research",
+            "Real-time AI algorithms for voice recognition"
+          ],
+          "education": "Master of Science in Artificial Intelligence from KAIST",
+          "comment": "The candidate possesses a strong educational background and relevant work experience in AI and machine learning."
+        },
+        "notable_gaps_and_missing_requirements": "No significant gaps identified; however, direct experience with large language models is not explicitly mentioned.",
+        "gender_bias": {
+          "score": 0,
+          "max_score": 100,
+          "comment": "No gender bias detected in the evaluation."
+        },
+        "conclusion": "Samuel Lee is a highly qualified candidate for the Data Scientist position, exhibiting a strong educational background, relevant work experience, and a high similarity score to the job requirements. His skills in Python, NLP, and machine learning, along with his awards and certifications, further enhance his candidacy. While there is no direct mention of large language models, his experience in deep learning and AI suggests he has the potential to quickly adapt to this area. Overall, he is a strong contender for the role."
+      }
     },
     {
+      "id": "1eb1929ee4746b4b8739ec84aba03dbd",
+      "candidate_file": "Ethan_Matthews_CV",
       "rank": 5,
-      "candidate": "Ethan_Matthews_CV.pdf",
       "similarity_score": 0.7982,
       "bias_score": 1.02,
-      "chatgpt_explanation": "**Candidate Evaluation: Ethan Matthews**\n\n**1. Similarity Score:**  \n- **Score:** 0.80/1.00  \n- This indicates a strong match with the job description, suggesting that Ethan possesses relevant skills and experience.\n\n**2. SHAP Analysis Key Factors:**  \n- **Positive Contributors:** \n  - Overall CV-Job Similarity (+0.036) suggests good alignment.\n  - Skills in Docker and cloud technologies are beneficial but not directly related to data science.\n- **Negative Contributors:**\n  - Lack of direct experience in NLP and machine learning, which are critical for the role.\n\n**3. Direct Observations from Resume:**\n- **Education:** Strong academic background in Information Systems (GPA: 3.7).\n- **Work Experience:** Current role as a Cloud Solutions Architect at IBM shows technical expertise but lacks specific data science responsibilities.\n- **Skills:** Proficient in Python, which is essential; however, no mention of NLP or deep learning frameworks.\n- **Certifications & Awards:** Recognized for leadership and cloud architecture, indicating strong project management skills.\n\n**4. Gender Bias Note:**\n- **Gender Bias Score:** 1.0/100 (lower is better). This score suggests minimal potential bias based on gender-related factors.\n\n**Conclusion:**\nEthan Matthews has a solid educational foundation and relevant programming skills, particularly in Python. However, he lacks direct experience with NLP and machine learning—key requirements for the Data Scientist position. While his cloud computing expertise is valuable, it does not fully align with the core responsibilities of this role. Therefore, while he demonstrates potential as a candidate, significant gaps exist that may hinder his effectiveness as a Data Scientist focused on language models and deep"
+      "chatgpt_explanation": {
+        "job_position": "Data Scientist",
+        "similarity": {
+          "score": 0.8,
+          "max_score": 1,
+          "comment": "The candidate demonstrates a strong match for the Data Scientist position, particularly in programming and cloud technologies."
+        },
+        "shap_analysis": {
+          "positive_contributors": [
+            {
+              "feature": "Overall CV-Job Similarity",
+              "impact": "+0.036",
+              "comment": "Indicates a good overall alignment with the job requirements."
+            },
+            {
+              "feature": "Semantic Context Factor 375",
+              "impact": "+0.001",
+              "comment": "Suggests relevance in contextual understanding of data science."
+            },
+            {
+              "feature": "Concept Gap 480",
+              "impact": "+0.001",
+              "comment": "Minor gap in concepts related to data science."
+            },
+            {
+              "feature": "Skill Docker",
+              "impact": "+0.001",
+              "comment": "Relevant skill that supports data science workflows."
+            },
+            {
+              "feature": "Semantic Context Factor 300",
+              "impact": "+0.001",
+              "comment": "Further supports contextual relevance."
+            },
+            {
+              "feature": "Semantic Context Factor 225",
+              "impact": "+0.001",
+              "comment": "Additional support for contextual understanding."
+            }
+          ],
+          "negative_contributors": [
+            {
+              "feature": "Semantic Context Factor 210",
+              "impact": "-0.001",
+              "comment": "Indicates a slight misalignment in specific data science contexts."
+            },
+            {
+              "feature": "Semantic Context Factor 450",
+              "impact": "-0.001",
+              "comment": "Minor negative impact on overall relevance."
+            },
+            {
+              "feature": "Concept Gap 450",
+              "impact": "-0.001",
+              "comment": "Indicates a gap in specific data science concepts."
+            },
+            {
+              "feature": "Semantic Context Factor 345",
+              "impact": "-0.001",
+              "comment": "Another minor misalignment in context."
+            }
+          ]
+        },
+        "direct_observations": {
+          "skills": ["Python", "Docker"],
+          "experience": ["Cloud Solutions Architect at IBM"],
+          "education": "Bachelor of Science in Information Systems from University of Texas at Austin",
+          "comment": "The candidate has relevant programming skills and experience in cloud solutions but lacks direct experience in NLP and machine learning."
+        },
+        "notable_gaps_and_missing_requirements": "The candidate does not have direct experience with NLP, machine learning, or large language models, which are critical for the Data Scientist role.",
+        "gender_bias": {
+          "score": 1,
+          "max_score": 100,
+          "comment": "The candidate's gender bias score is low, indicating a neutral stance in gender considerations."
+        },
+        "conclusion": "Ethan Matthews shows a strong foundation in programming and cloud technologies, which are beneficial for a Data Scientist role. However, the lack of experience in NLP and machine learning presents a notable gap. While the candidate has a high similarity score, further development in the required areas is necessary for a complete fit."
+      }
     }
   ]
 }

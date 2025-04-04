@@ -1,0 +1,2317 @@
+{
+  "analysis_id": "shap_f44bcc15-0acf-4e00-ad56-844d7a624912",
+  "shap": [
+    {
+      "id": "a7da25588335efb104c4cbe0feec2cf5",
+      "candidate_file": "Anna_Schmidt_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.6994413544467291,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.03943470361169896,
+          "value": 0.729277491569519,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.004589189722565115,
+          "value": 0.2732675075531006,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": -0.0033402701584443716,
+          "value": 0.13431477546691895,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.00202101650300166,
+          "value": 0.38247567415237427,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0009618398732366292,
+          "value": 0.5854504704475403,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 255",
+          "impact": -0.0009536344487360317,
+          "value": 0.2386358082294464,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": -0.0008798695657162312,
+          "value": -0.3941868543624878,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 600",
+          "impact": -0.0006910905590984831,
+          "value": 0.49464479088783264,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": -0.0006831213624209241,
+          "value": 0.6050708293914795,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 510",
+          "impact": -0.0006632574256725534,
+          "value": 0.38241177797317505,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "b73dcc03054fc85adb60b100e58dba47",
+      "candidate_file": "Sophia_Williams_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.8355541288146467,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.04939549766646102,
+          "value": 0.8383381366729736,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": 0.0024754762377424554,
+          "value": -0.021692732349038124,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": 0.002015700003892572,
+          "value": 0.4650559425354004,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": 0.0018738680965148238,
+          "value": 0.002072380855679512,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": 0.0017661485242346819,
+          "value": 0.11013972759246826,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": 0.001701235017031087,
+          "value": -0.08215930312871933,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": 0.0015014973431714256,
+          "value": -0.17307953536510468,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 0",
+          "impact": 0.0014218595362367554,
+          "value": 0.18766996264457703,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 750",
+          "impact": 0.0013526775116867896,
+          "value": 0.0873270034790039,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 720",
+          "impact": 0.0013235107504480207,
+          "value": 0.009915739297866821,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "f9c26ef9c78bcadf40478f66b23acd53",
+      "candidate_file": "Daniel_Kim_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7486538904018321,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.015592275670962233,
+          "value": 0.7486570477485657,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0025298350435718066,
+          "value": 0.41790032386779785,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0009037173987036849,
+          "value": 0.47795069217681885,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": -0.0006839620798087431,
+          "value": 0.17182664573192596,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.0006143307807360787,
+          "value": 0.31999000906944275,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": 0.0005534554005273998,
+          "value": -0.2496587336063385,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": -0.0005082172454627357,
+          "value": 0.35811561346054077,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": 0.0004933495137387648,
+          "value": -0.6174214482307434,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 150",
+          "impact": 0.0003535773825113551,
+          "value": -0.47806763648986816,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0003525889579475891,
+          "value": 0.9331706166267395,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "269931d9454dbbf3afa19a1cd4a6666b",
+      "candidate_file": "Zoe_Miller_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7184889006991714,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.03688477049148756,
+          "value": 0.7231321334838867,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.004673624621166877,
+          "value": 0.1893121302127838,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": -0.0027801930373289024,
+          "value": 0.18328478932380676,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0011468012830327405,
+          "value": 0.09065048396587372,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": -0.000875186666739313,
+          "value": -0.5123679637908936,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 405",
+          "impact": -0.0004182304043893692,
+          "value": 0.965178370475769,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.00035255879684298845,
+          "value": 0.9173834323883057,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 510",
+          "impact": 0.0003386266593324174,
+          "value": 0.2888210415840149,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": 0.00032388165759914044,
+          "value": 0.12877607345581055,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 600",
+          "impact": 0.0003188202730778903,
+          "value": 0.34901711344718933,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "a680d1188c07b88339354b2b967e1860",
+      "candidate_file": "Daniel_Foster_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7753998470020237,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.018191120079807117,
+          "value": 0.7754032015800476,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.003381232813908353,
+          "value": 0.5352476239204407,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0012819736082303468,
+          "value": 0.4449223577976227,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": 0.0009127320062832443,
+          "value": 0.5739192962646484,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0008213010485215715,
+          "value": 0.11417409032583237,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0007295890814222795,
+          "value": 0.22277604043483734,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0006775474286063006,
+          "value": 0.8315569758415222,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": -0.0006158546165697985,
+          "value": 0.1940784454345703,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 150",
+          "impact": -0.0005901086924821003,
+          "value": -0.4132464826107025,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 750",
+          "impact": -0.0005721338965488797,
+          "value": 0.2626137137413025,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "863e3c6bf96632ce9bd4216159888aee",
+      "candidate_file": "Jennifer_Clarke_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7477373495730155,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.009309641093548518,
+          "value": 0.7684551477432251,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0032737100720710644,
+          "value": 0.3244118094444275,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": -0.0019974966123577067,
+          "value": 0.17940670251846313,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0015023880333653072,
+          "value": 0.2191420942544937,
+          "positive": true
+        },
+        {
+          "feature": "Gender Neutrality Score",
+          "impact": -0.0008246379582465419,
+          "value": 2.072538849365084,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": -0.0007892843491119898,
+          "value": 0.3411605954170227,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": 0.0007355434300194289,
+          "value": 0.25726768374443054,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0007022958380086602,
+          "value": 0.13649126887321472,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0004790349633960901,
+          "value": 0.9622044563293457,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 255",
+          "impact": -0.00046422766589083265,
+          "value": 0.19354388117790222,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "794879b7912a15e812c6a7333580d965",
+      "candidate_file": "Carlos_Romero_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7867685999163725,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.030464343776364967,
+          "value": 0.7867796421051025,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0014352573454923371,
+          "value": 0.6266140341758728,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0014211470389422407,
+          "value": 0.32440945506095886,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": -0.0007688205861975813,
+          "value": 0.646234393119812,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": -0.0007494973565453838,
+          "value": -0.15750490128993988,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0007314653197790501,
+          "value": 0.22351525723934174,
+          "positive": true
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": -0.000722516260864496,
+          "value": 0.0,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": -0.0006975723271484425,
+          "value": 0.23641109466552734,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 0",
+          "impact": -0.0006939001430547188,
+          "value": 0.061398595571517944,
+          "positive": false
+        },
+        {
+          "feature": "Feature: Skill Kubernetes",
+          "impact": -0.0006353779800563338,
+          "value": 0.0,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "88dadd59259b30c65a0cb91fe47426fd",
+      "candidate_file": "Maya_Nguyen_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7614973720025725,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.007310866544655565,
+          "value": 0.7666048407554626,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.003904766795010495,
+          "value": 0.3372083604335785,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0016265288773354468,
+          "value": 0.19421815872192383,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 300",
+          "impact": 0.0010566775798877476,
+          "value": -0.09059484302997589,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0010444864755603449,
+          "value": 0.23855483531951904,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": 0.0009143099543924198,
+          "value": 0.4422988295555115,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": 0.0008018012446034291,
+          "value": 0.23234374821186066,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 720",
+          "impact": 0.00036733582562920643,
+          "value": 0.05676145851612091,
+          "positive": true
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": 0.0003020246982616296,
+          "value": 1.0,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0002958706231041369,
+          "value": 0.85568767786026,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "a194ab6fe01a93614a6ca578df6c4e8c",
+      "candidate_file": "Clara_Wang_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7420104368942215,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.01770136713789207,
+          "value": 0.7428900003433228,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.003012486331954059,
+          "value": 0.3551761209964752,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.00212360006137937,
+          "value": 0.3482116162776947,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0010270016392146697,
+          "value": 0.24020694196224213,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": -0.000822548360166178,
+          "value": 0.3863372206687927,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": -0.0007267016723228129,
+          "value": 0.3518187999725342,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": -0.0005047655153014593,
+          "value": -0.5013918876647949,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0004481026373808597,
+          "value": 0.19090427458286285,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0003831235625436522,
+          "value": 0.9850814938545227,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 480",
+          "impact": 0.0002984641799192976,
+          "value": 0.10577791929244995,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "5c9f34213912719129fd62521f1d5394",
+      "candidate_file": "Aisha_Ahmed_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7409218247441243,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.020141356612013578,
+          "value": 0.7409181594848633,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.002117834076005637,
+          "value": 0.3322167694568634,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0020694776820256145,
+          "value": 0.4449515640735626,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0009768969525425955,
+          "value": 0.4435136616230011,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": -0.0008074569111264411,
+          "value": 0.3703423738479614,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": -0.0006855236345484732,
+          "value": 0.3637986183166504,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": 0.00047008233102725625,
+          "value": -0.5549765825271606,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": 0.0004526980065136455,
+          "value": 0.08482781052589417,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 0",
+          "impact": 0.00037987116346478673,
+          "value": 0.21298187971115112,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.00037195785353635034,
+          "value": 0.8272116184234619,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "4122ce37d8fc96842a885bc510eb9c8f",
+      "candidate_file": "Emma_Cooper_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7017323266216491,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.04168769537993104,
+          "value": 0.7017293572425842,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.004951513416698903,
+          "value": 0.2105434536933899,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": -0.003179240678238172,
+          "value": 0.16553013026714325,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.0015250730898915149,
+          "value": 0.2482307106256485,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0009450261953695922,
+          "value": 0.6227052807807922,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": -0.0008785574137861694,
+          "value": -0.3803463280200958,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 255",
+          "impact": -0.0008387729789163243,
+          "value": 0.2074204534292221,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 600",
+          "impact": -0.0006931391387011778,
+          "value": 0.5096161365509033,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 510",
+          "impact": -0.0006579774262281395,
+          "value": 0.4205828309059143,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": -0.0006574446293679698,
+          "value": 0.6423256397247314,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "125fc8a7605383ac1ddee43c7174ef44",
+      "candidate_file": "Alfarizy_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.8515821843208498,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.05587409932139281,
+          "value": 0.8515979051589966,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": 0.0024012779407481793,
+          "value": 0.45366203784942627,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": 0.0022877607269260625,
+          "value": -0.06787942349910736,
+          "positive": true
+        },
+        {
+          "feature": "Feature: Skill Kubernetes",
+          "impact": 0.0022483423854373435,
+          "value": 4.0,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": 0.002118482654137702,
+          "value": 0.04825907200574875,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": 0.0019852717175109736,
+          "value": -0.3200262188911438,
+          "positive": true
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": 0.001774506911640495,
+          "value": 3.0,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": 0.001646017208251562,
+          "value": -0.21124549210071564,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": 0.001637253414084545,
+          "value": 0.030059069395065308,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 750",
+          "impact": 0.0013721156396676597,
+          "value": 0.08405816555023193,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "49bea7031a040ca7b751784767e2e7a4",
+      "candidate_file": "Lucas_Stewart_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7847210215782903,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.03293386473172561,
+          "value": 0.7949808835983276,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.001407715891421425,
+          "value": 0.42587101459503174,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0012271848049678037,
+          "value": 0.4277912378311157,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": -0.0008839024087725327,
+          "value": 0.14948610961437225,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": -0.0007953324367876061,
+          "value": 0.2876933515071869,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": -0.0007416117000607634,
+          "value": 0.14758150279521942,
+          "positive": false
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": -0.0007224926296296747,
+          "value": 0.0,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 0",
+          "impact": -0.0006943838083332287,
+          "value": 0.010116342455148697,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": -0.0006907811145548267,
+          "value": 0.44741159677505493,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0006472056984255864,
+          "value": 0.8325129151344299,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "6074097b108f1a309df388ca06fc15d2",
+      "candidate_file": "Jack_Thompson_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7676504371134587,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.007237137518498673,
+          "value": 0.7676585912704468,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0031060086865997154,
+          "value": 0.31611788272857666,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.001626090804347514,
+          "value": 0.23444603383541107,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0010304953988216864,
+          "value": 0.25964608788490295,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 300",
+          "impact": 0.0010247395424301052,
+          "value": -0.06169833242893219,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": 0.0009124735004991658,
+          "value": 0.3816104531288147,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 195",
+          "impact": 0.0008869913126686456,
+          "value": 0.5703868865966797,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": 0.0008008086216917024,
+          "value": 0.2725716233253479,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": 0.0006332648383485689,
+          "value": 0.7781211733818054,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 510",
+          "impact": 0.0005914557541234798,
+          "value": 0.16896331310272217,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "7c2e51e1563d9f9489129099e8eca579",
+      "candidate_file": "Liam_Carter_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7304093483471463,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.03302295837671172,
+          "value": 0.7304055690765381,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.0016618566615714569,
+          "value": 0.2928455173969269,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0012025516580957227,
+          "value": 0.232818141579628,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": 0.0009384282596075232,
+          "value": -0.5176227688789368,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 405",
+          "impact": 0.0004649007793795918,
+          "value": 0.9599235653877258,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 720",
+          "impact": 0.00036710165212839094,
+          "value": 0.061538711190223694,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": 0.00032426851532295624,
+          "value": 0.2709437310695648,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 600",
+          "impact": 0.0003209358221033703,
+          "value": 0.33556830883026123,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.000317350367838936,
+          "value": 0.8613875508308411,
+          "positive": false
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": 0.0003020246982616296,
+          "value": 1.0,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "e50b03a6fa9934b13f058c36c19399aa",
+      "candidate_file": "Michael_Brooks_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7199543899305726,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.037173611193629004,
+          "value": 0.7222582697868347,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.003473366406314871,
+          "value": 0.365627646446228,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": -0.002447527089842366,
+          "value": 0.14310874044895172,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.0015249785781093655,
+          "value": 0.3194802701473236,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 255",
+          "impact": -0.0009369883507100327,
+          "value": 0.22984184324741364,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": 0.0008775387763181043,
+          "value": 0.535493016242981,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 600",
+          "impact": -0.0006910905590984831,
+          "value": 0.48004719614982605,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 510",
+          "impact": -0.0006443780110124986,
+          "value": 0.3943108916282654,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 510",
+          "impact": -0.0005573329926884697,
+          "value": 0.018488526344299316,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.00049355563479596,
+          "value": 0.26323848962783813,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "af52880300835d75c684694e1b4217db",
+      "candidate_file": "Natalia_Ivanova_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7565397085901403,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.01036006572073992,
+          "value": 0.7565401792526245,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0033744194259895644,
+          "value": 0.33738574385643005,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0016293313152099447,
+          "value": 0.17953947186470032,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 300",
+          "impact": 0.0010566775798877476,
+          "value": -0.16480305790901184,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0009980903529939061,
+          "value": 0.29462331533432007,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": 0.0008018012446034291,
+          "value": 0.21766506135463715,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": -0.0007897187912964501,
+          "value": 0.3132171630859375,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0006429567945388457,
+          "value": 0.1547914445400238,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 720",
+          "impact": 0.00036589575306564807,
+          "value": 0.019780367612838745,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0003645252823732205,
+          "value": 0.9987843036651611,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "5e71dd1d34256f18db8abb83cac2be3c",
+      "candidate_file": "Olivia_Green_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7453102233031991,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.01745163986625344,
+          "value": 0.745317816734314,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.0014999688513908772,
+          "value": 0.28714120388031006,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.00132948888756329,
+          "value": 0.23510031402111053,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": 0.000934399583866666,
+          "value": -0.5468629002571106,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.0006138054990963917,
+          "value": 0.25680190324783325,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": -0.0005071501462797597,
+          "value": 0.2949275076389313,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 405",
+          "impact": 0.00046339864727361547,
+          "value": 0.930683434009552,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.00031986346587680863,
+          "value": 0.947655975818634,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 750",
+          "impact": 0.0003180172285024778,
+          "value": 0.044788211584091187,
+          "positive": true
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": 0.0003020460197431176,
+          "value": 1.0,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "f5433063cfb796103d0cc48dd59cec97",
+      "candidate_file": "Michael_Johnson_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.8338822511564341,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.05073917417922078,
+          "value": 0.833882212638855,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": 0.002686054878758602,
+          "value": 0.004282369278371334,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": 0.00211960155742889,
+          "value": 0.02390272170305252,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": 0.0019655544350014654,
+          "value": 0.4115750789642334,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": 0.0017661485242346819,
+          "value": 0.01237565279006958,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": 0.001699047536363389,
+          "value": -0.09237566590309143,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 0",
+          "impact": 0.0014218595362367554,
+          "value": 0.2854340374469757,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 750",
+          "impact": 0.0013521319000807791,
+          "value": 0.013575494289398193,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 720",
+          "impact": 0.0013245468546041394,
+          "value": 0.04173213243484497,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": 0.0013046567628513734,
+          "value": -0.2746146023273468,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "11ff39187844ba13a1e792ec3c498ce8",
+      "candidate_file": "Ravi_Patel_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7809780643851479,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.018370618876916097,
+          "value": 0.7743533849716187,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0031868011393517224,
+          "value": 0.3250380754470825,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": -0.0015852917375496502,
+          "value": 0.04640841484069824,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0012253952901001744,
+          "value": 0.43519777059555054,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 720",
+          "impact": 0.0010689236210147531,
+          "value": 0.05650770664215088,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 300",
+          "impact": 0.0010537198322416164,
+          "value": -0.016478415578603745,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": 0.0009141457071862105,
+          "value": 0.4017603397369385,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 255",
+          "impact": -0.0006927644202379464,
+          "value": 0.3265421688556671,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 225",
+          "impact": 0.000684745363575606,
+          "value": -0.18336552381515503,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 150",
+          "impact": -0.0005901086924821003,
+          "value": -0.2532801330089569,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "c33819c2974660cc6e8c0ef0762690e5",
+      "candidate_file": "Benjamin_Clark_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.749621468514643,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.011150140441612142,
+          "value": 0.7600913643836975,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0031676826054973955,
+          "value": 0.32487860321998596,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.001057955263394029,
+          "value": 0.27635830640792847,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": -0.0007902778196478644,
+          "value": 0.36091214418411255,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0006625798069126144,
+          "value": 0.304953396320343,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.0006138123944524483,
+          "value": 0.2711927592754364,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": -0.0005070649360219984,
+          "value": 0.3093183636665344,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 510",
+          "impact": -0.0003486944270939465,
+          "value": 0.004868447780609131,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 150",
+          "impact": 0.00033561509886635254,
+          "value": -0.4694860577583313,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0003107523559131235,
+          "value": 0.8584399819374084,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "339cd7735caacc502b81902bfd3b2fd2",
+      "candidate_file": "Emily_Zhang_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7253879319518712,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.033214607463336036,
+          "value": 0.7325741052627563,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.004857645469027926,
+          "value": 0.21069443225860596,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0016570845013477108,
+          "value": 0.2366923689842224,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0008883816617028829,
+          "value": 0.2402590662240982,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": -0.0008766924024404922,
+          "value": -0.406247615814209,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 300",
+          "impact": 0.0007812988742508419,
+          "value": -0.09092708677053452,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.00044496621771161575,
+          "value": 0.19588778913021088,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 405",
+          "impact": -0.0004182304043893692,
+          "value": 1.0712987184524536,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 45",
+          "impact": -0.0003965660355915189,
+          "value": 0.0001793503761291504,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.00036913317866367186,
+          "value": 1.0105050802230835,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "4a491c85d1e261dd930dd68734404066",
+      "candidate_file": "Sarah_Johnson_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7285960944978213,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.03455716465061998,
+          "value": 0.7285900115966797,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.003015360582263396,
+          "value": 0.2072029411792755,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0017427399511130565,
+          "value": 0.3151935338973999,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": 0.0009325046410836708,
+          "value": -0.5660483241081238,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0008369899711460055,
+          "value": 0.24443508684635162,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0004812270866634206,
+          "value": 0.1826452761888504,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 405",
+          "impact": 0.00046476404045293646,
+          "value": 0.9114980101585388,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0004004717455743419,
+          "value": 0.9918035864830017,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 255",
+          "impact": 0.0003938236386520296,
+          "value": 0.057757049798965454,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 720",
+          "impact": 0.00036857912917411976,
+          "value": 0.03359133005142212,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "a7713dd2078eef942632ee40d49f0226",
+      "candidate_file": "Samuel_Lee_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.8108167363678698,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.040395020837330944,
+          "value": 0.8108152151107788,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": 0.0014475890384855444,
+          "value": 0.003455883590504527,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 300",
+          "impact": 0.001306317358857948,
+          "value": 0.015732508152723312,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0012839567419619538,
+          "value": 0.3776073455810547,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 480",
+          "impact": 0.0011765476433353178,
+          "value": 0.06581103801727295,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": 0.0008125722243117194,
+          "value": 0.031203968450427055,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0007314463209868908,
+          "value": 0.18878768384456635,
+          "positive": true
+        },
+        {
+          "feature": "Feature: Skill Ai",
+          "impact": 0.0007237586535789897,
+          "value": 9.0,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 225",
+          "impact": 0.0006757729515234604,
+          "value": -0.22560590505599976,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 315",
+          "impact": 0.0006017955657193295,
+          "value": 0.28717583417892456,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "1eb1929ee4746b4b8739ec84aba03dbd",
+      "candidate_file": "Ethan_Matthews_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7981859801018204,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.03580904972586683,
+          "value": 0.8086705803871155,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0012669801209426212,
+          "value": 0.15902194380760193,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0012490982715601857,
+          "value": 0.479483038187027,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 480",
+          "impact": 0.0012150785618024113,
+          "value": 0.0621180534362793,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0011743660698813102,
+          "value": 0.4632788896560669,
+          "positive": false
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": 0.001082767848080158,
+          "value": 1.0,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 300",
+          "impact": 0.0009288492797994083,
+          "value": 0.0032640299759805202,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": -0.0007099649373988763,
+          "value": 0.4828992486000061,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 225",
+          "impact": 0.000675517579523113,
+          "value": -0.2375369518995285,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": -0.0006352323287440634,
+          "value": -0.12467001378536224,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "5d9411881a48633ebe2f5e5bcaeba4ab",
+      "candidate_file": "Michael_OConnor_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7834174247458734,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.030339586918117212,
+          "value": 0.7834208011627197,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0013280975323242872,
+          "value": 0.3408651351928711,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0012253952901001744,
+          "value": 0.15543599426746368,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": -0.0008627221221628564,
+          "value": 0.1828669011592865,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0008074499130042193,
+          "value": 0.12677907943725586,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": -0.0007953324367876061,
+          "value": 0.29504361748695374,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": -0.0007463588867766383,
+          "value": -0.16764871776103973,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 0",
+          "impact": -0.000730710120787934,
+          "value": 0.0027660648338496685,
+          "positive": false
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": -0.000722537582345984,
+          "value": 0.0,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": -0.0006883826322702744,
+          "value": 0.1750563383102417,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "5a731423f065353c52e3a62dab7f6fc0",
+      "candidate_file": "Maria_Lopez_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7841437542752303,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.03086776985615901,
+          "value": 0.7994157671928406,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.001496751594500308,
+          "value": 0.6581907868385315,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.001461381915875191,
+          "value": 0.2764745354652405,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.001412269572851934,
+          "value": 0.39256227016448975,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": -0.0008469798089746488,
+          "value": 0.6778111457824707,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": -0.0007953324367876061,
+          "value": 0.2838248908519745,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 0",
+          "impact": -0.0007305740239278801,
+          "value": 0.013984804041683674,
+          "positive": false
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": -0.0007224884926258039,
+          "value": 0.0,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": -0.0006633887933507173,
+          "value": -0.009226227179169655,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 720",
+          "impact": -0.0006405809846502121,
+          "value": 0.41994571685791016,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "92b3e8ddbb543dc8e03a25a18b45ccbb",
+      "candidate_file": "Olivia_James_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7528131453753693,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.014601955029163853,
+          "value": 0.7520500421524048,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.0033073003646460694,
+          "value": 0.4195233881473541,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0016291079144349027,
+          "value": 0.18506374955177307,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 300",
+          "impact": 0.0010061101276560578,
+          "value": -0.05013919994235039,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0009614331328823786,
+          "value": 0.2718839645385742,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": 0.0008775830413314124,
+          "value": 0.44822239875793457,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": 0.0008013239438289156,
+          "value": 0.2231893390417099,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0005080140127561913,
+          "value": 0.1864183247089386,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": -0.0005002881834200477,
+          "value": -0.4702177047729492,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 345",
+          "impact": -0.0003552179541468034,
+          "value": 0.021468669176101685,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "6c3859d7a0d38060f4493c8dd8850631",
+      "candidate_file": "Claire_Dubois_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7786140383852657,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.027089168668695665,
+          "value": 0.778607189655304,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0012800831302463543,
+          "value": 0.1961165964603424,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0009067180985007414,
+          "value": 0.09722012281417847,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": -0.0007794373644892754,
+          "value": 0.3556452691555023,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": -0.0007663474734358758,
+          "value": -0.1719888299703598,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0007388171357032714,
+          "value": 0.4131673574447632,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 0",
+          "impact": -0.0007305740239278801,
+          "value": -0.05783559009432793,
+          "positive": false
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": -0.0007024661537315587,
+          "value": 0.0,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": -0.0006863633017823737,
+          "value": 0.21573695540428162,
+          "positive": false
+        },
+        {
+          "feature": "Feature: Skill Kubernetes",
+          "impact": -0.0006416762840945082,
+          "value": 0.0,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "a3649c8c9bd50735a5720b9ddd39a309",
+      "candidate_file": "Thomas_Muller_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7234140267380545,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.034741104767837955,
+          "value": 0.7234132885932922,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.004025818628818407,
+          "value": 0.1788993775844574,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.0012025516580957227,
+          "value": 0.1978934407234192,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": -0.000875710471726393,
+          "value": -0.19024324417114258,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0004269185768488194,
+          "value": 0.2627328336238861,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 405",
+          "impact": -0.00041806177057775293,
+          "value": 1.28730309009552,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0003412709026160695,
+          "value": 0.8926616907119751,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": 0.00032426851532295624,
+          "value": 0.23601903021335602,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 600",
+          "impact": 0.0003209358221033703,
+          "value": 0.4494636058807373,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 90",
+          "impact": 0.00028481815421541235,
+          "value": -0.2965264618396759,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "85d34c5970b7f7d4298bf7492768509c",
+      "candidate_file": "David_Johnson_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7341044184627517,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.018052669451818243,
+          "value": 0.7497206330299377,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.00250488814743237,
+          "value": 0.3130483627319336,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.0021248789916325462,
+          "value": 0.33247360587120056,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0010165076586841674,
+          "value": 0.2307148277759552,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": -0.0008808006367960404,
+          "value": -0.4214320480823517,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": -0.0008231130921833576,
+          "value": 0.3705992102622986,
+          "positive": false
+        },
+        {
+          "feature": "Gender Neutrality Score",
+          "impact": -0.000751503392164037,
+          "value": 1.562499991861979,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0006677011493718125,
+          "value": 0.6045472621917725,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": -0.0005577030788931925,
+          "value": 0.6241676211357117,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0005389599630394629,
+          "value": 0.32962343096733093,
+          "positive": false
+        }
+      ]
+    },
+    {
+      "id": "bbe1d96a7f73acf74805445c2f7eb7c7",
+      "candidate_file": "Ethan_Scott_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.740469876595009,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.017519699946195465,
+          "value": 0.7404688596725464,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.0021201047008471037,
+          "value": 0.34550198912620544,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.0018577279908421048,
+          "value": 0.27994075417518616,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0012863859819482056,
+          "value": 0.2403413951396942,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 405",
+          "impact": 0.0009783748079306286,
+          "value": -0.7263535261154175,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": -0.0008148279487877156,
+          "value": 0.38362759351730347,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 405",
+          "impact": 0.0004986158748250749,
+          "value": 0.7511928081512451,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.00042391148682723257,
+          "value": 0.19330079853534698,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.00039896568377967165,
+          "value": 0.9490270614624023,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 480",
+          "impact": 0.0002961074279882716,
+          "value": 0.1136135458946228,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "7c33270294397d2f07c3789cf330f508",
+      "candidate_file": "Test_Candidate_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7625942505437482,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": -0.009750700687122749,
+          "value": 0.7625917792320251,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.00315379317694104,
+          "value": 0.3937515616416931,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": 0.001626378556497849,
+          "value": 0.17812082171440125,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 255",
+          "impact": 0.0009226184171933346,
+          "value": 0.21997758746147156,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 180",
+          "impact": 0.0009143303947076094,
+          "value": 0.4899686574935913,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 195",
+          "impact": 0.0008703884820156111,
+          "value": 0.5430727601051331,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 60",
+          "impact": 0.0008018012446034291,
+          "value": 0.21624641120433807,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 510",
+          "impact": 0.0005404237382281489,
+          "value": 0.17614910006523132,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 615",
+          "impact": 0.0004666419754330807,
+          "value": 0.9708412289619446,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": 0.00046099715727735845,
+          "value": -0.06400589644908905,
+          "positive": true
+        }
+      ]
+    },
+    {
+      "id": "81a75112e9200bf7e4c509649fedd929",
+      "candidate_file": "Isabella_Evans_CV",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.7760880303404918,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.03057833069390684,
+          "value": 0.791878879070282,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": -0.0015462284398142622,
+          "value": 0.19400058686733246,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": -0.0014446072546125026,
+          "value": 0.2749180793762207,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0012800831302463543,
+          "value": 0.2916564643383026,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 0",
+          "impact": -0.0008229641815431708,
+          "value": 0.2674408257007599,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": -0.0007729837592509072,
+          "value": 0.9870713949203491,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": -0.0007712320528498991,
+          "value": -0.04266348481178284,
+          "positive": false
+        },
+        {
+          "feature": "Semantic Context Factor 0",
+          "impact": -0.0007305740239278801,
+          "value": 0.030368870124220848,
+          "positive": false
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": -0.0007224926296296747,
+          "value": 0.0,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 450",
+          "impact": -0.0007099649373988763,
+          "value": 0.3112768232822418,
+          "positive": false
+        }
+      ]
+    }
+  ]
+}
