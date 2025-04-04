@@ -43,6 +43,7 @@ interface Job {
 const Dashboard: React.FC = () => {
   const [openNewJob, setOpenNewJob] = useState(false);
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
 
@@ -88,16 +89,28 @@ const Dashboard: React.FC = () => {
     alert("Job link copied to clipboard!");
   };
 
+  const stripHTML = (html: string) => html.replace(/<[^>]+>/g, "");
+
+  const filteredJobs = jobs.filter((job) =>
+    `${job.title} ${job.location} ${job.type} ${job.category} ${stripHTML(
+      job.description
+    )}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
   return (
     <Box>
-      <TransparaAppBar onLogout={handleLogout} />
+      <TransparaAppBar
+        onLogout={handleLogout}
+        onSearch={(value) => setSearchTerm(value)}
+      />
+
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
-          {}
           <Grid item xs={12} md={3}>
             <Sidebar />
 
-            {}
             <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
               <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
                 Quick Stats
@@ -134,7 +147,6 @@ const Dashboard: React.FC = () => {
             </Paper>
           </Grid>
 
-          {}
           <Grid item xs={12} md={9}>
             <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 2 }}>
               <Box
@@ -158,7 +170,7 @@ const Dashboard: React.FC = () => {
                 </Button>
               </Box>
 
-              {jobs.length === 0 ? (
+              {filteredJobs.length === 0 ? (
                 <Box
                   sx={{
                     p: 4,
@@ -177,7 +189,7 @@ const Dashboard: React.FC = () => {
                 </Box>
               ) : (
                 <List>
-                  {jobs.map((job) => (
+                  {filteredJobs.map((job) => (
                     <ListItem
                       key={job.id}
                       divider
@@ -222,7 +234,6 @@ const Dashboard: React.FC = () => {
                         />
                       </ListItemButton>
 
-                      {}
                       <Box
                         sx={{ display: "flex", alignItems: "center", pr: 1 }}
                       >
