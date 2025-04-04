@@ -13,7 +13,6 @@ from src.utils.text_utils import (
 from src.utils.io_utils import (
     load_job_description,
     load_candidate_pdfs,
-    display_ranking
 )
 
 __all__ = [
@@ -24,6 +23,5 @@ __all__ = [
     'preprocess_text',
     'tokenize',
     'load_job_description',
-    'load_candidate_pdfs',
-    'display_ranking'
+    'load_candidate_pdfs'
 ]
