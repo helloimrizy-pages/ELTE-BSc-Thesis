@@ -2,6 +2,8 @@ import os
 import json
 import csv
 import shutil
+import hashlib
+
 from typing import Dict, List, Any, Optional, Union, TextIO
 
 def ensure_dir_exists(directory_path: str) -> str:
@@ -26,3 +28,7 @@ def load_from_json(file_path: str) -> Any:
     
     with open(file_path, 'r', encoding='utf-8') as f:
         return json.load(f)
+
+def generate_candidate_id(file_path: str) -> str:
+    basename = os.path.basename(file_path)
+    return hashlib.md5(basename.encode()).hexdigest()
