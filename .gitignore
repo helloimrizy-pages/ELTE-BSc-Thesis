@@ -7,7 +7,7 @@ Others/
 transpara/code_context.txt
 transpara/transpara_venv
 transpara/node_modules
-
+w
 .DS_Store
 
 transpara/code_context.txt
@@ -20,3 +20,4 @@ transpara/nlp_data_extraction/main.py
 transpara/resume_ranking/.env
 transpara/resume_ranking/code_context.txt
 *.pyc
+transpara/export_code_2.sh

@@ -17,16 +17,16 @@ if [ -f "$output_file" ]; then
 fi
 
 # List of directories to look for
-directories=("src/components" "src/pages" "src/services" "resume_ranking/api" "resume_ranking/backend" "resume_ranking/config" "resume_ranking/src")
+directories=("src/components" "src/pages" "src/services" "src/types" "src/utils")
 
 # List of specific files to include
-specific_files=("src/App.tsx" "src/firebase.ts" "src/setupGlobal.ts" "resume_ranking/main.py" "src/types/analysisService.d.ts")
+specific_files=("src/App.tsx" "src/firebase.ts" "src/setupGlobal.ts")
 
 # List of file types to ignore
 ignore_files=("*.ico" "*.png" "*.jpg" "*.jpeg" "*.gif" "*.svg" "*.pyc")
 
 # List of files to exclude (provide relative paths from the project root)
-exclude_files=()  # Modify as needed
+exclude_files=()
 
 # Function to append file content
 append_file_content() {
