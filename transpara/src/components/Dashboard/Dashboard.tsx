@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemText,
   ListItemButton,
+  IconButton,
   Divider,
   Paper,
   Grid,
@@ -17,8 +18,17 @@ import { auth, db } from "../../firebase";
 import { signOut } from "firebase/auth";
 import { NewJobDialog } from "./NewJob";
 import { EditJobDialog } from "../Dashboard/EditJobDialog";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import Sidebar from "../AppBar/Sidebar";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface Job {
   id: string;
@@ -59,6 +69,23 @@ const Dashboard: React.FC = () => {
   const handleJobClick = (job: Job) => {
     setSelectedJob(job);
     setOpenEditDialog(true);
+  };
+
+  const handleDeleteJob = async (jobId: string) => {
+    if (window.confirm("Are you sure you want to delete this job posting?")) {
+      try {
+        await deleteDoc(doc(db, "jobs", jobId));
+      } catch (error) {
+        console.error("Failed to delete job:", error);
+        alert("Failed to delete job.");
+      }
+    }
+  };
+
+  const handleCopyLink = (jobId: string) => {
+    const link = `${window.location.origin}/job/${jobId}`;
+    navigator.clipboard.writeText(link);
+    alert("Job link copied to clipboard!");
   };
 
   return (
@@ -162,7 +189,10 @@ const Dashboard: React.FC = () => {
                         overflow: "hidden",
                       }}
                     >
-                      <ListItemButton onClick={() => handleJobClick(job)}>
+                      <ListItemButton
+                        onClick={() => handleJobClick(job)}
+                        sx={{ flex: 1 }}
+                      >
                         <ListItemText
                           primary={
                             <Typography variant="subtitle1" fontWeight="medium">
@@ -173,7 +203,6 @@ const Dashboard: React.FC = () => {
                             <>
                               <Typography
                                 variant="body2"
-                                component="span"
                                 color="text.secondary"
                               >
                                 {job.location} • {job.type}
@@ -192,6 +221,24 @@ const Dashboard: React.FC = () => {
                           }
                         />
                       </ListItemButton>
+
+                      {}
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", pr: 1 }}
+                      >
+                        <IconButton
+                          onClick={() => handleCopyLink(job.id)}
+                          aria-label="Copy job link"
+                        >
+                          <ContentCopyIcon fontSize="small" />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => handleDeleteJob(job.id)}
+                          aria-label="Delete job"
+                        >
+                          <DeleteIcon fontSize="small" color="error" />
+                        </IconButton>
+                      </Box>
                     </ListItem>
                   ))}
                 </List>
