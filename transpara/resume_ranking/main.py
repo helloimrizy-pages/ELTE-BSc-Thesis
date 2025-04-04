@@ -1,10 +1,11 @@
 import os
 import argparse
-
 from src.data.embeddings import load_mbert_model
-from src.models.ranking_model import enhanced_ranking_pipeline
-from src.utils.io_utils import load_candidate_pdfs, load_job_description, display_ranking
+from src.models.ranking_model import rank_candidates, display_ranking
+from src.utils.io_utils import load_candidate_pdfs, load_job_description
 from src.analysis.chatgpt_explanation import generate_chatgpt_explanations
+from src.analysis.gender_analysis import analyze_gender_bias_distribution
+from src.analysis.shap_explanation import generate_shap_explanations
 
 def main():
     parser = argparse.ArgumentParser(description="Candidate Ranking System")
@@ -21,16 +22,23 @@ def main():
         "reports": os.path.join("output", "reports")
     }
 
-    print("Running candidate ranking pipeline...")
-    results = enhanced_ranking_pipeline(
+    print("Running candidate ranking pipeline...\n")
+    results = rank_candidates(
         job_description, candidate_texts, candidate_files, tokenizer, model, output_folders
     )
 
     display_ranking(os.path.join(output_folders["reports"], "ranking_results.json"))
     
+    print("\nRunning SHAP explanations...")
+    generate_shap_explanations(candidate_files, results["explanations"], output_folders)
+
+    print("\nGenerating ChatGPT explanations...")
     generate_chatgpt_explanations(
-        results, job_description, candidate_files, candidate_texts, output_folders["reports"]
+        results, job_description, candidate_files, candidate_texts, output_folders
     )
+
+    print("\nRunning gender bias analysis...")
+    analyze_gender_bias_distribution(candidate_texts, candidate_files, ranked_indices=results["ranked_indices"], output_folders=output_folders)
 
 if __name__ == "__main__":
     main()
