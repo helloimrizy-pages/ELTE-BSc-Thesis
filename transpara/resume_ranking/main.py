@@ -7,10 +7,11 @@ from src.analysis.chatgpt_explanation import generate_chatgpt_explanations
 from src.analysis.gender_analysis import analyze_gender_bias_distribution
 from src.analysis.shap_explanation import generate_shap_explanations
 
-def main():
+def main(job_description: str = 'data/job_desc/data.txt', candidates_dir: str = 'data', job_id: str = 'default'):
     parser = argparse.ArgumentParser(description="Candidate Ranking System")
     parser.add_argument('--job_description', type=str, default='data/job_desc/data.txt')
     parser.add_argument('--candidates_dir', type=str, default='data')
+    parser.add_argument('--job_id', type=str, default='default')
     args = parser.parse_args()
 
     job_description = load_job_description(args.job_description)
@@ -19,8 +20,10 @@ def main():
 
     output_folders = {
         "models": os.path.join("output", "models"),
-        "reports": os.path.join("output", "reports")
+        "reports": os.path.join("output", "reports", args.job_id)
     }
+
+    os.makedirs(output_folders["reports"], exist_ok=True)
 
     print("Running candidate ranking pipeline...\n")
     results = rank_candidates(
