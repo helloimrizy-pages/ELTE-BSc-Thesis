@@ -63,7 +63,7 @@ const Sidebar: React.FC = () => {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => navigate("/analytics")}
-            selected={isActive("/analytics")}
+            selected={location.pathname.startsWith("/analytics")}
             sx={{
               "&.Mui-selected": {
                 bgcolor: "rgba(0, 0, 0, 0.04)",
