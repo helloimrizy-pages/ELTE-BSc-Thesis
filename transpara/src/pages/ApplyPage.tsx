@@ -23,27 +23,13 @@ import {
   Chip,
 } from "@mui/material";
 import {
-  CloudUpload as UploadIcon,
   ArrowBack as BackIcon,
   LinkedIn as LinkedInIcon,
   Language as WebsiteIcon,
 } from "@mui/icons-material";
-import { styled } from "@mui/material/styles";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useDropzone } from "react-dropzone";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 
 const steps = [
   "Basic Information",
@@ -84,7 +70,6 @@ export const ApplyPage: React.FC = () => {
   const [expectedSalary, setExpectedSalary] = useState("");
   const [portfolioUrl, setPortfolioUrl] = useState("");
 
-  // 🔁 Load autosaved data on mount
   useEffect(() => {
     const saved = localStorage.getItem("job_application_draft");
     if (saved) {
@@ -106,7 +91,6 @@ export const ApplyPage: React.FC = () => {
     }
   }, []);
 
-  // 💾 Auto-save form progress
   useEffect(() => {
     const draft = {
       firstName,
@@ -138,7 +122,6 @@ export const ApplyPage: React.FC = () => {
     availableStartDate,
   ]);
 
-  // 🧲 Dropzone for CV upload
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       "application/pdf": [".pdf"],
@@ -175,12 +158,6 @@ export const ApplyPage: React.FC = () => {
     };
     fetchJob();
   }, [jobId]);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setCvFile(e.target.files[0]);
-    }
-  };
 
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1);
@@ -372,7 +349,7 @@ export const ApplyPage: React.FC = () => {
       case 2:
         return (
           <Box sx={{ mt: 3 }}>
-            {/* Drag & Drop CV */}
+            {}
             <Box
               {...getRootProps()}
               sx={{
