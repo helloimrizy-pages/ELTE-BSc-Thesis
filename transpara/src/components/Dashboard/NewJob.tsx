@@ -169,7 +169,6 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
                     "inline",
                     "blockType",
                     "fontSize",
-                    "list",
                     "textAlign",
                     "colorPicker",
                     "link",
