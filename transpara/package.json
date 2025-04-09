@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@date-io/date-fns": "^3.2.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.5",
     "@mui/material": "^6.4.5",
+    "@mui/x-date-pickers": "^7.28.3",
     "@tailwindcss/vite": "^4.0.7",
     "axios": "^1.8.4",
+    "date-fns": "^2.29.3",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "firebase": "^11.3.1",
@@ -24,10 +27,11 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-draft-wysiwyg": "^1.15.0",
+    "react-dropzone": "^14.3.8",
     "react-firebase-hooks": "^5.1.1",
     "react-quill": "^2.0.0",
     "react-router-dom": "^7.2.0",
-    "recharts": "^2.15.1"
+    "recharts": "^2.15.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
