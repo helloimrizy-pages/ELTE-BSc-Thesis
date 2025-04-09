@@ -21,3 +21,4 @@ transpara/resume_ranking/.env
 transpara/resume_ranking/code_context.txt
 *.pyc
 transpara/export_code_2.sh
+transpara/resume_ranking/firebase-adminsdk.json
