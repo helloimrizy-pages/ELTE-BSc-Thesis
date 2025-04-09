@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, ChangeEvent } from "react";
+import { styled } from "@mui/material/styles";
 import {
   Box,
   Container,
@@ -8,6 +9,14 @@ import {
   Button,
   Grid,
   Avatar,
+  IconButton,
+  Card,
+  CardContent,
+  Snackbar,
+  Alert,
+  Skeleton,
+  CircularProgress,
+  Badge,
 } from "@mui/material";
 import { auth, db, storage } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -16,6 +25,123 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { TransparaAppBar } from "../components/AppBar/TransparaAppBar";
 import Sidebar from "../components/AppBar/Sidebar";
 
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import SaveIcon from "@mui/icons-material/Save";
+import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
+import BusinessIcon from "@mui/icons-material/Business";
+import BadgeIcon from "@mui/icons-material/Badge";
+
+const ProfileContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: "#fafafa",
+  minHeight: "calc(100vh - 64px)",
+  paddingTop: theme.spacing(4),
+  paddingBottom: theme.spacing(6),
+}));
+
+const ProfileCard = styled(Paper)(({ theme }) => ({
+  borderRadius: theme.spacing(2),
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+  overflow: "hidden",
+}));
+
+const ProfileHeader = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(4),
+  backgroundColor: theme.palette.primary.main,
+  color: "white",
+  position: "relative",
+}));
+
+const ProfileContent = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(4),
+}));
+
+const StyledAvatar = styled(Avatar)(() => ({
+  width: 120,
+  height: 120,
+  border: "4px solid white",
+  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+  transition: "all 0.3s ease",
+}));
+
+const AvatarBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    width: 32,
+    height: 32,
+    borderRadius: "50%",
+    backgroundColor: theme.palette.background.paper,
+    cursor: "pointer",
+    border: `2px solid ${theme.palette.background.paper}`,
+    boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
+  },
+}));
+
+const SectionTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: 600,
+  marginBottom: theme.spacing(3),
+  position: "relative",
+  "&:after": {
+    content: '""',
+    position: "absolute",
+    left: 0,
+    bottom: -8,
+    width: 40,
+    height: 3,
+    backgroundColor: theme.palette.primary.main,
+  },
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  "& .MuiOutlinedInput-root": {
+    borderRadius: theme.spacing(1),
+    transition: "all 0.3s ease",
+    "&:hover": {
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
+  "& .Mui-disabled": {
+    backgroundColor: "rgba(0, 0, 0, 0.02)",
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(0, 0, 0, 0.1)",
+    },
+  },
+}));
+
+const ActionButton = styled(Button)(({ theme }) => ({
+  borderRadius: theme.spacing(1),
+  padding: theme.spacing(1.2, 3),
+  textTransform: "none",
+  fontSize: "0.95rem",
+  fontWeight: 600,
+  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    transform: "translateY(-2px)",
+    boxShadow: "0 6px 15px rgba(0, 0, 0, 0.15)",
+  },
+}));
+
+const SectionCard = styled(Card)(({ theme }) => ({
+  borderRadius: theme.spacing(2),
+  boxShadow: "0 2px 12px rgba(0, 0, 0, 0.04)",
+  marginBottom: theme.spacing(3),
+  overflow: "visible",
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  "&:hover": {
+    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.08)",
+  },
+}));
+
+const CardTitle = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(2, 3),
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
+
 const ProfilePage: React.FC = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -23,57 +149,116 @@ const ProfilePage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [company, setCompany] = useState("");
   const [photoURL, setPhotoURL] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       if (!auth.currentUser) return;
-      const uid = auth.currentUser.uid;
-      const docRef = doc(db, "users", uid);
-      const snapshot = await getDoc(docRef);
 
-      if (snapshot.exists()) {
-        const data = snapshot.data();
-        setFirstName(data.firstName || "");
-        setLastName(data.lastName || "");
-        setEmail(data.email || auth.currentUser.email || "");
-        setUsername(data.username || "");
-        setCompany(data.company || "");
-        setPhotoURL(auth.currentUser.photoURL);
+      try {
+        const uid = auth.currentUser.uid;
+        const docRef = doc(db, "users", uid);
+        const snapshot = await getDoc(docRef);
+
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          setFirstName(data.firstName || "");
+          setLastName(data.lastName || "");
+          setEmail(data.email || auth.currentUser.email || "");
+          setUsername(data.username || "");
+          setCompany(data.company || "");
+          setPhotoURL(auth.currentUser.photoURL);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        showSnackbar("Failed to load profile data", "error");
+      } finally {
+        setIsLoading(false);
       }
     };
+
     fetchUserData();
   }, []);
 
+  const showSnackbar = (message: string, severity: "success" | "error") => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   const handleSave = async () => {
     if (!auth.currentUser) return;
-    const uid = auth.currentUser.uid;
-    const docRef = doc(db, "users", uid);
-    await updateDoc(docRef, {
-      firstName,
-      lastName,
-    });
+
+    setIsSaving(true);
+    try {
+      const uid = auth.currentUser.uid;
+      const docRef = doc(db, "users", uid);
+      await updateDoc(docRef, {
+        firstName,
+        lastName,
+      });
+      showSnackbar("Profile updated successfully", "success");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      showSnackbar("Failed to update profile", "error");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handlePhotoUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.[0] || !auth.currentUser) return;
-    const file = e.target.files[0];
-    const storageRef = ref(
-      storage,
-      `profilePhotos/${auth.currentUser.uid}/${file.name}`
-    );
-    const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on(
-      "state_changed",
-      () => {},
-      console.error,
-      async () => {
-        const url = await getDownloadURL(uploadTask.snapshot.ref);
-        await updateProfile(auth.currentUser!, { photoURL: url });
-        setPhotoURL(url);
-      }
-    );
+    const file = e.target.files[0];
+    setIsUploading(true);
+
+    try {
+      const storageRef = ref(
+        storage,
+        `profilePhotos/${auth.currentUser.uid}/${file.name}`
+      );
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        () => {},
+        (error) => {
+          console.error("Upload error:", error);
+          showSnackbar("Failed to upload profile picture", "error");
+          setIsUploading(false);
+        },
+        async () => {
+          try {
+            const url = await getDownloadURL(uploadTask.snapshot.ref);
+            await updateProfile(auth.currentUser!, { photoURL: url });
+            setPhotoURL(url);
+            showSnackbar("Profile picture updated successfully", "success");
+          } catch (error) {
+            console.error("Error updating profile picture:", error);
+            showSnackbar("Failed to update profile picture", "error");
+          } finally {
+            setIsUploading(false);
+          }
+        }
+      );
+    } catch (error) {
+      console.error("Error starting upload:", error);
+      showSnackbar("Failed to start upload", "error");
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -82,89 +267,278 @@ const ProfilePage: React.FC = () => {
         onLogout={async () => auth.signOut()}
         onSearch={() => {}}
       />
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={3}>
-            <Sidebar />
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+          variant="filled"
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
+      <ProfileContainer>
+        <Container maxWidth="lg">
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3}>
+              <Sidebar />
+            </Grid>
+
+            <Grid item xs={12} md={9}>
+              <ProfileCard>
+                <ProfileHeader>
+                  <Box display="flex" alignItems="center">
+                    {isLoading ? (
+                      <Skeleton
+                        variant="circular"
+                        width={120}
+                        height={120}
+                        sx={{ mr: 3 }}
+                      />
+                    ) : (
+                      <AvatarBadge
+                        overlap="circular"
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "right",
+                        }}
+                        badgeContent={
+                          isUploading ? (
+                            <CircularProgress
+                              size={20}
+                              sx={{ color: "white" }}
+                            />
+                          ) : (
+                            <IconButton
+                              size="small"
+                              onClick={() => fileInputRef.current?.click()}
+                              sx={{
+                                bgcolor: "primary.main",
+                                color: "white",
+                                "&:hover": { bgcolor: "primary.dark" },
+                              }}
+                            >
+                              <PhotoCameraIcon fontSize="small" />
+                            </IconButton>
+                          )
+                        }
+                      >
+                        <StyledAvatar src={photoURL || undefined}>
+                          {!photoURL &&
+                            (
+                              firstName.charAt(0) + lastName.charAt(0)
+                            ).toUpperCase()}
+                        </StyledAvatar>
+                      </AvatarBadge>
+                    )}
+                    <Box ml={3}>
+                      {isLoading ? (
+                        <>
+                          <Skeleton variant="text" width={180} height={40} />
+                          <Skeleton variant="text" width={120} height={24} />
+                        </>
+                      ) : (
+                        <>
+                          <Typography variant="h4" fontWeight="700">
+                            {firstName} {lastName}
+                          </Typography>
+                          <Typography
+                            variant="subtitle1"
+                            sx={{ opacity: 0.9, mt: 0.5 }}
+                          >
+                            {company}
+                          </Typography>
+                        </>
+                      )}
+                    </Box>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoUpload}
+                      hidden
+                    />
+                  </Box>
+                </ProfileHeader>
+
+                <ProfileContent>
+                  <SectionTitle variant="h6">Personal Information</SectionTitle>
+
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                      <SectionCard>
+                        <CardTitle>
+                          <PersonIcon
+                            sx={{ color: "text.secondary", mr: 1.5 }}
+                          />
+                          <Typography variant="subtitle1" fontWeight="600">
+                            Name Details
+                          </Typography>
+                        </CardTitle>
+                        <CardContent>
+                          {isLoading ? (
+                            <>
+                              <Skeleton
+                                variant="rectangular"
+                                height={56}
+                                sx={{ mb: 3, borderRadius: 1 }}
+                              />
+                              <Skeleton
+                                variant="rectangular"
+                                height={56}
+                                sx={{ borderRadius: 1 }}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <StyledTextField
+                                fullWidth
+                                label="First Name"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                InputProps={{
+                                  startAdornment: (
+                                    <PersonIcon color="action" sx={{ mr: 1 }} />
+                                  ),
+                                }}
+                              />
+                              <StyledTextField
+                                fullWidth
+                                label="Last Name"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                InputProps={{
+                                  startAdornment: (
+                                    <PersonIcon color="action" sx={{ mr: 1 }} />
+                                  ),
+                                }}
+                                sx={{ mb: 0 }}
+                              />
+                            </>
+                          )}
+                        </CardContent>
+                      </SectionCard>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                      <SectionCard>
+                        <CardTitle>
+                          <BadgeIcon
+                            sx={{ color: "text.secondary", mr: 1.5 }}
+                          />
+                          <Typography variant="subtitle1" fontWeight="600">
+                            Account Details
+                          </Typography>
+                        </CardTitle>
+                        <CardContent>
+                          {isLoading ? (
+                            <>
+                              <Skeleton
+                                variant="rectangular"
+                                height={56}
+                                sx={{ mb: 3, borderRadius: 1 }}
+                              />
+                              <Skeleton
+                                variant="rectangular"
+                                height={56}
+                                sx={{ borderRadius: 1 }}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <StyledTextField
+                                fullWidth
+                                label="Email"
+                                value={email}
+                                disabled
+                                InputProps={{
+                                  startAdornment: (
+                                    <EmailIcon color="action" sx={{ mr: 1 }} />
+                                  ),
+                                }}
+                              />
+                              <StyledTextField
+                                fullWidth
+                                label="Username"
+                                value={username}
+                                disabled
+                                InputProps={{
+                                  startAdornment: (
+                                    <BadgeIcon color="action" sx={{ mr: 1 }} />
+                                  ),
+                                }}
+                                sx={{ mb: 0 }}
+                              />
+                            </>
+                          )}
+                        </CardContent>
+                      </SectionCard>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <SectionCard>
+                        <CardTitle>
+                          <BusinessIcon
+                            sx={{ color: "text.secondary", mr: 1.5 }}
+                          />
+                          <Typography variant="subtitle1" fontWeight="600">
+                            Company Information
+                          </Typography>
+                        </CardTitle>
+                        <CardContent>
+                          {isLoading ? (
+                            <Skeleton
+                              variant="rectangular"
+                              height={56}
+                              sx={{ borderRadius: 1 }}
+                            />
+                          ) : (
+                            <StyledTextField
+                              fullWidth
+                              label="Company"
+                              value={company}
+                              disabled
+                              InputProps={{
+                                startAdornment: (
+                                  <BusinessIcon color="action" sx={{ mr: 1 }} />
+                                ),
+                              }}
+                              sx={{ mb: 0 }}
+                            />
+                          )}
+                        </CardContent>
+                      </SectionCard>
+                    </Grid>
+                  </Grid>
+
+                  <Box
+                    sx={{ mt: 3, display: "flex", justifyContent: "flex-end" }}
+                  >
+                    <ActionButton
+                      variant="contained"
+                      onClick={handleSave}
+                      color="primary"
+                      disabled={isLoading || isSaving}
+                      startIcon={
+                        isSaving ? <CircularProgress size={20} /> : <SaveIcon />
+                      }
+                    >
+                      {isSaving ? "Saving..." : "Save Changes"}
+                    </ActionButton>
+                  </Box>
+                </ProfileContent>
+              </ProfileCard>
+            </Grid>
           </Grid>
-
-          <Grid item xs={12} md={9}>
-            <Paper sx={{ p: 4, borderRadius: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                Profile Settings
-              </Typography>
-
-              <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                <Avatar
-                  src={photoURL || undefined}
-                  sx={{ width: 72, height: 72, mr: 2 }}
-                />
-                <Button
-                  variant="outlined"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  Change Profile Picture
-                </Button>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoUpload}
-                  hidden
-                />
-              </Box>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="First Name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Last Name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField fullWidth label="Email" value={email} disabled />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Username"
-                    value={username}
-                    disabled
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Company"
-                    value={company}
-                    disabled
-                  />
-                </Grid>
-              </Grid>
-
-              <Box sx={{ mt: 3 }}>
-                <Button
-                  variant="contained"
-                  onClick={handleSave}
-                  sx={{ backgroundColor: "black" }}
-                >
-                  Save Changes
-                </Button>
-              </Box>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      </ProfileContainer>
     </Box>
   );
 };
