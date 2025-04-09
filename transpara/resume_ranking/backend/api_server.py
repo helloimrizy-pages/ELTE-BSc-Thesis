@@ -10,17 +10,12 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Dict, Any
 from firebase_admin import credentials, initialize_app, storage, firestore
+from src.utils.firebase_init import initialize_firebase
 
 app = FastAPI()
 
-cred_path = "firebase-adminsdk.json"
-if not os.path.exists(cred_path):
-    raise FileNotFoundError("Firebase credentials not found.")
+initialize_firebase()
 
-cred = credentials.Certificate(cred_path)
-firebase_app = initialize_app(cred, {
-    'storageBucket': 'transpara-b2266.firebasestorage.app'
-})
 firestore_db = firestore.client()
 bucket = storage.bucket()
 
@@ -97,6 +92,16 @@ def analyze_candidates(request: AnalyzeRequest):
     pipeline_path = os.path.abspath("main.py")
     os.system(f"python {pipeline_path} --job_description {job_desc_path} --candidates_dir {temp_data_dir} --job_id {job_id}")
 
+    output_dir = os.path.join("output", "reports", job_id)
+    return {
+        "ranking_results": load_json_report(os.path.join(output_dir, "ranking_results.json")),
+        "shap_explanations": load_json_report(os.path.join(output_dir, "shap_explanations.json")),
+        "chatgpt_explanations": load_json_report(os.path.join(output_dir, "chatgpt_explanations.json")),
+        "gender_bias_report": load_json_report(os.path.join(output_dir, "gender_bias_analysis.json")),
+    }
+
+@app.get("/api/get-analysis/{job_id}")
+def get_analysis(job_id: str):
     output_dir = os.path.join("output", "reports", job_id)
     return {
         "ranking_results": load_json_report(os.path.join(output_dir, "ranking_results.json")),
