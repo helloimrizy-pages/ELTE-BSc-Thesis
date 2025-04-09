@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import { ApplyPage } from "./pages/ApplyPage";
 import JobPost from "./pages/JobPost";
+import { AnalyticsPage } from "./components/Analytics/AnalyticsPage";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -27,6 +28,8 @@ function App() {
 
         {/* Applicant Job Application Page */}
         <Route path="/apply/:jobId" element={<ApplyPage />} />
+
+        <Route path="/analytics" element={<AnalyticsPage />} />
 
         {/* Redirect unknown paths to home */}
         <Route path="*" element={<Navigate to="/" />} />
