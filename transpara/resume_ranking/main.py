@@ -33,15 +33,15 @@ def main(job_description: str = 'data/job_desc/data.txt', candidates_dir: str = 
     display_ranking(os.path.join(output_folders["reports"], "ranking_results.json"))
     
     print("\nRunning SHAP explanations...")
-    generate_shap_explanations(candidate_files, results["explanations"], output_folders)
+    generate_shap_explanations(candidate_files, results["explanations"], output_folders, job_id)
 
     print("\nGenerating ChatGPT explanations...")
     generate_chatgpt_explanations(
-        results, job_description, candidate_files, candidate_texts, output_folders
+        results, job_description, candidate_files, candidate_texts, output_folders, job_id
     )
 
     print("\nRunning gender bias analysis...")
-    analyze_gender_bias_distribution(candidate_texts, candidate_files, ranked_indices=results["ranked_indices"], output_folders=output_folders)
+    analyze_gender_bias_distribution(candidate_texts, candidate_files, ranked_indices=results["ranked_indices"], output_folders=output_folders, job_id=job_id)
 
 if __name__ == "__main__":
     main()
