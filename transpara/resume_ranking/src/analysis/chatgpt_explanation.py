@@ -23,15 +23,15 @@ def generate_chatgpt_explanations(
     else:
         existing_explanations = {"analysis_id": "chatgpt_" + str(uuid4()), "explanations": []}
     
-    existing_files = {
-        entry.get("candidate_file")
+    existing_ids = {
+        entry.get("id")
         for entry in existing_explanations.get("explanations", [])
-        if entry.get("candidate_file") is not None
+        if entry.get("id") is not None
     }
-    
+
     for rank, idx in enumerate(results["ranked_indices"][:top_n], 1):
         candidate_file = candidate_files[idx]
-        if candidate_file in existing_files:
+        if candidate_id in existing_ids:
             print(f"ChatGPT explanation for {candidate_file} already exists, skipping.")
             continue
 
