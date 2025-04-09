@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Paper,
@@ -15,12 +15,32 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import WorkIcon from "@mui/icons-material/Work";
 import PersonIcon from "@mui/icons-material/Person";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [user] = useAuthState(auth);
+  const [firstName, setFirstName] = useState<string>("");
 
   const isActive = (path: string) => location.pathname === path;
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!user) return;
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setFirstName(data.firstName || "User");
+      }
+    };
+
+    fetchUser();
+  }, [user]);
 
   return (
     <Paper
@@ -34,7 +54,7 @@ const Sidebar: React.FC = () => {
     >
       <Box sx={{ p: 2, bgcolor: "primary.main", color: "white" }}>
         <Typography variant="subtitle1" fontWeight="bold">
-          Dashboard Navigation
+          Hi, {firstName || "User"}!
         </Typography>
       </Box>
       <List component="nav" disablePadding>
@@ -96,11 +116,48 @@ const Sidebar: React.FC = () => {
         </ListItem>
 
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton
+            onClick={() => navigate("/profile")}
+            selected={location.pathname.startsWith("/profile")}
+            sx={{
+              "&.Mui-selected": {
+                bgcolor: "rgba(0, 0, 0, 0.04)",
+                borderLeft: "4px solid",
+                borderColor: "primary.main",
+                "&:hover": {
+                  bgcolor: "rgba(0, 0, 0, 0.08)",
+                },
+              },
+            }}
+          >
             <ListItemIcon>
-              <PersonIcon />
+              <PersonIcon color={isActive("/profile") ? "primary" : "action"} />
             </ListItemIcon>
             <ListItemText primary="My Profile" />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => navigate("/settings")}
+            selected={location.pathname.startsWith("/settings")}
+            sx={{
+              "&.Mui-selected": {
+                bgcolor: "rgba(0, 0, 0, 0.04)",
+                borderLeft: "4px solid",
+                borderColor: "primary.main",
+                "&:hover": {
+                  bgcolor: "rgba(0, 0, 0, 0.08)",
+                },
+              },
+            }}
+          >
+            <ListItemIcon>
+              <SettingsIcon
+                color={isActive("/settings") ? "primary" : "action"}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Settings" />
           </ListItemButton>
         </ListItem>
       </List>
