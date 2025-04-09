@@ -1,3 +1,0 @@
-We are looking for a Data Scientist with experience in Python, NLP, 
-and machine learning. The candidate should be familiar with 
-large language models and deep learning frameworks.

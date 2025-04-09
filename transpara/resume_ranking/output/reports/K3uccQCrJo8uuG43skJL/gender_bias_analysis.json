@@ -1,0 +1,32 @@
+{
+  "analysis_id": "gender_bias_e0bdc9d0-a966-48ee-89c1-784be26d3b8a",
+  "title": "Gender Bias Analysis Report",
+  "understanding": {
+    "description": "The Gender Bias Score measures the imbalance between masculine and feminine terms in the text. A score of 0 indicates perfect balance, while higher scores indicate more gender-specific language.",
+    "calculation": "(|male_terms - female_terms| / total_words) * 100"
+  },
+  "candidate_analysis": [
+    {
+      "id": "11f8ad7c2fcbfcf62c5aa41611ae74b3",
+      "candidate_file": "Alfarizy - Curriculum Vitae (Whale Cloud)",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    }
+  ],
+  "recommendations": [
+    "Use gender-neutral job titles (e.g., 'chairperson' instead of 'chairman/chairwoman').",
+    "Replace gendered pronouns with 'they/them' where possible.",
+    "Focus on skills and achievements rather than personal attributes.",
+    "Review for unconscious bias in language describing leadership, technical skills, etc."
+  ],
+  "summary": {
+    "average_bias": 0.0,
+    "min_bias": 0.0,
+    "max_bias": 0.0,
+    "median_bias": 0.0,
+    "most_neutral_candidate": "Alfarizy - Curriculum Vitae (Whale Cloud)",
+    "least_neutral_candidate": "Alfarizy - Curriculum Vitae (Whale Cloud)"
+  }
+}
