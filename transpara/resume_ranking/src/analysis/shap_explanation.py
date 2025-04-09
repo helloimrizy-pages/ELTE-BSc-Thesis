@@ -6,6 +6,7 @@ import os
 from typing import Dict, List, Tuple, Optional, Any, Union
 from uuid import uuid4
 from src.utils.file_utils import save_to_json, load_from_json, generate_candidate_id
+from src.utils.firebase_utils import get_candidate_name_from_firestore
 
 from config.settings import MODEL_SETTINGS
 
@@ -70,7 +71,8 @@ def generate_model_explanations(
 def generate_shap_explanations(
     candidate_files: List[str],
     explanations: List[Dict[str, Any]],
-    output_folders: Dict[str, str]
+    output_folders: Dict[str, str],
+    job_id: str
 ) -> None:
     """
     Save SHAP explanations to a JSON report, skipping existing ones based on candidate ID.
@@ -90,7 +92,7 @@ def generate_shap_explanations(
     for idx, explanation in enumerate(explanations):
         candidate_file = candidate_files[idx]
         candidate_id = generate_candidate_id(candidate_file)
-        candidate_name = os.path.basename(candidate_file).replace(".pdf", "")
+        candidate_name = get_candidate_name_from_firestore(job_id, os.path.basename(candidate_file))
 
         if candidate_id in existing_shap_ids:
             print(f"SHAP analysis for {candidate_name} already exists, skipping.")
