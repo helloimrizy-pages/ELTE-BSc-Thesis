@@ -27,10 +27,11 @@ import {
   ArrowBack as BackIcon,
   LinkedIn as LinkedInIcon,
   Language as WebsiteIcon,
-  // Facebook as FacebookIcon,
-  // Twitter as TwitterIcon,
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { useDropzone } from "react-dropzone";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -59,29 +60,95 @@ export const ApplyPage: React.FC = () => {
   const { jobId } = useParams();
   const [jobTitle, setJobTitle] = useState("");
 
-  // Personal Information
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [placeOfResidence, setPlaceOfResidence] = useState("");
 
-  // Phone Information
   const [selectedCountry, setSelectedCountry] = useState<CountryOption>(
     countries.find((c) => c.code === "US")!
   );
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  // Social Profiles
   const [linkedinUrl, setLinkedinUrl] = useState("");
-  // const [xUrl, setXUrl] = useState("");
-  // const [facebookUrl, setFacebookUrl] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
 
-  // Additional fields
   const [message, setMessage] = useState("");
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [error, setError] = useState("");
+
+  const [availableStartDate, setAvailableStartDate] = useState<Date | null>(
+    null
+  );
+  const [expectedSalary, setExpectedSalary] = useState("");
+  const [portfolioUrl, setPortfolioUrl] = useState("");
+
+  // 🔁 Load autosaved data on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("job_application_draft");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setFirstName(parsed.firstName || "");
+      setLastName(parsed.lastName || "");
+      setEmail(parsed.email || "");
+      setConfirmEmail(parsed.confirmEmail || "");
+      setPlaceOfResidence(parsed.placeOfResidence || "");
+      setPhoneNumber(parsed.phoneNumber || "");
+      setMessage(parsed.message || "");
+      setLinkedinUrl(parsed.linkedinUrl || "");
+      setWebsiteUrl(parsed.websiteUrl || "");
+      setExpectedSalary(parsed.expectedSalary || "");
+      setPortfolioUrl(parsed.portfolioUrl || "");
+      if (parsed.availableStartDate) {
+        setAvailableStartDate(new Date(parsed.availableStartDate));
+      }
+    }
+  }, []);
+
+  // 💾 Auto-save form progress
+  useEffect(() => {
+    const draft = {
+      firstName,
+      lastName,
+      email,
+      confirmEmail,
+      placeOfResidence,
+      phoneNumber,
+      message,
+      linkedinUrl,
+      websiteUrl,
+      expectedSalary,
+      portfolioUrl,
+      availableStartDate,
+    };
+    localStorage.setItem("job_application_draft", JSON.stringify(draft));
+  }, [
+    firstName,
+    lastName,
+    email,
+    confirmEmail,
+    placeOfResidence,
+    phoneNumber,
+    message,
+    linkedinUrl,
+    websiteUrl,
+    expectedSalary,
+    portfolioUrl,
+    availableStartDate,
+  ]);
+
+  // 🧲 Dropzone for CV upload
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: {
+      "application/pdf": [".pdf"],
+    },
+    onDrop: (acceptedFiles) => {
+      if (acceptedFiles.length > 0) {
+        setCvFile(acceptedFiles[0]);
+      }
+    },
+  });
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -89,6 +156,12 @@ export const ApplyPage: React.FC = () => {
         setError("Invalid job ID");
         return;
       }
+      if (!cvFile) {
+        setError("Please upload your CV before submitting.");
+        setIsSubmitting(false);
+        return;
+      }
+
       try {
         const jobDoc = await getDoc(doc(db, "jobs", jobId));
         if (jobDoc.exists()) {
@@ -157,15 +230,17 @@ export const ApplyPage: React.FC = () => {
         phoneCountry: selectedCountry.code,
         phoneNumber,
         linkedinUrl,
-        // xUrl,
-        // facebookUrl,
         websiteUrl,
         message,
         cvUrl,
+        expectedSalary,
+        portfolioUrl,
+        availableStartDate: availableStartDate
+          ? availableStartDate.toISOString()
+          : null,
         appliedAt: new Date(),
       };
 
-      // Submit application
       await addDoc(
         collection(db, "jobs", jobId, "applications"),
         applicationData
@@ -173,7 +248,6 @@ export const ApplyPage: React.FC = () => {
 
       setSuccessMessage("Application submitted successfully!");
 
-      // Redirect after delay
       setTimeout(() => {
         navigate("/jobs");
       }, 3000);
@@ -244,22 +318,26 @@ export const ApplyPage: React.FC = () => {
                 if (newValue) setSelectedCountry(newValue);
               }}
               getOptionLabel={(option) => `${option.label} (+${option.phone})`}
-              renderOption={(props, option) => (
-                <Box
-                  component="li"
-                  sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                  {...props}
-                >
-                  <img
-                    loading="lazy"
-                    width="20"
-                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                    alt=""
-                  />
-                  {option.label} (+{option.phone})
-                </Box>
-              )}
+              renderOption={(props, option) => {
+                const { key, ...rest } = props;
+                return (
+                  <Box
+                    component="li"
+                    key={key}
+                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                    {...rest}
+                  >
+                    <img
+                      loading="lazy"
+                      width="20"
+                      src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                      srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                      alt=""
+                    />
+                    {option.label} (+{option.phone})
+                  </Box>
+                );
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -294,15 +372,26 @@ export const ApplyPage: React.FC = () => {
       case 2:
         return (
           <Box sx={{ mt: 3 }}>
-            <Button
-              component="label"
-              variant="outlined"
-              startIcon={<UploadIcon />}
-              sx={{ mb: 3, width: "100%", height: "100px" }}
+            {/* Drag & Drop CV */}
+            <Box
+              {...getRootProps()}
+              sx={{
+                border: "2px dashed #ccc",
+                borderRadius: 2,
+                padding: 4,
+                textAlign: "center",
+                mb: 3,
+                cursor: "pointer",
+                backgroundColor: isDragActive ? "#f0f0f0" : "transparent",
+              }}
             >
-              {cvFile ? cvFile.name : "Upload your CV/Resume"}
-              <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-            </Button>
+              <input {...getInputProps()} />
+              <Typography variant="body2">
+                {cvFile
+                  ? `Uploaded: ${cvFile.name}`
+                  : "Drag & drop your CV here, or click to upload"}
+              </Typography>
+            </Box>
 
             <TextField
               label="Message to Hiring Manager"
@@ -311,13 +400,13 @@ export const ApplyPage: React.FC = () => {
               multiline
               rows={4}
               fullWidth
-              required
               sx={{ mb: 3 }}
             />
 
             <Typography variant="subtitle1" sx={{ mb: 2 }}>
-              Social Profiles (Optional)
+              Social Profiles
             </Typography>
+
             <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
               <TextField
                 label="LinkedIn"
@@ -340,6 +429,36 @@ export const ApplyPage: React.FC = () => {
                 }}
               />
             </Box>
+
+            <TextField
+              label="Portfolio / GitHub (optional)"
+              value={portfolioUrl}
+              onChange={(e) => setPortfolioUrl(e.target.value)}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+
+            <TextField
+              label="Expected Salary (€)"
+              type="number"
+              value={expectedSalary}
+              onChange={(e) => setExpectedSalary(e.target.value)}
+              fullWidth
+              required
+              sx={{ mb: 2 }}
+            />
+
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Available Start Date"
+                value={availableStartDate}
+                onChange={(date) => setAvailableStartDate(date)}
+                slotProps={{
+                  textField: { fullWidth: true },
+                  popper: { disablePortal: true },
+                }}
+              />
+            </LocalizationProvider>
           </Box>
         );
 
@@ -373,13 +492,63 @@ export const ApplyPage: React.FC = () => {
                 <Divider />
                 <Box>
                   <Typography variant="subtitle2" color="text.secondary">
-                    Attachments
+                    CV Attachment
                   </Typography>
                   <Chip
                     label={cvFile?.name || "No CV uploaded"}
                     variant="outlined"
                     size="small"
                   />
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    marginTop={2}
+                  >
+                    Message to Hiring Manager
+                  </Typography>
+                  <Typography>{message}</Typography>
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    marginTop={2}
+                  >
+                    LinkedIn
+                  </Typography>
+                  <Typography>{linkedinUrl ? linkedinUrl : "-"}</Typography>
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    marginTop={2}
+                  >
+                    Website
+                  </Typography>
+                  <Typography>{websiteUrl ? websiteUrl : "-"}</Typography>
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    marginTop={2}
+                  >
+                    Portofolio / Github
+                  </Typography>
+                  <Typography>{portfolioUrl ? portfolioUrl : "-"}</Typography>
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    marginTop={2}
+                  >
+                    Expected Salary (€)
+                  </Typography>
+                  <Typography>{expectedSalary}</Typography>
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    marginTop={2}
+                  >
+                    Available Start Date
+                  </Typography>
+                  <Typography>
+                    {availableStartDate?.toLocaleDateString()}
+                  </Typography>
                 </Box>
               </Box>
             </Paper>
