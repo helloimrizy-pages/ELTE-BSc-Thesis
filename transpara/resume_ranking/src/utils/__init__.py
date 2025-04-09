@@ -15,6 +15,14 @@ from src.utils.io_utils import (
     load_candidate_pdfs,
 )
 
+from src.utils.firebase_utils import (
+    get_candidate_name_from_firestore,
+)
+
+from src.utils.firebase_init import (
+    initialize_firebase,
+)
+
 __all__ = [
     'ensure_dir_exists',
     'save_to_json',
@@ -23,5 +31,7 @@ __all__ = [
     'preprocess_text',
     'tokenize',
     'load_job_description',
-    'load_candidate_pdfs'
+    'load_candidate_pdfs',
+    'get_candidate_name_from_firestore',
+    'initialize_firebase'
 ]
