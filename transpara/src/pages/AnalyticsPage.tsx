@@ -22,7 +22,7 @@ import {
 } from "recharts";
 import axios from "axios";
 import { collection, getDocs } from "firebase/firestore";
-import { db, auth } from "../../firebase";
+import { db, auth } from "../firebase";
 import { Radar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -33,8 +33,8 @@ import {
   Tooltip as ChartTooltip,
   Legend,
 } from "chart.js";
-import { TransparaAppBar } from "../AppBar/TransparaAppBar";
-import Sidebar from "../AppBar/Sidebar";
+import { TransparaAppBar } from "../components/AppBar/TransparaAppBar";
+import Sidebar from "../components/AppBar/Sidebar";
 import { signOut } from "firebase/auth";
 
 ChartJS.register(
@@ -138,6 +138,10 @@ export const AnalyticsPage = () => {
     }
   };
 
+  const filteredData = data.filter((candidate) =>
+    candidate.candidate_file.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   useEffect(() => {
     const tryFetchCachedAnalysis = async () => {
       if (!selectedJobId) return;
@@ -240,14 +244,19 @@ export const AnalyticsPage = () => {
                     <Typography variant="subtitle1">
                       Top Candidates by Similarity Score
                     </Typography>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={data}>
-                        <XAxis dataKey="candidate_file" />
-                        <YAxis domain={[0, 1]} />
-                        <Tooltip />
-                        <Bar dataKey="similarity_score" fill="#8884d8" />
-                      </BarChart>
-                    </ResponsiveContainer>
+                    <Box sx={{ height: 300, mt: 3 }}>
+                      <Typography variant="subtitle1">
+                        Top Candidates by Similarity Score
+                      </Typography>
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={filteredData}>
+                          <XAxis dataKey="candidate_file" />
+                          <YAxis domain={[0, 1]} />
+                          <Tooltip />
+                          <Bar dataKey="similarity_score" fill="#8884d8" />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </Box>
                   </Box>
 
                   {data.length > 0 && (
