@@ -107,9 +107,22 @@ const Sidebar: React.FC = () => {
         <Divider />
 
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton
+            onClick={() => navigate("/jobs")}
+            selected={location.pathname.startsWith("/jobs")}
+            sx={{
+              "&.Mui-selected": {
+                bgcolor: "rgba(0, 0, 0, 0.04)",
+                borderLeft: "4px solid",
+                borderColor: "primary.main",
+                "&:hover": {
+                  bgcolor: "rgba(0, 0, 0, 0.08)",
+                },
+              },
+            }}
+          >
             <ListItemIcon>
-              <WorkIcon />
+              <WorkIcon color={isActive("/jobs") ? "primary" : "action"} />
             </ListItemIcon>
             <ListItemText primary="Job Postings" />
           </ListItemButton>
