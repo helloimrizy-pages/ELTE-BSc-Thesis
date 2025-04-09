@@ -1,6 +1,4 @@
 import "./setupGlobal";
-import React from "react";
-import AuthPage from "./components/Auth/AuthPage";
 import Dashboard from "./components/Dashboard/Dashboard";
 import { auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -10,11 +8,12 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { ApplyPage } from "./pages/ApplyPage";
-import JobPost from "./pages/JobPost";
-import { AnalyticsPage } from "./components/Analytics/AnalyticsPage";
+import { ApplicationPage } from "./pages/ApplicationPage";
+import { PublishedJobPostingPage } from "./pages/PublishedJobPostingPage";
+import { AnalyticsPage } from "./pages/AnalyticsPage";
 import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
+import JobPostings from "./pages/JobPostingPage";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -23,13 +22,14 @@ function App() {
     <Router>
       <Routes>
         {/* Home or Auth */}
-        <Route path="/" element={user ? <Dashboard /> : <AuthPage />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/jobs" element={<JobPostings />} />
 
         {/* Job Posting Page */}
-        <Route path="/job/:jobId" element={<JobPost />} />
+        <Route path="/job/:jobId" element={<PublishedJobPostingPage />} />
 
         {/* Applicant Application Page */}
-        <Route path="/apply/:jobId" element={<ApplyPage />} />
+        <Route path="/apply/:jobId" element={<ApplicationPage />} />
 
         {/* Analytics */}
         <Route path="/analytics" element={<AnalyticsPage />} />
