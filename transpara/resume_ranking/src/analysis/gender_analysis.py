@@ -7,6 +7,7 @@ from uuid import uuid4
 from collections import Counter
 from typing import Dict, List, Optional, Any
 from src.utils.file_utils import save_to_json, load_from_json, generate_candidate_id
+from src.utils.firebase_utils import get_candidate_name_from_firestore
 
 try:
     nlp = spacy.load("en_core_web_sm")
@@ -37,13 +38,14 @@ def generate_gender_bias_report(
     candidate_texts: List[str], 
     candidate_files: List[str], 
     bias_scores: List[float],
+    job_id: str,
     output_folders: Optional[Dict[str, str]] = None
 ) -> str:
     new_entries = []
     for text, file, score in zip(candidate_texts, candidate_files, bias_scores):
         candidate_id = generate_candidate_id(file)
         candidate_file = os.path.basename(file)
-        candidate_name = os.path.basename(candidate_file).replace('.pdf', '')
+        candidate_name = get_candidate_name_from_firestore(job_id, os.path.basename(candidate_file))
         gendered_terms = _get_gendered_terms(text)
         male_terms = gendered_terms['male_terms']
         female_terms = gendered_terms['female_terms']
@@ -64,11 +66,11 @@ def generate_gender_bias_report(
             "recommendation": recommendation
         }
         new_entries.append(candidate_report)
-    
+
     report_path = None
     if output_folders:
         report_path = os.path.join(output_folders["reports"], "gender_bias_analysis.json")
-    
+
     if report_path and os.path.exists(report_path):
         existing_report = load_from_json(report_path)
         if "analysis_id" not in existing_report:
@@ -93,15 +95,14 @@ def generate_gender_bias_report(
                 "Review for unconscious bias in language describing leadership, technical skills, etc."
             ]
         }
-    
+
     existing_ids = {entry["id"] for entry in existing_report.get("candidate_analysis", [])}
     for entry in new_entries:
         if entry["id"] in existing_ids:
             print(f"Gender bias analysis for {entry['id']} already exists, skipping.")
         else:
             existing_report["candidate_analysis"].append(entry)
-    
-    # Update summary from all candidate entries
+
     if existing_report["candidate_analysis"]:
         scores = [entry["gender_bias_score"] for entry in existing_report["candidate_analysis"]]
         summary = {
@@ -115,16 +116,17 @@ def generate_gender_bias_report(
         existing_report["summary"] = summary
     else:
         existing_report["summary"] = {}
-    
+
     if report_path:
         save_to_json(existing_report, report_path)
         print(f"\nGender bias analysis generated and saved to {report_path}.")
-    
+
     return json.dumps(existing_report, indent=2)
-    
+
 def analyze_gender_bias_distribution(
     candidate_texts: List[str],
     candidate_files: List[str],
+    job_id: Optional[str] = None,
     ranked_indices: Optional[np.ndarray] = None,
     output_folders: Optional[Dict[str, str]] = None
 ) -> Dict[str, Any]:
@@ -147,7 +149,7 @@ def analyze_gender_bias_distribution(
         "least_neutral_candidate": candidate_names[np.argmax(bias_scores)]
     }
 
-    report = generate_gender_bias_report(candidate_texts, candidate_files, bias_scores, output_folders)
+    report = generate_gender_bias_report(candidate_texts, candidate_files, bias_scores, job_id, output_folders)
 
     return {
         "bias_data": gender_data,
