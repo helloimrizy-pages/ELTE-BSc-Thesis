@@ -115,7 +115,6 @@ export const EditJobDialog: React.FC<EditJobDialogProps> = ({
                   "inline",
                   "blockType",
                   "fontSize",
-                  "list",
                   "textAlign",
                   "colorPicker",
                   "link",
