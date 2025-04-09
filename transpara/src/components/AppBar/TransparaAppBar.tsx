@@ -11,25 +11,42 @@ import {
   InputBase,
   styled,
   alpha,
+  Divider,
+  ListItemText,
+  ListItemIcon,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { ProfileMenu } from "./ProfileMenu";
 import logo from "../../assets/logo.png";
-
-const NOTIFICATION_COUNTS = {
-  MESSAGES: 4,
-  NOTIFICATIONS: 17,
-} as const;
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  updateDoc,
+  doc,
+  Timestamp,
+} from "firebase/firestore";
+import { formatDistanceToNow } from "date-fns";
+import blankProfile from "../../assets/blank-profile.svg";
 
 interface AppBarProps {
   onLogout: () => Promise<void>;
   onSearch: (value: string) => void;
+}
+
+interface NotificationItem {
+  id: string;
+  candidateName: string;
+  jobTitle: string;
+  timestamp: Timestamp;
+  read: boolean;
+  jobId: string;
+  type: string;
 }
 
 const Search = styled("div")(({ theme }) => ({
@@ -82,83 +99,51 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
 }) => {
   const [user] = useAuthState(auth);
   const [searchInput, setSearchInput] = useState("");
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [notificationAnchorEl, setNotificationAnchorEl] =
+    useState<null | HTMLElement>(null);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+
+  const isMenuOpen = Boolean(anchorEl);
 
   useEffect(() => {
     const delay = setTimeout(() => {
       onSearch(searchInput);
     }, 300);
-
     return () => clearTimeout(delay);
   }, [searchInput]);
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    useState<null | HTMLElement>(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  useEffect(() => {
+    if (!user) return;
+    const q = query(
+      collection(db, "notifications"),
+      where("userId", "==", user.uid),
+      orderBy("timestamp", "desc")
+    );
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const notifs: NotificationItem[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<NotificationItem, "id">),
+      }));
+      setNotifications(notifs);
+    });
+    return unsubscribe;
+  }, [user]);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
+  const handleMenuClose = () => setAnchorEl(null);
+  const handleNotificationOpen = (e: React.MouseEvent<HTMLElement>) =>
+    setNotificationAnchorEl(e.currentTarget);
+  const handleNotificationClose = () => setNotificationAnchorEl(null);
+
+  const markAsRead = async (id: string) => {
+    await updateDoc(doc(db, "notifications", id), { read: true });
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id="mobile-menu"
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton size="large" aria-label="show new mails" color="inherit">
-          <Badge badgeContent={NOTIFICATION_COUNTS.MESSAGES} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={NOTIFICATION_COUNTS.NOTIFICATIONS} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -171,7 +156,6 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          {}
           <Box
             sx={{
               display: "flex",
@@ -198,7 +182,6 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
             </Typography>
           </Box>
 
-          {}
           <Box
             sx={{ flex: 1, display: "flex", justifyContent: "center", px: 2 }}
           >
@@ -218,91 +201,89 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 inputProps={{ "aria-label": "search" }}
-                sx={{
-                  width: "100%",
-                  input: {
-                    color: "black",
-                    "&::placeholder": {
-                      color: "black",
-                      opacity: 1,
-                    },
-                  },
-                }}
               />
             </Search>
           </Box>
 
-          {}
-          <Box
-            sx={{
-              display: "flex",
-              gap: 1,
-              minWidth: "200px",
-              justifyContent: "flex-end",
-              marginRight: "30px",
-            }}
-          >
-            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-              <IconButton size="large" sx={{ color: "black" }}>
-                <Badge badgeContent={2} color="error">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M4 4h2v2h14v-2h2v2h1v16h-20v-16h1v-2zm17 4h-16v12h16v-12zm-5 4h-6v-2h6v2z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </Badge>
-              </IconButton>
-              <IconButton size="large" sx={{ color: "black" }}>
-                <NotificationsIcon />
-              </IconButton>
-              <IconButton
-                size="large"
-                edge="end"
-                onClick={handleProfileMenuOpen}
-                sx={{
-                  padding: 0,
-                  "& img": {
-                    borderRadius: "50%",
-                    width: "48px",
-                    height: "48px",
-                    objectFit: "cover",
-                    border: "2px solid #ccc",
-                  },
-                }}
-              >
-                <img
-                  src={user?.photoURL || "https://via.placeholder.com/32"}
-                  alt="Profile"
-                />
-              </IconButton>
-            </Box>
+          <Box sx={{ display: "flex", alignItems: "center", mr: 3 }}>
+            <IconButton color="inherit" onClick={handleNotificationOpen}>
+              <Badge badgeContent={unreadCount} color="error">
+                <NotificationsIcon sx={{ color: "black" }} />
+              </Badge>
+            </IconButton>
 
-            {}
-            <Box sx={{ display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="show more"
-                aria-controls="mobile-menu"
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                sx={{ color: "black" }}
-              >
-                <MoreIcon />
-              </IconButton>
-            </Box>
+            <IconButton
+              edge="end"
+              onClick={handleProfileMenuOpen}
+              sx={{
+                padding: 0,
+                ml: 2,
+                "& img": {
+                  borderRadius: "50%",
+                  width: 42,
+                  height: 42,
+                  objectFit: "cover",
+                  border: "2px solid #ccc",
+                },
+              }}
+            >
+              <img src={user?.photoURL || blankProfile} alt="Profile" />
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
 
       {}
-      {renderMobileMenu}
+      <Menu
+        anchorEl={notificationAnchorEl}
+        open={Boolean(notificationAnchorEl)}
+        onClose={handleNotificationClose}
+        PaperProps={{ style: { width: "320px" } }}
+      >
+        <Typography variant="subtitle2" sx={{ px: 2, py: 1 }}>
+          Notifications
+        </Typography>
+        <Divider />
+        {notifications.length === 0 && (
+          <MenuItem disabled>No notifications</MenuItem>
+        )}
+        {notifications.map((notif) => (
+          <MenuItem
+            key={notif.id}
+            onClick={() => {
+              markAsRead(notif.id);
+              handleNotificationClose();
+            }}
+            sx={{ backgroundColor: notif.read ? "white" : "#f5f5f5" }}
+          >
+            <ListItemIcon>
+              <NotificationsIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography variant="body1" component="span">
+                  {`${notif.candidateName} applied for ${notif.jobTitle}`}
+                </Typography>
+              }
+              secondary={
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  component="span"
+                >
+                  {notif.timestamp?.toDate()
+                    ? formatDistanceToNow(notif.timestamp.toDate(), {
+                        addSuffix: true,
+                      })
+                    : "Just now"}
+                </Typography>
+              }
+            />
+          </MenuItem>
+        ))}
+      </Menu>
+
+      {}
       <ProfileMenu
         anchorEl={anchorEl}
         isOpen={isMenuOpen}
