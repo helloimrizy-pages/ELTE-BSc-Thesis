@@ -13,6 +13,8 @@ import {
 import { ApplyPage } from "./pages/ApplyPage";
 import JobPost from "./pages/JobPost";
 import { AnalyticsPage } from "./components/Analytics/AnalyticsPage";
+import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -20,18 +22,28 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* If user is logged in, go to Dashboard, otherwise show Auth Page */}
+        {/* Home or Auth */}
         <Route path="/" element={user ? <Dashboard /> : <AuthPage />} />
 
         {/* Job Posting Page */}
         <Route path="/job/:jobId" element={<JobPost />} />
 
-        {/* Applicant Job Application Page */}
+        {/* Applicant Application Page */}
         <Route path="/apply/:jobId" element={<ApplyPage />} />
 
+        {/* Analytics */}
         <Route path="/analytics" element={<AnalyticsPage />} />
 
-        {/* Redirect unknown paths to home */}
+        {/* Profile and Settings */}
+        <Route
+          path="/profile"
+          element={user ? <ProfilePage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/settings"
+          element={user ? <SettingsPage /> : <Navigate to="/" />}
+        />
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
