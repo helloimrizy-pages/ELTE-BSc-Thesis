@@ -6,15 +6,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      // Proxy API requests to your FastAPI backend
-      "/analyze": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/analysis": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
+      "/api": "http://localhost:8000",
     },
   },
 });
