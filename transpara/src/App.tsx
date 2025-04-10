@@ -1,5 +1,6 @@
 import "./setupGlobal";
 import Dashboard from "./components/Dashboard/Dashboard";
+import AuthPage from "./components/Auth/AuthPage";
 import { auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
@@ -8,6 +9,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+
 import { ApplicationPage } from "./pages/ApplicationPage";
 import { PublishedJobPostingPage } from "./pages/PublishedJobPostingPage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
@@ -16,25 +18,30 @@ import SettingsPage from "./pages/SettingsPage";
 import JobPostings from "./pages/JobPostingPage";
 
 function App() {
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
+
+  if (loading) return null;
 
   return (
     <Router>
       <Routes>
-        {/* Home or Auth */}
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/jobs" element={<JobPostings />} />
+        <Route
+          path="/"
+          element={user ? <Navigate to="/dashboard" /> : <AuthPage />}
+        />
 
-        {/* Job Posting Page */}
-        <Route path="/job/:jobId" element={<PublishedJobPostingPage />} />
-
-        {/* Applicant Application Page */}
-        <Route path="/apply/:jobId" element={<ApplicationPage />} />
-
-        {/* Analytics */}
-        <Route path="/analytics" element={<AnalyticsPage />} />
-
-        {/* Profile and Settings */}
+        <Route
+          path="/dashboard"
+          element={user ? <Dashboard /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/jobs"
+          element={user ? <JobPostings /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/analytics"
+          element={user ? <AnalyticsPage /> : <Navigate to="/" />}
+        />
         <Route
           path="/profile"
           element={user ? <ProfilePage /> : <Navigate to="/" />}
@@ -43,6 +50,9 @@ function App() {
           path="/settings"
           element={user ? <SettingsPage /> : <Navigate to="/" />}
         />
+
+        <Route path="/apply/:jobId" element={<ApplicationPage />} />
+        <Route path="/job/:jobId" element={<PublishedJobPostingPage />} />
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
