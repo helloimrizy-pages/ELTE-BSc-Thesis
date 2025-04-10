@@ -776,6 +776,84 @@ const JobPostingPage: React.FC = () => {
                 </Box>
               </StatsCard>
             </Grid>
+
+            <Grid item xs={12} md={6}>
+              <DashboardCard>
+                <CardContent sx={{ height: "100%", p: 3 }}>
+                  <SectionTitle variant="h6">
+                    <LocationOnIcon /> Location Distribution
+                  </SectionTitle>
+                  <Box sx={{ height: 250, width: "100%" }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={analyticsData.locationBreakdown}
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={80}
+                          dataKey="value"
+                          label={({ name, percent }) =>
+                            `${name} ${(percent * 100).toFixed(0)}%`
+                          }
+                        >
+                          {analyticsData.locationBreakdown.map(
+                            (entry, index) => (
+                              <Cell
+                                key={`loc-cell-${index}`}
+                                fill={COLORS[index % COLORS.length]}
+                              />
+                            )
+                          )}
+                        </Pie>
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </Box>
+                </CardContent>
+              </DashboardCard>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <DashboardCard>
+                <CardContent sx={{ height: "100%", p: 3 }}>
+                  <SectionTitle variant="h6">
+                    <AccessTimeIcon /> Job Type Distribution
+                  </SectionTitle>
+                  <Box sx={{ height: 250, width: "100%" }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={jobs.reduce((acc, job) => {
+                            const type = job.type || "Unknown";
+                            const existing = acc.find(
+                              (item) => item.name === type
+                            );
+                            if (existing) existing.value += 1;
+                            else acc.push({ name: type, value: 1 });
+                            return acc;
+                          }, [] as { name: string; value: number }[])}
+                          cx="50%"
+                          cy="50%"
+                          outerRadius={80}
+                          dataKey="value"
+                          label={({ name, percent }) =>
+                            `${name} ${(percent * 100).toFixed(0)}%`
+                          }
+                        >
+                          {jobs.map((_, index) => (
+                            <Cell
+                              key={`type-cell-${index}`}
+                              fill={COLORS[index % COLORS.length]}
+                            />
+                          ))}
+                        </Pie>
+                        <Legend />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </Box>
+                </CardContent>
+              </DashboardCard>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
