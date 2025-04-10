@@ -29,6 +29,5 @@ def load_from_json(file_path: str) -> Any:
     with open(file_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
-def generate_candidate_id(file_path: str) -> str:
-    basename = os.path.basename(file_path)
-    return hashlib.md5(basename.encode()).hexdigest()
+def extract_user_id(file_name: str) -> str:
+    return os.path.basename(file_name).split("_")[0]
