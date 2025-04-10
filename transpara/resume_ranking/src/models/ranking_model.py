@@ -9,7 +9,8 @@ from src.models.linguistic_debiasing import mitigate_gender_bias
 from src.models.embedding_debiasing import compute_gender_subspace
 from src.analysis.shap_explanation import generate_model_explanations
 from api.openai_client import initialize_openai_client
-from src.utils.file_utils import save_to_json, load_from_json, generate_candidate_id
+from src.utils.file_utils import save_to_json, load_from_json, extract_user_id
+from src.utils.firebase_utils import get_candidate_id_from_firestore, get_candidate_name_from_firestore
 
 def load_ranking_model(model_path: str) -> any:
     if not os.path.exists(model_path):
@@ -30,6 +31,7 @@ def rank_candidates(
     tokenizer,
     model,
     output_folders: dict = None,
+    job_id: str = None,
 ) -> dict:
 
     job_description_text_mitigated = mitigate_gender_bias(job_description_text)
@@ -68,8 +70,10 @@ def rank_candidates(
 
     for rank, idx in enumerate(ranked_indices, start=1):
         candidate_file = candidate_files[idx]
-        candidate_id = generate_candidate_id(candidate_file)
-        candidate_name = os.path.basename(candidate_file).replace('.pdf', '')
+        file_name = os.path.basename(candidate_file)
+        user_id = extract_user_id(file_name)
+        candidate_id = get_candidate_id_from_firestore(job_id, user_id)
+        candidate_name = get_candidate_name_from_firestore(job_id, user_id)
 
         if candidate_id in existing_ids:
             print(f"Ranking result for {candidate_name} already exists, skipping.")
