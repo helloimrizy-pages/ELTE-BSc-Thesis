@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, doc, addDoc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { isValidFirestoreId } from "../utils/validation";
 import { CountryOption } from "../types/country";
@@ -54,6 +54,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useDropzone } from "react-dropzone";
 import { format } from "date-fns";
+import { setDoc } from "firebase/firestore";
 
 const PageContainer = styled(Box)(({ theme }) => ({
   backgroundColor: "#fafafa",
@@ -423,18 +424,27 @@ export const ApplicationPage: React.FC = () => {
 
     setConfirmDialogOpen(false);
     setIsSubmitting(true);
-    let cvUrl = "";
 
     try {
+      const applicationsCollection = collection(
+        db,
+        "jobs",
+        jobId,
+        "applications"
+      );
+      const applicationRef = doc(applicationsCollection);
+      const candidateID = applicationRef.id;
+
       const storage = getStorage();
       const cvRef = ref(
         storage,
-        `applications/${jobId}/${Date.now()}_${cvFile.name}`
+        `applications/${jobId}/${candidateID}_${cvFile.name}`
       );
       const uploadSnapshot = await uploadBytes(cvRef, cvFile);
-      cvUrl = await getDownloadURL(uploadSnapshot.ref);
+      const cvUrl = await getDownloadURL(uploadSnapshot.ref);
 
       const applicationData = {
+        candidateID,
         jobId,
         jobTitle,
         firstName,
@@ -456,10 +466,7 @@ export const ApplicationPage: React.FC = () => {
         appliedAt: new Date(),
       };
 
-      await addDoc(
-        collection(db, "jobs", jobId, "applications"),
-        applicationData
-      );
+      await setDoc(applicationRef, applicationData);
 
       setSuccessMessage("Application submitted successfully!");
       clearDraft();
