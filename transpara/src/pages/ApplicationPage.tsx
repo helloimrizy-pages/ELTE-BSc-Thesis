@@ -55,6 +55,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useDropzone } from "react-dropzone";
 import { format } from "date-fns";
 import { setDoc } from "firebase/firestore";
+import { BusinessCenter as BusinessCenterIcon } from "@mui/icons-material";
 
 const PageContainer = styled(Box)(({ theme }) => ({
   backgroundColor: "#fafafa",
@@ -238,6 +239,7 @@ export const ApplicationPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
   const [placeOfResidence, setPlaceOfResidence] = useState("");
+  const [isJobOpen, setIsJobOpen] = useState<boolean | null>(null);
 
   const [selectedCountry, setSelectedCountry] = useState<CountryOption>(
     countries.find((c) => c.code === "US")!
@@ -272,6 +274,7 @@ export const ApplicationPage: React.FC = () => {
         if (jobDoc.exists()) {
           const jobData = jobDoc.data();
           setJobTitle(jobData.title);
+          setIsJobOpen(jobData.isOpen !== false);
         } else {
           setError("Job not found");
         }
@@ -481,6 +484,39 @@ export const ApplicationPage: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+
+  if (isJobOpen === false) {
+    return (
+      <PageContainer>
+        <Container maxWidth="md" sx={{ pt: 4 }}>
+          <ApplicationCard elevation={0}>
+            <Box sx={{ p: 4, textAlign: "center" }}>
+              <Box
+                sx={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: "50%",
+                  bgcolor: "warning.light",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto 24px",
+                }}
+              >
+                <BusinessCenterIcon sx={{ fontSize: 40, color: "white" }} />
+              </Box>
+              <Typography variant="h5" gutterBottom>
+                Job Application Closed
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+                This job is no longer accepting applications.
+              </Typography>
+            </Box>
+          </ApplicationCard>
+        </Container>
+      </PageContainer>
+    );
+  }
 
   const renderStepContent = (step: number) => {
     switch (step) {
