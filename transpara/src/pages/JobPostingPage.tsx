@@ -53,7 +53,6 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CategoryIcon from "@mui/icons-material/Category";
 import PersonIcon from "@mui/icons-material/Person";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import ShareIcon from "@mui/icons-material/Share";
 import LinkIcon from "@mui/icons-material/Link";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
@@ -62,6 +61,7 @@ import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import { TransparaAppBar } from "../components/AppBar/TransparaAppBar";
 import Sidebar from "../components/AppBar/Sidebar";
 import { signOut } from "firebase/auth";
+import { updateDoc } from "firebase/firestore";
 
 import {
   BarChart,
@@ -80,6 +80,8 @@ import {
 import { NewJobDialog } from "../components/Dashboard/NewJob";
 import { EditJobDialog } from "../components/Dashboard/EditJobDialog";
 import { Snackbar } from "@mui/material";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 const PageContainer = styled(Box)(({ theme }) => ({
   backgroundColor: "#fafafa",
@@ -207,6 +209,7 @@ interface Job {
   category: string;
   description: string;
   ownerUid: string;
+  isOpen?: boolean;
 }
 
 const COLORS = [
@@ -246,6 +249,8 @@ const JobPostingPage: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [closedJobsCount, setClosedJobsCount] = useState(0);
+  const [activeJobsCount, setActiveJobsCount] = useState(0);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -285,6 +290,7 @@ const JobPostingPage: React.FC = () => {
           const jobList: JobWithStats[] = [];
           let totalViews = 0;
           let totalApplications = 0;
+          let closedCount = 0;
           const categoryCounts: Record<string, number> = {};
           const locationCounts: Record<string, number> = {};
           const applicationDates: Record<string, number> = {};
@@ -309,6 +315,10 @@ const JobPostingPage: React.FC = () => {
                 (categoryCounts[jobData.category] || 0) + 1;
             }
 
+            if (jobData.isOpen === false) {
+              closedCount += 1;
+            }
+
             if (jobData.location) {
               locationCounts[jobData.location] =
                 (locationCounts[jobData.location] || 0) + 1;
@@ -331,7 +341,9 @@ const JobPostingPage: React.FC = () => {
               views: viewsCount,
             });
           }
-
+          const activeCount = jobList.filter((j) => j.isOpen !== false).length;
+          setActiveJobsCount(activeCount);
+          setClosedJobsCount(closedCount);
           const categoryBreakdown = Object.entries(categoryCounts).map(
             ([name, value]) => ({ name, value })
           );
@@ -580,30 +592,12 @@ const JobPostingPage: React.FC = () => {
                     fontSize="small"
                   />
                 </Badge>
-                <Typography variant="body2" color="text.secondary">
-                  Applicants
-                </Typography>
-              </Box>
-
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Badge
-                  badgeContent={job.views || 0}
-                  color="secondary"
-                  sx={{
-                    "& .MuiBadge-badge": {
-                      fontSize: 10,
-                      height: 16,
-                      minWidth: 16,
-                    },
-                  }}
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  marginLeft={2}
                 >
-                  <VisibilityIcon
-                    sx={{ color: "text.secondary", mr: 0.5 }}
-                    fontSize="small"
-                  />
-                </Badge>
-                <Typography variant="body2" color="text.secondary">
-                  Views
+                  Applicants
                 </Typography>
               </Box>
             </Box>
@@ -742,7 +736,7 @@ const JobPostingPage: React.FC = () => {
                 </IconAvatar>
                 <Box sx={{ ml: 2 }}>
                   <Typography variant="h4" fontWeight="600">
-                    {jobs.length}
+                    {activeJobsCount}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     Active Jobs
@@ -770,14 +764,14 @@ const JobPostingPage: React.FC = () => {
             <Grid item xs={12} sm={4}>
               <StatsCard>
                 <IconAvatar>
-                  <VisibilityIcon />
+                  <BusinessCenterIcon />
                 </IconAvatar>
                 <Box sx={{ ml: 2 }}>
                   <Typography variant="h4" fontWeight="600">
-                    {analyticsData.totalViews}
+                    {closedJobsCount}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Total Views
+                    Closed Jobs
                   </Typography>
                 </Box>
               </StatsCard>
@@ -875,6 +869,7 @@ const JobPostingPage: React.FC = () => {
                   >
                     <EditIcon fontSize="small" sx={{ mr: 1 }} /> Edit
                   </MenuItem>
+
                   <MenuItem
                     onClick={() => {
                       if (menuJob) handleCopyLink(menuJob);
@@ -884,6 +879,50 @@ const JobPostingPage: React.FC = () => {
                     <ContentCopyIcon fontSize="small" sx={{ mr: 1 }} /> Copy
                     Link
                   </MenuItem>
+
+                  {(() => {
+                    const job = jobs.find((j) => j.id === menuJob);
+                    if (!job) return null;
+
+                    const isOpen = job.isOpen ?? true; // fallback to true if undefined
+
+                    return (
+                      <MenuItem
+                        onClick={async () => {
+                          try {
+                            await updateDoc(doc(db, "jobs", job.id), {
+                              isOpen: !isOpen,
+                            });
+                            setSnackbarMessage(
+                              `Job ${isOpen ? "closed" : "opened"} successfully`
+                            );
+                            setSnackbarOpen(true);
+                          } catch (error) {
+                            console.error(
+                              "Error updating job open/close status:",
+                              error
+                            );
+                            setSnackbarMessage("Failed to update job status");
+                            setSnackbarOpen(true);
+                          }
+                          handleMenuClose();
+                        }}
+                      >
+                        {isOpen ? (
+                          <>
+                            <LockIcon fontSize="small" sx={{ mr: 1 }} /> Close
+                            Job
+                          </>
+                        ) : (
+                          <>
+                            <LockOpenIcon fontSize="small" sx={{ mr: 1 }} />{" "}
+                            Open Job
+                          </>
+                        )}
+                      </MenuItem>
+                    );
+                  })()}
+
                   <Divider />
                   <MenuItem
                     onClick={() => {
