@@ -6,8 +6,8 @@ import numpy as np
 from uuid import uuid4
 from collections import Counter
 from typing import Dict, List, Optional, Any
-from src.utils.file_utils import save_to_json, load_from_json, generate_candidate_id
-from src.utils.firebase_utils import get_candidate_name_from_firestore
+from src.utils.file_utils import save_to_json, load_from_json, extract_user_id
+from src.utils.firebase_utils import get_candidate_name_from_firestore, get_candidate_id_from_firestore
 
 try:
     nlp = spacy.load("en_core_web_sm")
@@ -43,20 +43,23 @@ def generate_gender_bias_report(
 ) -> str:
     new_entries = []
     for text, file, score in zip(candidate_texts, candidate_files, bias_scores):
-        candidate_id = generate_candidate_id(file)
-        candidate_file = os.path.basename(file)
-        candidate_name = get_candidate_name_from_firestore(job_id, os.path.basename(candidate_file))
+        user_id = extract_user_id(file)
+        candidate_id = get_candidate_id_from_firestore(job_id, user_id)
+        candidate_name = get_candidate_name_from_firestore(job_id, user_id)
+
         gendered_terms = _get_gendered_terms(text)
         male_terms = gendered_terms['male_terms']
         female_terms = gendered_terms['female_terms']
         male_freq = _count_term_frequencies(male_terms)
         female_freq = _count_term_frequencies(female_terms)
+
         if score < LOW_BIAS_THRESHOLD:
             recommendation = "This resume uses gender-neutral language effectively."
         elif score < MODERATE_BIAS_THRESHOLD:
             recommendation = "This resume has some gender-specific language, but is generally balanced."
         else:
             recommendation = "This resume shows significant gender imbalance in language usage."
+
         candidate_report = {
             "id": candidate_id,
             "candidate_file": candidate_name,
@@ -133,11 +136,18 @@ def analyze_gender_bias_distribution(
     from src.models.linguistic_debiasing import compute_gender_bias_score
 
     bias_scores = [compute_gender_bias_score(text) for text in candidate_texts]
-    candidate_names = [os.path.splitext(os.path.basename(file))[0] for file in candidate_files]
 
+    report = generate_gender_bias_report(candidate_texts, candidate_files, bias_scores, job_id, output_folders)
+
+    candidate_names = [os.path.splitext(os.path.basename(file))[0] for file in candidate_files]
     gender_data = []
     for name, file, score in zip(candidate_names, candidate_files, bias_scores):
-        gender_data.append({"id": name, "Candidate": name, "gender_bias_score": score, "File": os.path.basename(file)})
+        gender_data.append({
+            "id": name,
+            "Candidate": name,
+            "gender_bias_score": score,
+            "File": os.path.basename(file)
+        })
 
     avg_bias = np.mean(bias_scores)
     summary = {
@@ -148,8 +158,6 @@ def analyze_gender_bias_distribution(
         "most_neutral_candidate": candidate_names[np.argmin(bias_scores)],
         "least_neutral_candidate": candidate_names[np.argmax(bias_scores)]
     }
-
-    report = generate_gender_bias_report(candidate_texts, candidate_files, bias_scores, job_id, output_folders)
 
     return {
         "bias_data": gender_data,
