@@ -1,7 +1,8 @@
 from src.utils.file_utils import (
     ensure_dir_exists,
     save_to_json,
-    load_from_json
+    load_from_json,
+    extract_user_id
 )
 
 from src.utils.text_utils import (
@@ -17,6 +18,7 @@ from src.utils.io_utils import (
 
 from src.utils.firebase_utils import (
     get_candidate_name_from_firestore,
+    get_candidate_id_from_firestore
 )
 
 from src.utils.firebase_init import (
@@ -27,11 +29,13 @@ __all__ = [
     'ensure_dir_exists',
     'save_to_json',
     'load_from_json',
+    'extract_user_id',
     'extract_skill_keywords',
     'preprocess_text',
     'tokenize',
     'load_job_description',
     'load_candidate_pdfs',
     'get_candidate_name_from_firestore',
+    'get_candidate_id_from_firestore',
     'initialize_firebase'
 ]
