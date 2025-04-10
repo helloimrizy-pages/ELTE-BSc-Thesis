@@ -1,29 +1,56 @@
 import React, { useState, useEffect } from "react";
+import { styled } from "@mui/material/styles";
 import {
   Box,
   Button,
   Typography,
   CircularProgress,
-  Paper,
   MenuItem,
   Select,
   FormControl,
   InputLabel,
   Container,
   Grid,
+  Card,
+  CardContent,
+  CardHeader,
+  Avatar,
+  Chip,
+  Divider,
+  Tabs,
+  Tab,
+  TextField,
+  Alert,
+  Skeleton,
+  IconButton,
+  Tooltip,
+  useTheme,
+  alpha,
+  Stack,
+  Rating,
 } from "@mui/material";
+
 import {
   BarChart,
   Bar,
   XAxis,
   YAxis,
-  Tooltip,
+  Tooltip as RechartsTooltip,
   ResponsiveContainer,
+  Legend,
+  CartesianGrid,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Pie,
+  PieChart,
+  Cell,
 } from "recharts";
 import axios from "axios";
 import { collection, getDocs } from "firebase/firestore";
 import { db, auth } from "../firebase";
-import { Radar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -31,11 +58,27 @@ import {
   LineElement,
   Filler,
   Tooltip as ChartTooltip,
-  Legend,
+  Legend as ChartLegend,
 } from "chart.js";
 import { TransparaAppBar } from "../components/AppBar/TransparaAppBar";
 import Sidebar from "../components/AppBar/Sidebar";
 import { signOut } from "firebase/auth";
+
+import PersonIcon from "@mui/icons-material/Person";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import PieChartIcon from "@mui/icons-material/PieChart";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import InfoIcon from "@mui/icons-material/Info";
+import WarningIcon from "@mui/icons-material/Warning";
+import SearchIcon from "@mui/icons-material/Search";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import SkillsIcon from "@mui/icons-material/Psychology";
+import EducationIcon from "@mui/icons-material/School";
+import ExperienceIcon from "@mui/icons-material/WorkHistory";
+import CompareIcon from "@mui/icons-material/Compare";
+import DescriptionIcon from "@mui/icons-material/Description";
 
 ChartJS.register(
   RadialLinearScale,
@@ -43,7 +86,126 @@ ChartJS.register(
   LineElement,
   Filler,
   ChartTooltip,
-  Legend
+  ChartLegend
+);
+
+const PageContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: "#fafafa",
+  minHeight: "calc(100vh - 64px)",
+  paddingTop: theme.spacing(4),
+  paddingBottom: theme.spacing(6),
+}));
+
+const AnalyticsCard = styled(Card)(({ theme }) => ({
+  borderRadius: theme.spacing(2),
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+  height: "100%",
+  overflow: "visible",
+}));
+
+const CardTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: 600,
+  display: "flex",
+  alignItems: "center",
+  gap: theme.spacing(1),
+  marginBottom: theme.spacing(2),
+  "& svg": {
+    color: theme.palette.primary.main,
+  },
+}));
+
+const StyledTabs = styled(Tabs)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  "& .MuiTab-root": {
+    textTransform: "none",
+    fontWeight: 500,
+    minWidth: 100,
+  },
+}));
+
+const ActionButton = styled(Button)(({ theme }) => ({
+  borderRadius: theme.spacing(1.5),
+  padding: theme.spacing(1, 3),
+  textTransform: "none",
+  fontWeight: 600,
+  boxShadow: "0 4px 14px rgba(0, 0, 0, 0.1)",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    transform: "translateY(-2px)",
+    boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
+  },
+}));
+
+const MetricCard = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(2.5),
+  borderRadius: theme.spacing(2),
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+  display: "flex",
+  alignItems: "center",
+  backgroundColor: "white",
+  height: "100%",
+}));
+
+const IconAvatar = styled(Avatar)(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.primary.main, 0.1),
+  color: theme.palette.primary.main,
+  width: 48,
+  height: 48,
+}));
+
+const CandidateCard = styled(Card)(({ theme }) => ({
+  borderRadius: theme.spacing(2),
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+  marginBottom: theme.spacing(3),
+  transition: "transform 0.2s ease, box-shadow 0.2s ease",
+  overflow: "visible",
+  "&:hover": {
+    boxShadow: "0 6px 25px rgba(0, 0, 0, 0.1)",
+    transform: "translateY(-2px)",
+  },
+}));
+
+const SearchField = styled(TextField)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  "& .MuiOutlinedInput-root": {
+    borderRadius: theme.spacing(1.5),
+    paddingLeft: theme.spacing(1),
+    transition: "all 0.3s ease",
+    "&:hover": {
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
+}));
+
+const ScoreChip = styled(Chip)<{ level: "high" | "medium" | "low" }>(
+  ({ theme, level }) => {
+    const getColor = () => {
+      switch (level) {
+        case "high":
+          return { bg: "#e6f7ed", text: "#2e7d32" };
+        case "medium":
+          return { bg: "#fff8e6", text: "#ed6c02" };
+        case "low":
+          return { bg: "#feeceb", text: "#d32f2f" };
+        default:
+          return { bg: "#e6f7ed", text: "#2e7d32" };
+      }
+    };
+
+    const { bg, text } = getColor();
+
+    return {
+      backgroundColor: bg,
+      color: text,
+      fontWeight: 600,
+      borderRadius: theme.spacing(1),
+      "& .MuiChip-label": {
+        padding: "0 10px",
+      },
+    };
+  }
 );
 
 interface ChatGPTExplanation {
@@ -87,34 +249,55 @@ interface Explanation {
   rank: number;
   chatgpt_explanation?: ChatGPTExplanation;
 }
+
 interface Job {
   id: string;
   title: string;
 }
 
+interface BiasSummary {
+  average_bias: number;
+  min_bias: number;
+  max_bias: number;
+  median_bias: number;
+  most_neutral_candidate: string;
+  least_neutral_candidate: string;
+}
+
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884d8",
+  "#82ca9d",
+];
+
 export const AnalyticsPage = () => {
+  const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<Explanation[]>([]);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedJobId, setSelectedJobId] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentTab, setCurrentTab] = useState(0);
+  const [initialLoading, setInitialLoading] = useState(true);
 
-  const [biasSummary, setBiasSummary] = useState<{
-    average_bias: number;
-    min_bias: number;
-    max_bias: number;
-    median_bias: number;
-    most_neutral_candidate: string;
-    least_neutral_candidate: string;
-  } | null>(null);
+  const [biasSummary, setBiasSummary] = useState<BiasSummary | null>(null);
 
   const fetchJobs = async () => {
-    const snapshot = await getDocs(collection(db, "jobs"));
-    const jobList: Job[] = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      title: doc.data().title,
-    }));
-    setJobs(jobList);
+    try {
+      const snapshot = await getDocs(collection(db, "jobs"));
+      const jobList: Job[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        title: doc.data().title,
+      }));
+      setJobs(jobList);
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+    } finally {
+      setInitialLoading(false);
+    }
   };
 
   const fetchAnalysis = async () => {
@@ -179,6 +362,818 @@ export const AnalyticsPage = () => {
     await signOut(auth);
   };
 
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setCurrentTab(newValue);
+  };
+
+  const getBiasLevelColor = (biasScore: number) => {
+    if (biasScore < 1) return "high";
+    if (biasScore < 3) return "medium";
+    return "low";
+  };
+
+  const getSimilarityLevelColor = (score: number) => {
+    if (score >= 0.7) return "high";
+    if (score >= 0.4) return "medium";
+    return "low";
+  };
+
+  const getSkillsFromCandidates = () => {
+    const allSkills = new Set<string>();
+    data.forEach((candidate) => {
+      if (candidate.chatgpt_explanation?.direct_observations?.skills) {
+        candidate.chatgpt_explanation.direct_observations.skills.forEach(
+          (skill) => {
+            allSkills.add(skill.toLowerCase());
+          }
+        );
+      }
+    });
+    return Array.from(allSkills);
+  };
+
+  const renderSkillsRadarChart = () => {
+    const skills = getSkillsFromCandidates();
+    if (skills.length === 0) return null;
+
+    return (
+      <ResponsiveContainer width="100%" height={400}>
+        <RadarChart
+          outerRadius={150}
+          width={500}
+          height={400}
+          data={skills.map((skill) => ({
+            skill,
+            ...data.reduce((acc, candidate) => {
+              const hasSkill =
+                candidate.chatgpt_explanation?.direct_observations?.skills?.some(
+                  (s) => s.toLowerCase() === skill.toLowerCase()
+                )
+                  ? 1
+                  : 0;
+              return {
+                ...acc,
+                [candidate.candidate_file]: hasSkill,
+              };
+            }, {}),
+          }))}
+        >
+          <PolarGrid />
+          <PolarAngleAxis dataKey="skill" />
+          <PolarRadiusAxis angle={30} domain={[0, 1]} />
+
+          {data.slice(0, 4).map((candidate, index) => (
+            <Radar
+              key={candidate.candidate_file}
+              name={candidate.candidate_file}
+              dataKey={candidate.candidate_file}
+              stroke={COLORS[index % COLORS.length]}
+              fill={COLORS[index % COLORS.length]}
+              fillOpacity={0.2}
+            />
+          ))}
+          <Legend />
+        </RadarChart>
+      </ResponsiveContainer>
+    );
+  };
+
+  const renderCandidateCards = () => {
+    if (loading) {
+      return Array(3)
+        .fill(0)
+        .map((_, i) => (
+          <CandidateCard key={i}>
+            <CardHeader
+              avatar={<Skeleton variant="circular" width={40} height={40} />}
+              title={<Skeleton variant="text" width="60%" />}
+              subheader={<Skeleton variant="text" width="40%" />}
+              action={<Skeleton variant="circular" width={30} height={30} />}
+            />
+            <Divider />
+            <CardContent>
+              <Box
+                sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+              >
+                <Skeleton variant="rectangular" width="45%" height={20} />
+                <Skeleton variant="rectangular" width="45%" height={20} />
+              </Box>
+              <Skeleton variant="rectangular" height={100} />
+            </CardContent>
+          </CandidateCard>
+        ));
+    }
+
+    if (filteredData.length === 0) {
+      return (
+        <Alert severity="info" sx={{ borderRadius: 2, mb: 3 }}>
+          No candidates found. Please run analysis or adjust your search.
+        </Alert>
+      );
+    }
+
+    return filteredData.map((candidate, idx) => (
+      <CandidateCard key={candidate.candidate_file}>
+        <CardHeader
+          avatar={
+            <Avatar
+              sx={{
+                bgcolor: alpha(theme.palette.primary.main, 0.1),
+                color: theme.palette.primary.main,
+              }}
+            >
+              {candidate.rank || idx + 1}
+            </Avatar>
+          }
+          title={
+            <Typography variant="subtitle1" fontWeight={600}>
+              {candidate.candidate_file}
+            </Typography>
+          }
+          subheader={candidate.chatgpt_explanation?.job_position || "Candidate"}
+          action={
+            <Tooltip title="View details">
+              <IconButton>
+                <ArrowForwardIcon />
+              </IconButton>
+            </Tooltip>
+          }
+        />
+        <Divider />
+        <CardContent>
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            <Grid item xs={6}>
+              <Typography variant="body2" color="text.secondary">
+                Match Score
+              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <ScoreChip
+                  label={`${(candidate.similarity_score * 100).toFixed(0)}%`}
+                  level={getSimilarityLevelColor(candidate.similarity_score)}
+                  size="small"
+                />
+                <Rating
+                  value={candidate.similarity_score * 5}
+                  precision={0.5}
+                  readOnly
+                  size="small"
+                  sx={{ ml: 1 }}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body2" color="text.secondary">
+                Bias Score
+              </Typography>
+              <ScoreChip
+                label={candidate.bias_score.toFixed(1)}
+                level={getBiasLevelColor(candidate.bias_score)}
+                size="small"
+              />
+            </Grid>
+          </Grid>
+
+          {candidate.chatgpt_explanation && (
+            <>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Key Skills
+                </Typography>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {candidate.chatgpt_explanation.direct_observations.skills
+                    .slice(0, 4)
+                    .map((skill, i) => (
+                      <Chip
+                        key={i}
+                        label={skill}
+                        size="small"
+                        sx={{
+                          borderRadius: 1,
+                          bgcolor: alpha(theme.palette.primary.main, 0.08),
+                          color: theme.palette.primary.main,
+                          fontWeight: 500,
+                        }}
+                      />
+                    ))}
+                  {candidate.chatgpt_explanation.direct_observations.skills
+                    .length > 4 && (
+                    <Chip
+                      label={`+${
+                        candidate.chatgpt_explanation.direct_observations.skills
+                          .length - 4
+                      }`}
+                      size="small"
+                      sx={{
+                        borderRadius: 1,
+                        bgcolor: alpha(theme.palette.primary.main, 0.03),
+                        color: "text.secondary",
+                      }}
+                    />
+                  )}
+                </Box>
+              </Box>
+
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                Summary
+              </Typography>
+              <Typography variant="body2" noWrap sx={{ mb: 1 }}>
+                {candidate.chatgpt_explanation.conclusion.slice(0, 120)}...
+              </Typography>
+            </>
+          )}
+
+          <Divider sx={{ my: 2 }} />
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Box>
+              <Typography variant="caption" color="text.secondary">
+                Rank: <strong>#{candidate.rank || idx + 1}</strong>
+              </Typography>
+            </Box>
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{
+                borderRadius: 1.5,
+                textTransform: "none",
+              }}
+            >
+              View Profile
+            </Button>
+          </Box>
+        </CardContent>
+      </CandidateCard>
+    ));
+  };
+
+  const renderAnalyticsOverview = () => {
+    if (loading) {
+      return (
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={4}>
+            <Skeleton
+              variant="rectangular"
+              height={120}
+              sx={{ borderRadius: 2 }}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Skeleton
+              variant="rectangular"
+              height={120}
+              sx={{ borderRadius: 2 }}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Skeleton
+              variant="rectangular"
+              height={120}
+              sx={{ borderRadius: 2 }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Skeleton
+              variant="rectangular"
+              height={400}
+              sx={{ borderRadius: 2 }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Skeleton
+              variant="rectangular"
+              height={400}
+              sx={{ borderRadius: 2 }}
+            />
+          </Grid>
+        </Grid>
+      );
+    }
+
+    if (!biasSummary || filteredData.length === 0) {
+      return (
+        <Alert severity="info" sx={{ borderRadius: 2 }}>
+          No analytics data available. Please run analysis to view insights.
+        </Alert>
+      );
+    }
+
+    return (
+      <Grid container spacing={3}>
+        {}
+        <Grid item xs={12} md={4}>
+          <MetricCard>
+            <IconAvatar>
+              <PersonIcon />
+            </IconAvatar>
+            <Box sx={{ ml: 2 }}>
+              <Typography variant="h4" fontWeight="600">
+                {filteredData.length}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Total Candidates
+              </Typography>
+            </Box>
+          </MetricCard>
+        </Grid>
+
+        <Grid item xs={12} md={4}>
+          <MetricCard>
+            <IconAvatar>
+              <SkillsIcon />
+            </IconAvatar>
+            <Box sx={{ ml: 2 }}>
+              <Typography variant="h4" fontWeight="600">
+                {getSkillsFromCandidates().length}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Unique Skills
+              </Typography>
+            </Box>
+          </MetricCard>
+        </Grid>
+
+        <Grid item xs={12} md={4}>
+          <MetricCard>
+            <IconAvatar>
+              <AssessmentIcon />
+            </IconAvatar>
+            <Box sx={{ ml: 2 }}>
+              <Typography variant="h4" fontWeight="600">
+                {biasSummary.average_bias.toFixed(1)}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Average Bias Score
+              </Typography>
+            </Box>
+          </MetricCard>
+        </Grid>
+
+        {}
+        <Grid item xs={12} md={6}>
+          <AnalyticsCard>
+            <CardContent sx={{ p: 3 }}>
+              <CardTitle variant="h6">
+                <BarChartIcon /> Top Candidates by Match Score
+              </CardTitle>
+              <Box sx={{ height: 300 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={filteredData
+                      .sort((a, b) => b.similarity_score - a.similarity_score)
+                      .slice(0, 8)}
+                    margin={{ top: 10, right: 30, left: 0, bottom: 30 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="candidate_file"
+                      angle={-45}
+                      textAnchor="end"
+                      height={70}
+                      tickFormatter={(value) =>
+                        value.length > 15
+                          ? `${value.substring(0, 15)}...`
+                          : value
+                      }
+                    />
+                    <YAxis
+                      domain={[0, 1]}
+                      tickFormatter={(value) => `${(value * 100).toFixed(0)}%`}
+                    />
+                    <RechartsTooltip
+                      formatter={(value: number) => [
+                        `${(value * 100).toFixed(1)}%`,
+                        "Match Score",
+                      ]}
+                    />
+                    <Bar
+                      dataKey="similarity_score"
+                      fill={theme.palette.primary.main}
+                      name="Match Score"
+                      radius={[4, 4, 0, 0]}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </Box>
+            </CardContent>
+          </AnalyticsCard>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <AnalyticsCard>
+            <CardContent sx={{ p: 3 }}>
+              <CardTitle variant="h6">
+                <PieChartIcon /> Gender Bias Distribution
+              </CardTitle>
+              <Box sx={{ height: 300 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        {
+                          name: "Low Bias (0-1)",
+                          value: filteredData.filter((c) => c.bias_score < 1)
+                            .length,
+                        },
+                        {
+                          name: "Medium Bias (1-3)",
+                          value: filteredData.filter(
+                            (c) => c.bias_score >= 1 && c.bias_score < 3
+                          ).length,
+                        },
+                        {
+                          name: "High Bias (3+)",
+                          value: filteredData.filter((c) => c.bias_score >= 3)
+                            .length,
+                        },
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) =>
+                        `${name}: ${(percent * 100).toFixed(0)}%`
+                      }
+                    >
+                      {[0, 1, 2].map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={
+                            index === 0
+                              ? "#4caf50"
+                              : index === 1
+                              ? "#ff9800"
+                              : "#f44336"
+                          }
+                        />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </Box>
+            </CardContent>
+          </AnalyticsCard>
+        </Grid>
+
+        <Grid item xs={12}>
+          <AnalyticsCard>
+            <CardContent sx={{ p: 3 }}>
+              <CardTitle variant="h6">
+                <CompareIcon /> Candidate Skill Comparison
+              </CardTitle>
+              {renderSkillsRadarChart()}
+            </CardContent>
+          </AnalyticsCard>
+        </Grid>
+
+        {filteredData.length > 0 && biasSummary && (
+          <Grid item xs={12}>
+            <AnalyticsCard>
+              <CardContent sx={{ p: 3 }}>
+                <CardTitle variant="h6">
+                  <InfoIcon /> Bias Analysis Summary
+                </CardTitle>
+
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={6}>
+                    <Box sx={{ mb: 3 }}>
+                      <Typography variant="subtitle2" gutterBottom>
+                        Most Neutral Candidate
+                      </Typography>
+                      <Box
+                        sx={{
+                          p: 2,
+                          borderRadius: 2,
+                          bgcolor: alpha("#4caf50", 0.1),
+                          border: "1px solid",
+                          borderColor: alpha("#4caf50", 0.2),
+                        }}
+                      >
+                        <Typography variant="body1" fontWeight={500}>
+                          {biasSummary.most_neutral_candidate}
+                        </Typography>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", mt: 1 }}
+                        >
+                          <Typography variant="body2" color="text.secondary">
+                            Bias Score:
+                          </Typography>
+                          <ScoreChip
+                            label={biasSummary.min_bias.toFixed(1)}
+                            level="high"
+                            size="small"
+                            sx={{ ml: 1 }}
+                          />
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
+                    <Box sx={{ mb: 3 }}>
+                      <Typography variant="subtitle2" gutterBottom>
+                        Least Neutral Candidate
+                      </Typography>
+                      <Box
+                        sx={{
+                          p: 2,
+                          borderRadius: 2,
+                          bgcolor: alpha("#f44336", 0.1),
+                          border: "1px solid",
+                          borderColor: alpha("#f44336", 0.2),
+                        }}
+                      >
+                        <Typography variant="body1" fontWeight={500}>
+                          {biasSummary.least_neutral_candidate}
+                        </Typography>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", mt: 1 }}
+                        >
+                          <Typography variant="body2" color="text.secondary">
+                            Bias Score:
+                          </Typography>
+                          <ScoreChip
+                            label={biasSummary.max_bias.toFixed(1)}
+                            level="low"
+                            size="small"
+                            sx={{ ml: 1 }}
+                          />
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Grid>
+
+                <Box
+                  sx={{
+                    p: 3,
+                    borderRadius: 2,
+                    bgcolor: "rgba(0, 0, 0, 0.02)",
+                    border: "1px solid",
+                    borderColor: "divider",
+                    mt: 2,
+                  }}
+                >
+                  <Typography variant="subtitle1" gutterBottom fontWeight={600}>
+                    <WarningIcon
+                      sx={{
+                        verticalAlign: "middle",
+                        mr: 1,
+                        color: "warning.main",
+                      }}
+                    />
+                    Recommendations to Reduce Gender Bias
+                  </Typography>
+                  <Grid container spacing={2} sx={{ mt: 1 }}>
+                    <Grid item xs={12} md={6}>
+                      <Stack spacing={1}>
+                        <Box sx={{ display: "flex" }}>
+                          <CheckCircleIcon
+                            sx={{ color: "success.main", mr: 1, fontSize: 20 }}
+                          />
+                          <Typography variant="body2">
+                            Use gender-neutral job titles (e.g., "
+                            <i>chairperson</i>" instead of
+                            "chairman/chairwoman").
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: "flex" }}>
+                          <CheckCircleIcon
+                            sx={{ color: "success.main", mr: 1, fontSize: 20 }}
+                          />
+                          <Typography variant="body2">
+                            Replace gendered pronouns with "<i>they/them</i>"
+                            where possible.
+                          </Typography>
+                        </Box>
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Stack spacing={1}>
+                        <Box sx={{ display: "flex" }}>
+                          <CheckCircleIcon
+                            sx={{ color: "success.main", mr: 1, fontSize: 20 }}
+                          />
+                          <Typography variant="body2">
+                            Focus on skills and achievements rather than
+                            personal attributes.
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: "flex" }}>
+                          <CheckCircleIcon
+                            sx={{ color: "success.main", mr: 1, fontSize: 20 }}
+                          />
+                          <Typography variant="body2">
+                            Review for unconscious bias in language describing
+                            leadership, technical skills, etc.
+                          </Typography>
+                        </Box>
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </CardContent>
+            </AnalyticsCard>
+          </Grid>
+        )}
+      </Grid>
+    );
+  };
+
+  const renderDetailedAnalysis = () => {
+    if (filteredData.length === 0) {
+      return (
+        <Alert severity="info" sx={{ borderRadius: 2 }}>
+          No candidates to display. Run analysis first to see detailed results.
+        </Alert>
+      );
+    }
+
+    return filteredData.map((candidate, idx) => (
+      <CandidateCard key={idx} sx={{ p: 0 }}>
+        <CardHeader
+          title={
+            <Typography variant="h6" fontWeight={600}>
+              {candidate.candidate_file}
+            </Typography>
+          }
+          subheader={
+            <Box sx={{ display: "flex", alignItems: "center", mt: 0.5 }}>
+              <ScoreChip
+                label={`Match: ${(candidate.similarity_score * 100).toFixed(
+                  0
+                )}%`}
+                level={getSimilarityLevelColor(candidate.similarity_score)}
+                size="small"
+                sx={{ mr: 1 }}
+              />
+              <ScoreChip
+                label={`Bias: ${candidate.bias_score.toFixed(1)}`}
+                level={getBiasLevelColor(candidate.bias_score)}
+                size="small"
+              />
+            </Box>
+          }
+          action={
+            <Typography
+              variant="h6"
+              sx={{ mr: 2, fontWeight: 700, color: theme.palette.primary.main }}
+            >
+              #{candidate.rank || idx + 1}
+            </Typography>
+          }
+          sx={{ px: 3, pt: 3, pb: 2 }}
+        />
+
+        {candidate.chatgpt_explanation ? (
+          <CardContent sx={{ px: 3, pt: 0 }}>
+            <Divider sx={{ mb: 3 }} />
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <Box sx={{ mb: 3 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <SkillsIcon
+                      sx={{ color: theme.palette.primary.main, mr: 1 }}
+                    />
+                    <Typography variant="subtitle1" fontWeight={600}>
+                      Skills
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {candidate.chatgpt_explanation.direct_observations.skills.map(
+                      (skill, i) => (
+                        <Chip
+                          key={i}
+                          label={skill}
+                          size="small"
+                          sx={{
+                            borderRadius: 1,
+                            bgcolor: alpha(theme.palette.primary.main, 0.08),
+                            color: theme.palette.primary.main,
+                            fontWeight: 500,
+                            mb: 0.5,
+                          }}
+                        />
+                      )
+                    )}
+                  </Box>
+                </Box>
+
+                <Box sx={{ mb: 3 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <ExperienceIcon
+                      sx={{ color: theme.palette.primary.main, mr: 1 }}
+                    />
+                    <Typography variant="subtitle1" fontWeight={600}>
+                      Experience
+                    </Typography>
+                  </Box>
+                  <Box>
+                    {candidate.chatgpt_explanation.direct_observations
+                      .experience.length > 0 ? (
+                      <Box component="ul" sx={{ pl: 2, mt: 1 }}>
+                        {candidate.chatgpt_explanation.direct_observations.experience.map(
+                          (exp, i) => (
+                            <Box component="li" key={i} sx={{ mb: 0.5 }}>
+                              <Typography variant="body2">{exp}</Typography>
+                            </Box>
+                          )
+                        )}
+                      </Box>
+                    ) : (
+                      <Typography variant="body2" color="text.secondary">
+                        No experience data available
+                      </Typography>
+                    )}
+                  </Box>
+                </Box>
+
+                <Box>
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <EducationIcon
+                      sx={{ color: theme.palette.primary.main, mr: 1 }}
+                    />
+                    <Typography variant="subtitle1" fontWeight={600}>
+                      Education
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2">
+                    {candidate.chatgpt_explanation.direct_observations
+                      .education || "No education data available"}
+                  </Typography>
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Box sx={{ mb: 3 }}>
+                  <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+                    Match Analysis
+                  </Typography>
+                  <Typography variant="body2">
+                    {candidate.chatgpt_explanation.similarity.comment}
+                  </Typography>
+                </Box>
+
+                <Box sx={{ mb: 3 }}>
+                  <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+                    Bias Analysis
+                  </Typography>
+                  <Typography variant="body2">
+                    {candidate.chatgpt_explanation.gender_bias.comment}
+                  </Typography>
+                </Box>
+
+                <Box>
+                  <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+                    Notable Gaps
+                  </Typography>
+                  <Typography variant="body2">
+                    {candidate.chatgpt_explanation
+                      .notable_gaps_and_missing_requirements ||
+                      "No significant gaps identified"}
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+
+            <Divider sx={{ my: 3 }} />
+
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2,
+                bgcolor: alpha(theme.palette.primary.main, 0.05),
+                border: "1px solid",
+                borderColor: alpha(theme.palette.primary.main, 0.1),
+              }}
+            >
+              <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+                Conclusion
+              </Typography>
+              <Typography variant="body2">
+                {candidate.chatgpt_explanation.conclusion}
+              </Typography>
+            </Box>
+          </CardContent>
+        ) : (
+          <CardContent>
+            <Typography variant="body2" color="text.secondary">
+              No detailed explanation available for this candidate.
+            </Typography>
+          </CardContent>
+        )}
+      </CandidateCard>
+    ));
+  };
+
   return (
     <Box>
       <TransparaAppBar
@@ -186,367 +1181,135 @@ export const AnalyticsPage = () => {
         onSearch={(value) => setSearchTerm(value)}
       />
 
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={3}>
-            <Sidebar />
-          </Grid>
+      <PageContainer>
+        <Container maxWidth="lg">
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3}>
+              <Sidebar />
+            </Grid>
 
-          <Grid item xs={12} md={9}>
-            <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                Candidate Ranking Analysis
-              </Typography>
+            <Grid item xs={12} md={9}>
+              <Box sx={{ mb: 4 }}>
+                <Typography variant="h4" fontWeight="700" gutterBottom>
+                  Candidate Analysis
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  Compare and analyze candidate data for better hiring decisions
+                </Typography>
+              </Box>
 
-              <FormControl fullWidth sx={{ mb: 2 }}>
-                <InputLabel>Select Job</InputLabel>
-                <Select
-                  value={selectedJobId}
-                  onChange={(e) => setSelectedJobId(e.target.value)}
-                  label="Select Job"
-                >
-                  {jobs.map((job) => (
-                    <MenuItem key={job.id} value={job.id}>
-                      {job.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <Button
-                variant="contained"
-                onClick={fetchAnalysis}
-                disabled={!selectedJobId}
-                sx={{
-                  mb: 3,
-                  backgroundColor: "black",
-                  "&:hover": { backgroundColor: "#333" },
-                }}
-              >
-                Run Analysis
-              </Button>
-
-              {loading ? (
-                <CircularProgress />
-              ) : Array.isArray(data) && data.length > 0 ? (
-                <Box>
-                  {!loading && selectedJobId && data.length > 0 && (
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mb: 2 }}
-                    >
-                      Showing cached analysis. Click "Run Analysis" to refresh.
-                    </Typography>
-                  )}
-
-                  <Box sx={{ height: 300, mt: 3 }}>
-                    <Typography variant="subtitle1">
-                      Top Candidates by Similarity Score
-                    </Typography>
-                    <Box sx={{ height: 300, mt: 3 }}>
-                      <Typography variant="subtitle1">
-                        Top Candidates by Similarity Score
-                      </Typography>
-                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={filteredData}>
-                          <XAxis dataKey="candidate_file" />
-                          <YAxis domain={[0, 1]} />
-                          <Tooltip />
-                          <Bar dataKey="similarity_score" fill="#8884d8" />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </Box>
-                  </Box>
-
-                  {data.length > 0 && (
-                    <Box sx={{ mt: 6 }}>
-                      <Typography variant="subtitle1" gutterBottom>
-                        Candidate Skill Comparison
-                      </Typography>
-                      <Radar
-                        data={{
-                          labels: [
-                            "machine learning",
-                            "python",
-                            "ai",
-                            "nlp",
-                            "algorithms",
-                            "pytorch",
-                            "tensorflow",
-                            "deep learning",
-                          ],
-                          datasets: data.map((candidate) => ({
-                            label: `${
-                              candidate.candidate_file
-                            } (${candidate.similarity_score.toFixed(2)})`,
-                            data: [
-                              candidate.chatgpt_explanation?.direct_observations.skills.includes(
-                                "machine learning"
-                              )
-                                ? 1
-                                : 0,
-                              candidate.chatgpt_explanation?.direct_observations.skills.includes(
-                                "python"
-                              )
-                                ? 1
-                                : 0,
-                              candidate.chatgpt_explanation?.direct_observations.skills.includes(
-                                "ai"
-                              )
-                                ? 1
-                                : 0,
-                              candidate.chatgpt_explanation?.direct_observations.skills.includes(
-                                "nlp"
-                              )
-                                ? 1
-                                : 0,
-                              candidate.chatgpt_explanation?.direct_observations.skills.includes(
-                                "algorithms"
-                              )
-                                ? 1
-                                : 0,
-                              candidate.chatgpt_explanation?.direct_observations.skills.includes(
-                                "pytorch"
-                              )
-                                ? 1
-                                : 0,
-                              candidate.chatgpt_explanation?.direct_observations.skills.includes(
-                                "tensorflow"
-                              )
-                                ? 1
-                                : 0,
-                              candidate.chatgpt_explanation?.direct_observations.skills.includes(
-                                "deep learning"
-                              )
-                                ? 1
-                                : 0,
-                            ],
-                            fill: true,
-                            backgroundColor: "rgba(0, 123, 255, 0.2)",
-                            borderColor: "rgba(0, 123, 255, 1)",
-                            borderWidth: 1,
-                          })),
-                        }}
-                        options={{
-                          responsive: true,
-                          scales: {
-                            r: {
-                              suggestedMin: 0,
-                              suggestedMax: 1,
-                              ticks: { stepSize: 1 },
-                            },
+              <AnalyticsCard elevation={0} sx={{ mb: 4 }}>
+                <CardContent sx={{ p: 3 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                      alignItems: { xs: "stretch", sm: "flex-end" },
+                      gap: 2,
+                    }}
+                  >
+                    <FormControl fullWidth>
+                      <InputLabel>Select Job</InputLabel>
+                      <Select
+                        value={selectedJobId}
+                        onChange={(e) => setSelectedJobId(e.target.value)}
+                        label="Select Job"
+                        sx={{
+                          borderRadius: 1.5,
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: alpha(theme.palette.primary.main, 0.2),
                           },
                         }}
-                      />
-                    </Box>
-                  )}
+                      >
+                        {initialLoading ? (
+                          <MenuItem disabled>Loading jobs...</MenuItem>
+                        ) : jobs.length === 0 ? (
+                          <MenuItem disabled>No jobs available</MenuItem>
+                        ) : (
+                          jobs.map((job) => (
+                            <MenuItem key={job.id} value={job.id}>
+                              {job.title}
+                            </MenuItem>
+                          ))
+                        )}
+                      </Select>
+                    </FormControl>
 
-                  <Box sx={{ height: 300, mt: 5 }}>
-                    <Typography variant="subtitle1">
-                      Gender Bias Scores
-                    </Typography>
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={data}>
-                        <XAxis dataKey="candidate_file" />
-                        <YAxis />
-                        <Tooltip />
-                        <Bar dataKey="bias_score" fill="#ff7f50" />
-                      </BarChart>
-                    </ResponsiveContainer>
+                    <ActionButton
+                      variant="contained"
+                      onClick={fetchAnalysis}
+                      disabled={!selectedJobId || loading}
+                      startIcon={
+                        loading ? (
+                          <CircularProgress size={20} color="inherit" />
+                        ) : (
+                          <RefreshIcon />
+                        )
+                      }
+                      sx={{ minWidth: 150 }}
+                    >
+                      {loading ? "Analyzing..." : "Run Analysis"}
+                    </ActionButton>
                   </Box>
+                </CardContent>
+              </AnalyticsCard>
 
-                  {biasSummary && (
-                    <Box sx={{ mt: 5 }}>
-                      {data.length > 0 && (
-                        <Box sx={{ mt: 4 }}>
-                          <Typography variant="subtitle1" gutterBottom>
-                            Candidate-Level Gender Bias Details
-                          </Typography>
-                          {data.map((candidate, idx) => {
-                            const biasEntry = candidate.bias_score;
-                            return (
-                              <Paper
-                                key={idx}
-                                elevation={1}
-                                sx={{
-                                  p: 2,
-                                  my: 2,
-                                  backgroundColor: "#fff",
-                                  borderLeft: `5px solid ${
-                                    biasEntry < 1
-                                      ? "#82ca9d"
-                                      : biasEntry < 3
-                                      ? "#ffc658"
-                                      : "#ff7f50"
-                                  }`,
-                                }}
-                              >
-                                <Typography
-                                  variant="subtitle2"
-                                  fontWeight="bold"
-                                >
-                                  {candidate.candidate_file}
-                                </Typography>
-                                <Typography variant="body2">
-                                  Bias Score:{" "}
-                                  <strong>{biasEntry.toFixed(2)}</strong>
-                                </Typography>
-                              </Paper>
-                            );
-                          })}
-                        </Box>
-                      )}
-
-                      <Box sx={{ mt: 5 }}>
-                        <Typography variant="subtitle1" gutterBottom>
-                          Recommendations to Reduce Gender Bias in Resumes
-                        </Typography>
-                        <ul>
-                          <li>
-                            Use gender-neutral job titles (e.g., “
-                            <i>chairperson</i>” instead of
-                            “chairman/chairwoman”).
-                          </li>
-                          <li>
-                            Replace gendered pronouns with “<i>they/them</i>”
-                            where possible.
-                          </li>
-                          <li>
-                            Focus on skills and achievements rather than
-                            personal attributes.
-                          </li>
-                          <li>
-                            Review for unconscious bias in language describing
-                            leadership, technical skills, etc.
-                          </li>
-                        </ul>
-                      </Box>
-
-                      <Box sx={{ height: 250, mt: 5 }}>
-                        <Typography variant="subtitle1" gutterBottom>
-                          Most vs Least Neutral Candidates
-                        </Typography>
-                        <ResponsiveContainer width="100%" height="100%">
-                          <BarChart
-                            data={[
-                              {
-                                name: "Most Neutral",
-                                candidate: biasSummary.most_neutral_candidate,
-                                score: biasSummary.min_bias,
-                              },
-                              {
-                                name: "Least Neutral",
-                                candidate: biasSummary.least_neutral_candidate,
-                                score: biasSummary.max_bias,
-                              },
-                            ]}
-                          >
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="score" fill="#8884d8" />
-                          </BarChart>
-                        </ResponsiveContainer>
-                      </Box>
-
-                      {data.map((candidate, idx) => (
-                        <Box
-                          key={idx}
-                          sx={{
-                            mt: 4,
-                            p: 3,
-                            border: "1px solid #ddd",
-                            borderRadius: 2,
-                            backgroundColor: "#f9f9f9",
-                          }}
-                        >
-                          <Typography variant="subtitle1" fontWeight="bold">
-                            {candidate.candidate_file}
-                          </Typography>
-
-                          {candidate.chatgpt_explanation ? (
-                            <>
-                              <Typography variant="body1" sx={{ mt: 1 }}>
-                                <strong>Position:</strong>{" "}
-                                {candidate.chatgpt_explanation.job_position}
-                              </Typography>
-                              <Typography variant="body1">
-                                <strong>Similarity:</strong>{" "}
-                                {
-                                  candidate.chatgpt_explanation.similarity
-                                    .comment
-                                }
-                              </Typography>
-                              <Typography variant="body1">
-                                <strong>Bias:</strong>{" "}
-                                {
-                                  candidate.chatgpt_explanation.gender_bias
-                                    .comment
-                                }
-                              </Typography>
-
-                              <Typography variant="body2" sx={{ mt: 2 }}>
-                                <strong>Direct Observations:</strong>
-                              </Typography>
-                              <ul>
-                                <li>
-                                  <strong>Skills:</strong>{" "}
-                                  {candidate.chatgpt_explanation.direct_observations.skills.join(
-                                    ", "
-                                  )}
-                                </li>
-                                <li>
-                                  <strong>Experience:</strong>{" "}
-                                  {candidate.chatgpt_explanation.direct_observations.experience.join(
-                                    ", "
-                                  )}
-                                </li>
-                                <li>
-                                  <strong>Education:</strong>{" "}
-                                  {
-                                    candidate.chatgpt_explanation
-                                      .direct_observations.education
-                                  }
-                                </li>
-                              </ul>
-
-                              <Typography variant="body2">
-                                <strong>Notable Gaps:</strong>{" "}
-                                {
-                                  candidate.chatgpt_explanation
-                                    .notable_gaps_and_missing_requirements
-                                }
-                              </Typography>
-
-                              <Typography variant="body2" sx={{ mt: 2 }}>
-                                <strong>Conclusion:</strong>{" "}
-                                {candidate.chatgpt_explanation.conclusion}
-                              </Typography>
-                            </>
-                          ) : (
-                            <Typography variant="body2" color="text.secondary">
-                              No explanation available for this candidate.
-                            </Typography>
-                          )}
-                        </Box>
-                      ))}
-                    </Box>
-                  )}
-                </Box>
-              ) : (
-                !loading &&
-                selectedJobId && (
-                  <Typography variant="body2" color="text.secondary">
-                    No analysis results available. Please try running analysis
-                    again or check your job selection.
-                  </Typography>
-                )
+              {!loading && selectedJobId && data.length > 0 && (
+                <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+                  Showing cached analysis results. Click "Run Analysis" to
+                  refresh data.
+                </Alert>
               )}
-            </Paper>
+
+              <StyledTabs
+                value={currentTab}
+                onChange={handleTabChange}
+                indicatorColor="primary"
+                textColor="primary"
+              >
+                <Tab
+                  label="Candidates"
+                  icon={<PersonIcon />}
+                  iconPosition="start"
+                />
+                <Tab
+                  label="Analytics"
+                  icon={<AssessmentIcon />}
+                  iconPosition="start"
+                />
+                <Tab
+                  label="Detailed Analysis"
+                  icon={<DescriptionIcon />}
+                  iconPosition="start"
+                />
+              </StyledTabs>
+
+              {currentTab === 0 && (
+                <Box>
+                  <Box sx={{ display: "flex", mb: 3 }}>
+                    <SearchField
+                      fullWidth
+                      placeholder="Search candidates..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      InputProps={{
+                        startAdornment: (
+                          <SearchIcon color="action" sx={{ mr: 1 }} />
+                        ),
+                      }}
+                    />
+                  </Box>
+                  {renderCandidateCards()}
+                </Box>
+              )}
+
+              {currentTab === 1 && renderAnalyticsOverview()}
+
+              {currentTab === 2 && renderDetailedAnalysis()}
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      </PageContainer>
     </Box>
   );
 };
