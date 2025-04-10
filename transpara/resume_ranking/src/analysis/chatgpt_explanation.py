@@ -3,8 +3,8 @@ from uuid import uuid4
 from typing import List, Dict, Any
 from src.models.linguistic_debiasing import compute_gender_bias_score
 from api.explanation_service import generate_chatgpt_explanation
-from src.utils.file_utils import save_to_json, load_from_json, generate_candidate_id
-from src.utils.firebase_utils import get_candidate_name_from_firestore
+from src.utils.file_utils import save_to_json, load_from_json, extract_user_id
+from src.utils.firebase_utils import get_candidate_name_from_firestore, get_candidate_id_from_firestore
 
 def generate_chatgpt_explanations(
     results: Dict[str, Any],
@@ -32,12 +32,14 @@ def generate_chatgpt_explanations(
 
     for rank, idx in enumerate(results["ranked_indices"][:top_n], 1):
         candidate_file = candidate_files[idx]
-        candidate_id = generate_candidate_id(candidate_file)
+        user_id = extract_user_id(candidate_file)
+
+        candidate_id = get_candidate_id_from_firestore(job_id, user_id)
         if candidate_id in existing_ids:
             print(f"ChatGPT explanation for {candidate_file} already exists, skipping.")
             continue
 
-        candidate_name = get_candidate_name_from_firestore(job_id, os.path.basename(candidate_file))
+        candidate_name = get_candidate_name_from_firestore(job_id, user_id)
         text = candidate_texts[idx]
         similarity = results["predictions"][idx]
         bias = compute_gender_bias_score(text)
@@ -63,8 +65,6 @@ def generate_chatgpt_explanations(
             "chatgpt_explanation": explanation
         }
         existing_explanations["explanations"].append(entry)
-        # print(f"\nRank {rank} - {candidate_name} ChatGPT Explanation:")
-        # print(explanation)
 
     save_to_json(existing_explanations, report_path)
     print(f"\nChatGPT explanations generated and saved to {report_path}")
