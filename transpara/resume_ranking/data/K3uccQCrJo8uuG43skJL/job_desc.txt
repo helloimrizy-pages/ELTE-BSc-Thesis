@@ -1,43 +1,32 @@
-<p style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">Help us shape the future of open source IT, devops, and IS, from bare metal to containers. Our goal is to revolutionise open source application and infrastructure operations.</span><br><br><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">We want to transform the world of software operations by enabling true model-driven operations via next-generation infrastructure-as-code. This will allow companies to run very efficient bare-metal operations for high-performance computing, private cloud, data lakes, AI/ML, and analytics. We need to invent some new technology, and we need to build some new products; we are therefore looking for someone who can lead and inspire a regional software engineering team to fulfill this initiative.</span><br><br><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">The Solutions Engineering team works in close collaboration with our managed infrastructure operations team, which runs many private OpenStack clouds and Kubernetes clusters for customers around the world. This enables us to improve our infra-as-code products based on our own real experience, mirroring that of our users and customers. We work in Python, creating open source automation capabilities that simplify operations for anybody, anywhere, who is building on Ubuntu.</span><br><br><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">Most of the team's work involves pure Python software development focused on enabling true DevOps workflows. We strive for high quality in both design, documentation, tests, and performance as we enhance operations code packages and Ubuntu itself in order to ensure our platform is the easiest, most robust, and best performing for driving your infrastructure.</span><br><br><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">This role is ideal for software engineers who want to work in a global team, have a passion for distributed systems and cloud computing, and an interest in the entire Linux stack - from kernel to networking to virtualization and containers.</span><br></p>
-<p><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">What you'll do</span></p>
-<ul>
-<li><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Work in Python and Golang to design and deliver open source software operations code</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Work with the entire Linux stack, from kernel, networking, storage, to applications</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Shape high quality open source monitoring and alerting infrastructure</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Rethink open source operations for our customers and open source community</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Demonstrate sound engineering design and testing principles in your code</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Follow agile software development practices</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Coach and develop your colleagues where you have insights</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Grow a healthy, collaborative engineering culture in line with the company values</span></li>
-<li><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Global travel up to 10% of time for internal and external events</span><br></li>
-</ul>
-<p><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">Who you are</span></p>
-<ul>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">You are a passionate Python developer</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">You are organised and want your team to deliver timely, high quality software</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">You understand the importance of reliable operations in an agile world</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">You have sound knowledge of cloud computing concepts &amp; technologies</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">You have practical knowledge of Linux and networking</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">You are a lifelong learner</span><br></li>
-</ul>
-<p><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">Bonus points for</span></p>
-<ul>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">You have graduated with a university degree in Computer Science or related software engineering field</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Golang programming skills</span><br></li>
-</ul>
-<p><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">What you will learn</span></p>
-<ul>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">OpenStack and Kubernetes in production</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Thinking rigorously about application and infrastructure reliability</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Wide range of open source applications and skills</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Real-life and hands-on exposure to a wide range of emerging technologies and tools</span><br><br></li>
-</ul>
-<p><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">We offer:</span></p>
-<ul>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">100% work-from-home</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Learning and development</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Competitive salary</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Recognition rewards</span></li>
-<li style="margin-left:1.6rem;"><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Annual leave</span></li>
-</ul>
-<p><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: var(--artdeco-reset-base-font-size-hundred-percent);font-family: var(--artdeco-reset-typography-font-family-sans);">Priority Pass for travel</span><br><br><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">About Canonical</span><br><br><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">Canonical is a pioneering tech firm that is at the forefront of the global move to open source. As the company that publishes Ubuntu, one of the most important open source projects and the platform for AI, IoT and the cloud, we are changing the world on a daily basis. We recruit on a global basis and set a very high standard for people joining the company. We expect excellence - in order to succeed, we need to be the best at what we do.</span><br><br><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">Canonical has been a remote-first company since its inception in 2004. Work at Canonical is a step into the future, and will challenge you to think differently, work smarter, learn new skills, and raise your game. Canonical provides a unique window into the world of 21st-century digital business.</span><br><br><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">Canonical is an equal opportunity employer</span><br><br><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">We are proud to foster a workplace free from discrimination. Diversity of experience, perspectives, and background create a better work environment and better products. Whatever your identity, we will give your application fair consideration.</span><br><br><span style="color: rgba(0,0,0,0.9);background-color: rgb(255,255,255);font-size: 14px;">#Stack</span></p>
+<p>Kulio is a fast-growing tech company dedicated to transforming how people connect with digital tools across Southeast Asia. We build platforms that simplify everyday life, empower communities, and deliver impact at scale. At Kulio, we value innovation, ownership, and collaboration.</p>
+<p></p>
+<p>As a Software Engineer at Kulio, you'll be part of a cross-functional product team, responsible for building, scaling, and maintaining robust web and mobile applications that serve thousands of users. You will work closely with product managers, designers, and other engineers to deliver high-quality features in a fast-paced environment.</p>
+<p></p>
+<p><strong>Responsibilities</strong></p>
+<p>1. Design, develop, test, and deploy scalable software solutions</p>
+<p>2. Collaborate with product and design teams to define feature specifications</p>
+<p>3. Write clean, maintainable, and well-documented code</p>
+<p>4. Review code and provide constructive feedback to peers</p>
+<p>5. Participate in sprint planning, standups, and retrospectives</p>
+<p>6. Debug and resolve production issues efficiently</p>
+<p>7. Continuously explore new technologies to improve development efficiency and product performance</p>
+<p></p>
+<p><strong>Requirements</strong></p>
+<p>1. Bachelor's degree in Computer Science, Engineering, or a related field</p>
+<p>2. 2+ years of professional experience in software development</p>
+<p>3. Proficiency in at least one modern programming language (e.g., JavaScript/TypeScript, Python, Go, or Java)</p>
+<p>4. Experience with React, Node.js, or similar frameworks</p>
+<p>5. Familiarity with RESTful APIs and database systems (SQL/NoSQL)</p>
+<p>6. Strong problem-solving skills and attention to detail</p>
+<p>7. Good communication skills and ability to work in a team</p>
+<p>8. Experience with cloud services (e.g., Firebase, AWS, GCP) is a plus</p>
+<p>9. Knowledge of CI/CD, Docker, or automated testing is a bonus</p>
+<p></p>
+<p><strong>Benefits</strong></p>
+<p>1. Competitive salary and performance-based bonuses</p>
+<p>2. Flexible working hours and hybrid setup</p>
+<p>3. Learning &amp; development budget</p>
+<p>4. Health insurance coverage</p>
+<p>5. Stock options for high performers</p>
+<p>6. Monthly team events and annual company retreat</p>
+<p>7. Opportunity to grow with a mission-driven, innovative team<br><br>Apply now by clicking the button below. Please feel free to reach out to <a href="" target="_self"><strong>careers@kulio.com</strong></a><strong> </strong>for any inquiries</p>

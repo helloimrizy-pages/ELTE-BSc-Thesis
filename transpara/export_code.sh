@@ -17,10 +17,10 @@ if [ -f "$output_file" ]; then
 fi
 
 # List of directories to look for
-directories=("src/components" "src/pages" "src/services" "src/types" "src/utils")
+directories=("src/components" "src/constants" "src/pages" "src/services" "src/types" "src/utils" "resume_ranking/api" "resume_ranking/backend" "resume_ranking/config" "resume_ranking/src")
 
 # List of specific files to include
-specific_files=("src/App.tsx" "src/firebase.ts" "src/setupGlobal.ts")
+specific_files=("src/App.tsx" "src/firebase.ts" "src/setupGlobal.ts" "resume_ranking/main.py")
 
 # List of file types to ignore
 ignore_files=("*.ico" "*.png" "*.jpg" "*.jpeg" "*.gif" "*.svg" "*.pyc")

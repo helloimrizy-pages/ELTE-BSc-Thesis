@@ -1,5 +1,5 @@
 {
-  "analysis_id": "gender_bias_9807291b-7b99-4a66-aabb-6bdfbb68aee2",
+  "analysis_id": "gender_bias_8e798aa8-b01b-449d-b484-db33bb226dc5",
   "title": "Gender Bias Analysis Report",
   "understanding": {
     "description": "The Gender Bias Score measures the imbalance between masculine and feminine terms in the text. A score of 0 indicates perfect balance, while higher scores indicate more gender-specific language.",
@@ -7,12 +7,15 @@
   },
   "candidate_analysis": [
     {
-      "id": "11f8ad7c2fcbfcf62c5aa41611ae74b3",
-      "candidate_file": "Alfarizy - Curriculum Vitae (Whale Cloud)",
-      "gender_bias_score": 0.0,
+      "id": "Y3ESdrmcISD9s8QNZrqw",
+      "candidate_file": "Anna Schmidt",
+      "gender_bias_score": 3.48,
       "male_terms": "none",
-      "female_terms": "none",
-      "recommendation": "This resume uses gender-neutral language effectively."
+      "female_terms": {
+        "female": 3,
+        "women": 4
+      },
+      "recommendation": "This resume shows significant gender imbalance in language usage."
     }
   ],
   "recommendations": [
@@ -22,11 +25,11 @@
     "Review for unconscious bias in language describing leadership, technical skills, etc."
   ],
   "summary": {
-    "average_bias": 0.0,
-    "min_bias": 0.0,
-    "max_bias": 0.0,
-    "median_bias": 0.0,
-    "most_neutral_candidate": "Alfarizy - Curriculum Vitae (Whale Cloud)",
-    "least_neutral_candidate": "Alfarizy - Curriculum Vitae (Whale Cloud)"
+    "average_bias": 3.48,
+    "min_bias": 3.48,
+    "max_bias": 3.48,
+    "median_bias": 3.48,
+    "most_neutral_candidate": "Anna Schmidt",
+    "least_neutral_candidate": "Anna Schmidt"
   }
 }
