@@ -5,8 +5,8 @@ import os
 
 from typing import Dict, List, Tuple, Optional, Any, Union
 from uuid import uuid4
-from src.utils.file_utils import save_to_json, load_from_json, generate_candidate_id
-from src.utils.firebase_utils import get_candidate_name_from_firestore
+from src.utils.file_utils import save_to_json, load_from_json, extract_user_id
+from src.utils.firebase_utils import get_candidate_name_from_firestore, get_candidate_id_from_firestore
 
 from config.settings import MODEL_SETTINGS
 
@@ -18,54 +18,44 @@ def generate_model_explanations(
 ) -> Tuple[List[Dict[str, Any]], np.ndarray, pd.DataFrame]:
 
     explainer = shap.TreeExplainer(model)
-    
     shap_values = explainer.shap_values(X)
-    
     base_value = explainer.expected_value
-    
+
     if len(feature_names) != shap_values.shape[1]:
         print(f"Warning: Mismatch between feature_names ({len(feature_names)}) and shap_values shape ({shap_values.shape[1]})")
         feature_names = X.columns.tolist()
         print(f"Using DataFrame columns as feature names ({len(feature_names)})")
-    
+
     shap_df = pd.DataFrame(shap_values, columns=feature_names)
-    
     explanations = []
+
     for idx, row in enumerate(shap_values):
         sorted_idx = np.argsort(-np.abs(row))
         top_contributors = []
-        
+
         for i in sorted_idx[:MODEL_SETTINGS['top_contributors']]:
             feature_name = feature_names[i]
             shap_value = row[i]
             feature_value = X.iloc[idx, i]
-            
             display_name = _get_descriptive_feature_name(feature_name, skill_keywords)
-            
+
             top_contributors.append({
                 "feature": display_name,
                 "impact": float(shap_value),
                 "value": float(feature_value),
                 "positive": bool(shap_value > 0)
             })
-        
-        if isinstance(base_value, np.ndarray):
-            base_value_scalar = base_value.item() if base_value.size == 1 else base_value[0]
-        else:
-            base_value_scalar = base_value
-            
-        row_sum = np.sum(row)
-        if isinstance(row_sum, np.ndarray):
-            row_sum = row_sum.item() if row_sum.size == 1 else row_sum[0]
-            
-        final_prediction = float(base_value_scalar) + float(row_sum)
-        
+
+        base_value_scalar = float(base_value[0]) if isinstance(base_value, np.ndarray) else float(base_value)
+        row_sum = float(np.sum(row))
+        final_prediction = base_value_scalar + row_sum
+
         explanations.append({
             "base_value": base_value_scalar,
             "prediction": final_prediction,
             "contributors": top_contributors
         })
-    
+
     return explanations, shap_values, shap_df
 
 def generate_shap_explanations(
@@ -77,7 +67,6 @@ def generate_shap_explanations(
     """
     Save SHAP explanations to a JSON report, skipping existing ones based on candidate ID.
     """
-
     shap_results_path = os.path.join(output_folders["reports"], "shap_explanations.json")
 
     if os.path.exists(shap_results_path):
@@ -90,9 +79,10 @@ def generate_shap_explanations(
     existing_shap_ids = {entry["id"] for entry in existing_shap.get("shap", [])}
 
     for idx, explanation in enumerate(explanations):
-        candidate_file = candidate_files[idx]
-        candidate_id = generate_candidate_id(candidate_file)
-        candidate_name = get_candidate_name_from_firestore(job_id, os.path.basename(candidate_file))
+        file_name = os.path.basename(candidate_files[idx])
+        user_id = extract_user_id(file_name)
+        candidate_id = get_candidate_id_from_firestore(job_id, user_id)
+        candidate_name = get_candidate_name_from_firestore(job_id, user_id)
 
         if candidate_id in existing_shap_ids:
             print(f"SHAP analysis for {candidate_name} already exists, skipping.")
@@ -135,23 +125,23 @@ def format_explanation_for_hr(
     base_value = explanation["base_value"]
     prediction = explanation["prediction"]
     contributors = explanation["contributors"]
-    
+
     if hasattr(base_value, '__iter__'):
         base_value = float(base_value[0] if len(base_value) > 0 else 0)
-    
+
     if hasattr(prediction, '__iter__'):
         prediction = float(prediction[0] if len(prediction) > 0 else 0)
-    
+
     positive_factors = [c for c in contributors if c["positive"]]
     negative_factors = [c for c in contributors if not c["positive"]]
-    
+
     explanation_text = f"Candidate: {candidate_name}\n"
     explanation_text += f"Position: {job_title}\n"
     explanation_text += f"Match Score: {prediction:.2f} (average is {base_value:.2f})\n\n"
-    
+
     explanation_text += _format_factors("Strengths", positive_factors, sign="+")
     explanation_text += _format_factors("Concerns", negative_factors, sign="-")
-    
+
     return explanation_text
 
 def _format_factors(title: str, factors: List[Dict[str, Any]], sign: str = "+") -> str:
