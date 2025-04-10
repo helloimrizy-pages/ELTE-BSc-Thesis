@@ -45,7 +45,6 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
         return;
       }
 
-      // Convert the editor's content to HTML.
       const rawContentState = convertToRaw(editorState.getCurrentContent());
       const descriptionHTML = draftToHtml(rawContentState);
 
@@ -57,6 +56,7 @@ export const NewJobDialog: React.FC<NewJobDialogProps> = ({
         category: jobCategory || "",
         ownerUid: user.uid,
         createdAt: Timestamp.now(),
+        isOpen: true,
       });
 
       if (docRef.id.includes("/")) {
