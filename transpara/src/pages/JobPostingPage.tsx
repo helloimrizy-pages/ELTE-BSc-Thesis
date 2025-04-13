@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import {
   Box,
-  Container,
   Typography,
   Button,
   IconButton,
@@ -88,6 +87,7 @@ const PageContainer = styled(Box)(({ theme }) => ({
   minHeight: "calc(100vh - 64px)",
   paddingTop: theme.spacing(4),
   paddingBottom: theme.spacing(6),
+  borderRadius: theme.spacing(2),
 }));
 
 const DashboardCard = styled(Card)(({ theme }) => ({
@@ -229,6 +229,7 @@ const JobPostingPage: React.FC = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [jobsLoading, setJobsLoading] = useState(true);
   const [currentTab, setCurrentTab] = useState(0);
+  const [sidebarMinimized, setSidebarMinimized] = useState(false);
   const [analyticsData, setAnalyticsData] = useState<{
     totalViews: number;
     totalApplications: number;
@@ -864,15 +865,32 @@ const JobPostingPage: React.FC = () => {
     <Box>
       <TransparaAppBar onLogout={handleLogout} onSearch={() => {}} />
 
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={3}>
-            <Sidebar />
-          </Grid>
+      <Box sx={{ mt: 4, mb: 4, px: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            transition: "all 0.3s ease",
+            gap: 2,
+          }}
+        >
+          <Box
+            sx={{
+              width: sidebarMinimized ? 80 : 240,
+              transition: "width 0.3s ease",
+              flexShrink: 0,
+            }}
+          >
+            <Sidebar
+              minimized={sidebarMinimized}
+              onToggleMinimize={() => setSidebarMinimized(!sidebarMinimized)}
+              onLogout={handleLogout}
+            />
+          </Box>
 
-          <Grid item xs={12} md={9}>
+          <Box sx={{ flexGrow: 1, pr: 2 }}>
             <PageContainer>
-              <Container maxWidth="lg">
+              <Box sx={{ px: 4 }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -962,7 +980,7 @@ const JobPostingPage: React.FC = () => {
                     const job = jobs.find((j) => j.id === menuJob);
                     if (!job) return null;
 
-                    const isOpen = job.isOpen ?? true; // fallback to true if undefined
+                    const isOpen = job.isOpen ?? true;
 
                     return (
                       <MenuItem
@@ -1061,11 +1079,11 @@ const JobPostingPage: React.FC = () => {
                   onClose={() => setSnackbarOpen(false)}
                   message={snackbarMessage}
                 />
-              </Container>
+              </Box>
             </PageContainer>
-          </Grid>
-        </Grid>
-      </Container>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 };
