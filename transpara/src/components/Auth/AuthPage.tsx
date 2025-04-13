@@ -44,6 +44,7 @@ const FormContainer = styled(Paper)(({ theme }) => ({
   borderRadius: theme.spacing(2),
   maxWidth: 480,
   width: "100%",
+  backgroundColor: theme.palette.background.paper,
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.08)",
 }));
 
@@ -224,7 +225,7 @@ const AuthPage: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
-          backgroundColor: "#fafafa",
+          backgroundColor: (theme) => theme.palette.background.default,
         }}
       >
         <CircularProgress size={60} thickness={4} />
@@ -256,7 +257,7 @@ const AuthPage: React.FC = () => {
           xs={12}
           md={6}
           sx={{
-            backgroundColor: "#fafafa",
+            backgroundColor: (theme) => theme.palette.background.paper,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
