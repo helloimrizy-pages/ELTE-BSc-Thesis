@@ -487,7 +487,13 @@ export const AnalyticsPage = () => {
           subheader={candidate.chatgpt_explanation?.job_position || "Candidate"}
           action={
             <Tooltip title="View details">
-              <IconButton>
+              <IconButton
+                size="small"
+                sx={{ borderRadius: 1.5, textTransform: "none" }}
+                onClick={() =>
+                  navigate(`/profile/${selectedJobId}/${candidate.id}`)
+                }
+              >
                 <ArrowForwardIcon />
               </IconButton>
             </Tooltip>
