@@ -15,6 +15,7 @@ import { ApplicationPage } from "./pages/ApplicationPage";
 import { PublishedJobPostingPage } from "./pages/PublishedJobPostingPage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
 import ProfilePage from "./pages/ProfilePage";
+import CandidateProfilePage from "./pages/CandidateProfilePage";
 import SettingsPage from "./pages/SettingsPage";
 import JobPostings from "./pages/JobPostingPage";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -70,6 +71,10 @@ function App() {
             />
             <Route path="/apply/:jobId" element={<ApplicationPage />} />
             <Route path="/job/:jobId" element={<PublishedJobPostingPage />} />
+            <Route
+              path="/profile/:jobId/:candidateId"
+              element={<CandidateProfilePage />}
+            />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </LogoutHandler>
