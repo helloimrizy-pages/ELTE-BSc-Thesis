@@ -87,10 +87,14 @@ ChartJS.register(
 );
 
 const PageContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: "#fafafa",
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? theme.palette.background.default
+      : "#fafafa",
   minHeight: "calc(100vh - 64px)",
   paddingTop: theme.spacing(4),
   paddingBottom: theme.spacing(6),
+  borderRadius: theme.spacing(2),
 }));
 
 const AnalyticsCard = styled(Card)(({ theme }) => ({
@@ -137,13 +141,12 @@ const ActionButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const MetricCard = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2.5),
+const MetricCard = styled(Card)(({ theme }) => ({
   borderRadius: theme.spacing(2),
   boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+  padding: theme.spacing(2.5),
   display: "flex",
   alignItems: "center",
-  backgroundColor: "white",
   height: "100%",
 }));
 
