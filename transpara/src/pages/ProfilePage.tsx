@@ -291,6 +291,7 @@ const ProfilePage: React.FC = () => {
             <Sidebar
               minimized={sidebarMinimized}
               onToggleMinimize={() => setSidebarMinimized(!sidebarMinimized)}
+              onLogout={handleLogout}
             />
           </Box>
 
