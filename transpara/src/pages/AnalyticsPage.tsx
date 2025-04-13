@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import {
   Box,
@@ -237,6 +238,7 @@ interface Explanation {
   similarity_score: number;
   bias_score: number;
   rank: number;
+  id: string;
   chatgpt_explanation?: ChatGPTExplanation;
 }
 
@@ -275,6 +277,7 @@ export const AnalyticsPage = () => {
 
   const [biasSummary, setBiasSummary] = useState<BiasSummary | null>(null);
   const [sidebarMinimized, setSidebarMinimized] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -590,10 +593,10 @@ export const AnalyticsPage = () => {
             <Button
               variant="outlined"
               size="small"
-              sx={{
-                borderRadius: 1.5,
-                textTransform: "none",
-              }}
+              sx={{ borderRadius: 1.5, textTransform: "none" }}
+              onClick={() =>
+                navigate(`/profile/${selectedJobId}/${candidate.id}`)
+              }
             >
               View Profile
             </Button>
