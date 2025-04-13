@@ -23,7 +23,6 @@ import {
   ListItemButton,
 } from "@mui/material";
 
-// Icons
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
@@ -64,9 +63,8 @@ interface NotificationItem {
   type: string;
 }
 
-// Styled components
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: "white",
+  backgroundColor: alpha(theme.palette.primary.main, 0.0),
   boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)",
   position: "sticky",
   top: 0,
@@ -234,7 +232,6 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
   useEffect(() => {
     if (!user) return;
 
-    // Fetch user profile data
     const fetchUserData = async () => {
       try {
         const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -251,7 +248,6 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
 
     fetchUserData();
 
-    // Subscribe to notifications
     const q = query(
       collection(db, "notifications"),
       where("userId", "==", user.uid),
@@ -453,7 +449,6 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
         </Toolbar>
       </StyledAppBar>
 
-      {/* Notifications Menu */}
       <Menu
         anchorEl={notificationAnchorEl}
         open={isNotificationsOpen}
