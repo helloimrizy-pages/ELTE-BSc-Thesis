@@ -2,25 +2,28 @@ import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
 import {
   Box,
-  Container,
   Typography,
-  Paper,
-  TextField,
   Button,
+  IconButton,
+  CircularProgress,
   Grid,
   Card,
   CardContent,
   InputAdornment,
-  IconButton,
-  CircularProgress,
   Snackbar,
   Alert,
   LinearProgress,
+  TextField,
+  Switch,
+  Tabs,
+  Tab,
+  alpha,
 } from "@mui/material";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { TransparaAppBar } from "../components/AppBar/TransparaAppBar";
@@ -32,44 +35,55 @@ import SecurityIcon from "@mui/icons-material/Security";
 import LockIcon from "@mui/icons-material/Lock";
 import SaveIcon from "@mui/icons-material/Save";
 import KeyIcon from "@mui/icons-material/Key";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import PersonIcon from "@mui/icons-material/Person";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import ShieldIcon from "@mui/icons-material/Shield";
 
-const SettingsContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: "#fafafa",
+import { useThemeContext } from "../context/ThemeContext";
+
+const PageContainer = styled(Box)(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? theme.palette.background.default
+      : "#fafafa",
   minHeight: "calc(100vh - 64px)",
   paddingTop: theme.spacing(4),
   paddingBottom: theme.spacing(6),
+  borderRadius: theme.spacing(2),
 }));
 
-const SettingsCard = styled(Paper)(({ theme }) => ({
+const SectionCard = styled(Card)(({ theme }) => ({
   borderRadius: theme.spacing(2),
   boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
-  overflow: "hidden",
-}));
-
-const SettingsHeader = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(3, 4),
-  backgroundColor: theme.palette.primary.main,
-  color: "white",
-  position: "relative",
-}));
-
-const SettingsContent = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(4),
-}));
-
-const SectionTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 600,
-  marginBottom: theme.spacing(3),
-  position: "relative",
-  "&:after": {
-    content: '""',
-    position: "absolute",
-    left: 0,
-    bottom: -8,
-    width: 40,
-    height: 3,
-    backgroundColor: theme.palette.primary.main,
+  height: "100%",
+  transition: "transform 0.2s ease, box-shadow 0.2s ease",
+  overflow: "visible",
+  "&:hover": {
+    boxShadow: "0 6px 25px rgba(0, 0, 0, 0.1)",
+    transform: "translateY(-2px)",
   },
+}));
+
+const CardTitle = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(2, 3),
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
+
+const IconAvatar = styled(Box)(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.primary.main, 0.1),
+  color: theme.palette.primary.main,
+  width: 40,
+  height: 40,
+  borderRadius: 20,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  marginRight: theme.spacing(2),
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
@@ -86,42 +100,52 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 const ActionButton = styled(Button)(({ theme }) => ({
-  borderRadius: theme.spacing(1),
-  padding: theme.spacing(1.2, 3),
+  borderRadius: theme.spacing(1.5),
+  padding: theme.spacing(1, 3),
   textTransform: "none",
-  fontSize: "0.95rem",
   fontWeight: 600,
-  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+  boxShadow: "0 4px 14px rgba(0, 0, 0, 0.1)",
   transition: "all 0.3s ease",
   "&:hover": {
     transform: "translateY(-2px)",
-    boxShadow: "0 6px 15px rgba(0, 0, 0, 0.15)",
+    boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
   },
 }));
 
-const SectionCard = styled(Card)(({ theme }) => ({
-  borderRadius: theme.spacing(2),
-  boxShadow: "0 2px 12px rgba(0, 0, 0, 0.04)",
+const SectionTitle = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(3),
-  overflow: "visible",
-  transition: "transform 0.3s ease, box-shadow 0.3s ease",
-  "&:hover": {
-    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.08)",
-  },
-}));
-
-const CardTitle = styled(Box)(({ theme }) => ({
+  fontWeight: 600,
   display: "flex",
   alignItems: "center",
-  padding: theme.spacing(2, 3),
-  borderBottom: `1px solid ${theme.palette.divider}`,
+  "& svg": {
+    marginRight: theme.spacing(1),
+    color: theme.palette.primary.main,
+  },
 }));
 
-const PasswordStrengthIndicator = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "strength",
-})<{ strength: number }>(({ theme }) => ({
+const StyledTabs = styled(Tabs)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  "& .MuiTab-root": {
+    textTransform: "none",
+    fontWeight: 500,
+    minWidth: 100,
+  },
+}));
+
+const PasswordStrengthIndicator = styled(Box)(({ theme }) => ({
   marginTop: theme.spacing(1),
   marginBottom: theme.spacing(2),
+}));
+
+const SecurityTip = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "flex-start",
+  marginBottom: theme.spacing(1.5),
+  "& .icon": {
+    color: theme.palette.primary.main,
+    marginRight: theme.spacing(1.5),
+    marginTop: 2,
+  },
 }));
 
 const SettingsPage: React.FC = () => {
@@ -138,11 +162,18 @@ const SettingsPage: React.FC = () => {
     "success"
   );
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const { toggleColorMode, mode } = useThemeContext();
+  const [currentTab, setCurrentTab] = useState(0);
+  const [sidebarMinimized, setSidebarMinimized] = useState(false);
 
   const showSnackbar = (message: string, severity: "success" | "error") => {
     setSnackbarMessage(message);
     setSnackbarSeverity(severity);
     setSnackbarOpen(true);
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
   };
 
   const handleSnackbarClose = () => {
@@ -234,12 +265,13 @@ const SettingsPage: React.FC = () => {
     }
   };
 
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setCurrentTab(newValue);
+  };
+
   return (
     <Box>
-      <TransparaAppBar
-        onLogout={async () => auth.signOut()}
-        onSearch={() => {}}
-      />
+      <TransparaAppBar onLogout={handleLogout} onSearch={() => {}} />
 
       <Snackbar
         open={snackbarOpen}
@@ -251,322 +283,660 @@ const SettingsPage: React.FC = () => {
           onClose={handleSnackbarClose}
           severity={snackbarSeverity}
           sx={{ width: "100%" }}
+          elevation={6}
           variant="filled"
         >
           {snackbarMessage}
         </Alert>
       </Snackbar>
 
-      <SettingsContainer>
-        <Container maxWidth="lg">
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={3}>
-              <Sidebar />
-            </Grid>
+      <Box sx={{ mt: 4, mb: 4, px: 2 }}>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
+          <Box
+            sx={{
+              width: sidebarMinimized ? 80 : 240,
+              transition: "width 0.3s ease",
+              flexShrink: 0,
+            }}
+          >
+            <Sidebar
+              minimized={sidebarMinimized}
+              onToggleMinimize={() => setSidebarMinimized(!sidebarMinimized)}
+              onLogout={handleLogout}
+            />
+          </Box>
 
-            <Grid item xs={12} md={9}>
-              <SettingsCard>
-                <SettingsHeader>
-                  <Box display="flex" alignItems="center">
-                    <SecurityIcon sx={{ fontSize: 32, mr: 2 }} />
-                    <Box>
-                      <Typography variant="h5" fontWeight={700}>
-                        Security Settings
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{ mt: 0.5, opacity: 0.9 }}
-                      >
-                        Manage your account security preferences
-                      </Typography>
-                    </Box>
+          <Box sx={{ flexGrow: 1, pr: 2 }}>
+            <PageContainer>
+              <Box sx={{ px: 4 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: 4,
+                  }}
+                >
+                  <Box>
+                    <Typography variant="h4" fontWeight="700" gutterBottom>
+                      Account Settings
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                      Manage your account preferences and security options
+                    </Typography>
                   </Box>
-                </SettingsHeader>
+                </Box>
 
-                <SettingsContent>
-                  <SectionTitle variant="h6">Password Management</SectionTitle>
+                <StyledTabs
+                  value={currentTab}
+                  onChange={handleTabChange}
+                  indicatorColor="primary"
+                  textColor="primary"
+                >
+                  <Tab
+                    label="Security"
+                    icon={<SecurityIcon />}
+                    iconPosition="start"
+                  />
+                  <Tab
+                    label="Preferences"
+                    icon={<PersonIcon />}
+                    iconPosition="start"
+                  />
+                  <Tab
+                    label="Notifications"
+                    icon={<NotificationsIcon />}
+                    iconPosition="start"
+                  />
+                </StyledTabs>
 
-                  <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                      <SectionCard>
-                        <CardTitle>
-                          <KeyIcon sx={{ color: "text.secondary", mr: 1.5 }} />
-                          <Typography variant="subtitle1" fontWeight="600">
-                            Change Password
-                          </Typography>
-                        </CardTitle>
-                        <CardContent>
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            sx={{ mb: 3 }}
-                          >
-                            To change your password, enter your current password
-                            for verification, then enter a new secure password.
-                          </Typography>
+                {currentTab === 0 && (
+                  <>
+                    <SectionTitle variant="h6">
+                      <ShieldIcon /> Security Settings
+                    </SectionTitle>
 
-                          <StyledTextField
-                            fullWidth
-                            label="Current Password"
-                            type={showCurrentPassword ? "text" : "password"}
-                            value={currentPassword}
-                            onChange={(e) => setCurrentPassword(e.target.value)}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <LockIcon color="action" />
-                                </InputAdornment>
-                              ),
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <IconButton
-                                    onClick={() =>
-                                      setShowCurrentPassword(
-                                        !showCurrentPassword
-                                      )
-                                    }
-                                    edge="end"
-                                    size="small"
+                    <Grid container spacing={3}>
+                      <Grid item xs={12} md={6}>
+                        <SectionCard>
+                          <CardTitle>
+                            <IconAvatar>
+                              <KeyIcon />
+                            </IconAvatar>
+                            <Typography variant="subtitle1" fontWeight="600">
+                              Change Password
+                            </Typography>
+                          </CardTitle>
+                          <CardContent sx={{ p: 3 }}>
+                            <StyledTextField
+                              fullWidth
+                              label="Current Password"
+                              type={showCurrentPassword ? "text" : "password"}
+                              value={currentPassword}
+                              onChange={(e) =>
+                                setCurrentPassword(e.target.value)
+                              }
+                              InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <LockIcon color="action" />
+                                  </InputAdornment>
+                                ),
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      onClick={() =>
+                                        setShowCurrentPassword(
+                                          !showCurrentPassword
+                                        )
+                                      }
+                                      edge="end"
+                                      size="small"
+                                    >
+                                      {showCurrentPassword ? (
+                                        <VisibilityOffIcon />
+                                      ) : (
+                                        <VisibilityIcon />
+                                      )}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+
+                            <StyledTextField
+                              fullWidth
+                              label="New Password"
+                              type={showNewPassword ? "text" : "password"}
+                              value={newPassword}
+                              onChange={handleNewPasswordChange}
+                              InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <LockIcon color="action" />
+                                  </InputAdornment>
+                                ),
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      onClick={() =>
+                                        setShowNewPassword(!showNewPassword)
+                                      }
+                                      edge="end"
+                                      size="small"
+                                    >
+                                      {showNewPassword ? (
+                                        <VisibilityOffIcon />
+                                      ) : (
+                                        <VisibilityIcon />
+                                      )}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+
+                            {newPassword && (
+                              <PasswordStrengthIndicator>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    mb: 0.5,
+                                  }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    color="text.secondary"
                                   >
-                                    {showCurrentPassword ? (
-                                      <VisibilityOffIcon />
-                                    ) : (
-                                      <VisibilityIcon />
-                                    )}
-                                  </IconButton>
-                                </InputAdornment>
-                              ),
-                            }}
-                          />
-
-                          <StyledTextField
-                            fullWidth
-                            label="New Password"
-                            type={showNewPassword ? "text" : "password"}
-                            value={newPassword}
-                            onChange={handleNewPasswordChange}
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <LockIcon color="action" />
-                                </InputAdornment>
-                              ),
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <IconButton
-                                    onClick={() =>
-                                      setShowNewPassword(!showNewPassword)
-                                    }
-                                    edge="end"
-                                    size="small"
+                                    Password Strength
+                                  </Typography>
+                                  <Typography
+                                    variant="caption"
+                                    color={getStrengthColor()}
                                   >
-                                    {showNewPassword ? (
-                                      <VisibilityOffIcon />
-                                    ) : (
-                                      <VisibilityIcon />
-                                    )}
-                                  </IconButton>
-                                </InputAdornment>
-                              ),
-                            }}
-                          />
+                                    {getStrengthLabel()}
+                                  </Typography>
+                                </Box>
+                                <LinearProgress
+                                  variant="determinate"
+                                  value={passwordStrength}
+                                  color={getStrengthColor()}
+                                  sx={{ height: 6, borderRadius: 3 }}
+                                />
+                              </PasswordStrengthIndicator>
+                            )}
 
-                          {newPassword && (
-                            <PasswordStrengthIndicator
-                              strength={passwordStrength}
+                            <StyledTextField
+                              fullWidth
+                              label="Confirm New Password"
+                              type={showConfirmPassword ? "text" : "password"}
+                              value={confirmPassword}
+                              onChange={(e) =>
+                                setConfirmPassword(e.target.value)
+                              }
+                              error={
+                                confirmPassword !== "" &&
+                                newPassword !== confirmPassword
+                              }
+                              helperText={
+                                confirmPassword !== "" &&
+                                newPassword !== confirmPassword
+                                  ? "Passwords don't match"
+                                  : ""
+                              }
+                              InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <LockIcon color="action" />
+                                  </InputAdornment>
+                                ),
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      onClick={() =>
+                                        setShowConfirmPassword(
+                                          !showConfirmPassword
+                                        )
+                                      }
+                                      edge="end"
+                                      size="small"
+                                    >
+                                      {showConfirmPassword ? (
+                                        <VisibilityOffIcon />
+                                      ) : (
+                                        <VisibilityIcon />
+                                      )}
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                              }}
+                              sx={{ mb: 0 }}
+                            />
+
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                mt: 3,
+                              }}
+                            >
+                              <ActionButton
+                                variant="outlined"
+                                color="inherit"
+                                onClick={resetPasswordFields}
+                                sx={{ mr: 2 }}
+                                disabled={isLoading}
+                              >
+                                Reset
+                              </ActionButton>
+                              <ActionButton
+                                variant="contained"
+                                color="primary"
+                                onClick={handleChangePassword}
+                                disabled={
+                                  isLoading ||
+                                  !currentPassword ||
+                                  !newPassword ||
+                                  !confirmPassword
+                                }
+                                startIcon={
+                                  isLoading ? (
+                                    <CircularProgress size={20} />
+                                  ) : (
+                                    <SaveIcon />
+                                  )
+                                }
+                              >
+                                {isLoading ? "Updating..." : "Update Password"}
+                              </ActionButton>
+                            </Box>
+                          </CardContent>
+                        </SectionCard>
+                      </Grid>
+
+                      <Grid item xs={12} md={6}>
+                        <SectionCard>
+                          <CardTitle>
+                            <IconAvatar>
+                              <SecurityIcon />
+                            </IconAvatar>
+                            <Typography variant="subtitle1" fontWeight="600">
+                              Password Security Tips
+                            </Typography>
+                          </CardTitle>
+                          <CardContent sx={{ p: 3 }}>
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              paragraph
+                            >
+                              Creating a strong password is essential for
+                              keeping your account secure. Follow these
+                              guidelines:
+                            </Typography>
+
+                            <Box sx={{ mt: 3 }}>
+                              <SecurityTip>
+                                <Typography variant="body2" className="icon">
+                                  •
+                                </Typography>
+                                <Typography variant="body2">
+                                  Use at least 12 characters - longer passwords
+                                  are generally more secure
+                                </Typography>
+                              </SecurityTip>
+
+                              <SecurityTip>
+                                <Typography variant="body2" className="icon">
+                                  •
+                                </Typography>
+                                <Typography variant="body2">
+                                  Include a mix of uppercase and lowercase
+                                  letters for additional complexity
+                                </Typography>
+                              </SecurityTip>
+
+                              <SecurityTip>
+                                <Typography variant="body2" className="icon">
+                                  •
+                                </Typography>
+                                <Typography variant="body2">
+                                  Add numbers and special characters (!@#$%^&*)
+                                  to strengthen your password
+                                </Typography>
+                              </SecurityTip>
+
+                              <SecurityTip>
+                                <Typography variant="body2" className="icon">
+                                  •
+                                </Typography>
+                                <Typography variant="body2">
+                                  Avoid using personal information that others
+                                  might know or could easily discover
+                                </Typography>
+                              </SecurityTip>
+
+                              <SecurityTip>
+                                <Typography variant="body2" className="icon">
+                                  •
+                                </Typography>
+                                <Typography variant="body2">
+                                  Don't reuse passwords across multiple services
+                                  or accounts
+                                </Typography>
+                              </SecurityTip>
+                            </Box>
+
+                            <Box
+                              sx={{
+                                mt: 3,
+                                pt: 2,
+                                borderTop: "1px solid",
+                                borderColor: "divider",
+                              }}
+                            >
+                              <Typography
+                                variant="subtitle2"
+                                gutterBottom
+                                fontWeight={600}
+                              >
+                                Need Additional Help?
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                paragraph
+                              >
+                                Contact our support team if you're experiencing
+                                issues with your account.
+                              </Typography>
+                              <ActionButton
+                                variant="outlined"
+                                color="primary"
+                                size="small"
+                                startIcon={<MailOutlineIcon />}
+                                onClick={() =>
+                                  window.open(
+                                    `mailto:support@yourapp.com?subject=Security Question&body=Hello,%20I%20need%20help%20with...`
+                                  )
+                                }
+                              >
+                                Contact Support
+                              </ActionButton>
+                            </Box>
+                          </CardContent>
+                        </SectionCard>
+                      </Grid>
+                    </Grid>
+                  </>
+                )}
+
+                {currentTab === 1 && (
+                  <>
+                    <SectionTitle variant="h6">
+                      <PersonIcon /> Preferences
+                    </SectionTitle>
+
+                    <Grid container spacing={3}>
+                      <Grid item xs={12} md={6}>
+                        <SectionCard sx={{ height: "100%" }}>
+                          <CardTitle>
+                            <IconAvatar>
+                              {mode === "dark" ? (
+                                <DarkModeIcon />
+                              ) : (
+                                <LightModeIcon />
+                              )}
+                            </IconAvatar>
+                            <Typography variant="subtitle1" fontWeight="600">
+                              Theme Preferences
+                            </Typography>
+                          </CardTitle>
+                          <CardContent sx={{ p: 3 }}>
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              paragraph
+                            >
+                              Choose between light and dark mode for your
+                              dashboard experience.
+                            </Typography>
+
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                mt: 2,
+                                p: 2,
+                                borderRadius: 2,
+                                bgcolor: alpha("#000", 0.04),
+                              }}
                             >
                               <Box
-                                sx={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  mb: 0.5,
-                                }}
+                                sx={{ display: "flex", alignItems: "center" }}
                               >
-                                <Typography
-                                  variant="caption"
-                                  color="text.secondary"
-                                >
-                                  Password Strength
-                                </Typography>
-                                <Typography
-                                  variant="caption"
-                                  color={getStrengthColor()}
-                                >
-                                  {getStrengthLabel()}
+                                {mode === "dark" ? (
+                                  <DarkModeIcon
+                                    sx={{ mr: 2, color: "primary.main" }}
+                                  />
+                                ) : (
+                                  <LightModeIcon
+                                    sx={{ mr: 2, color: "primary.main" }}
+                                  />
+                                )}
+                                <Typography variant="body1" fontWeight={500}>
+                                  {mode === "dark" ? "Dark Mode" : "Light Mode"}
                                 </Typography>
                               </Box>
-                              <LinearProgress
-                                variant="determinate"
-                                value={passwordStrength}
-                                color={getStrengthColor()}
-                                sx={{ height: 6, borderRadius: 3 }}
+
+                              <Switch
+                                checked={mode === "dark"}
+                                onChange={toggleColorMode}
+                                color="primary"
                               />
-                            </PasswordStrengthIndicator>
-                          )}
+                            </Box>
 
-                          <StyledTextField
-                            fullWidth
-                            label="Confirm New Password"
-                            type={showConfirmPassword ? "text" : "password"}
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            error={
-                              confirmPassword !== "" &&
-                              newPassword !== confirmPassword
-                            }
-                            helperText={
-                              confirmPassword !== "" &&
-                              newPassword !== confirmPassword
-                                ? "Passwords don't match"
-                                : ""
-                            }
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <LockIcon color="action" />
-                                </InputAdornment>
-                              ),
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <IconButton
-                                    onClick={() =>
-                                      setShowConfirmPassword(
-                                        !showConfirmPassword
-                                      )
-                                    }
-                                    edge="end"
-                                    size="small"
-                                  >
-                                    {showConfirmPassword ? (
-                                      <VisibilityOffIcon />
-                                    ) : (
-                                      <VisibilityIcon />
-                                    )}
-                                  </IconButton>
-                                </InputAdornment>
-                              ),
-                            }}
-                            sx={{ mb: 0 }}
-                          />
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              sx={{ mt: 3 }}
+                            >
+                              {mode === "dark"
+                                ? "Dark mode reduces eye strain in low-light environments and can save battery life on OLED screens."
+                                : "Light mode provides better readability in well-lit environments and matches traditional document styles."}
+                            </Typography>
+                          </CardContent>
+                        </SectionCard>
+                      </Grid>
 
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "flex-end",
-                              mt: 3,
-                            }}
-                          >
-                            <ActionButton
-                              variant="outlined"
-                              color="inherit"
-                              onClick={resetPasswordFields}
-                              sx={{ mr: 2 }}
-                              disabled={isLoading}
+                      <Grid item xs={12} md={6}>
+                        <SectionCard sx={{ height: "100%" }}>
+                          <CardTitle>
+                            <IconAvatar>
+                              <MailOutlineIcon />
+                            </IconAvatar>
+                            <Typography variant="subtitle1" fontWeight="600">
+                              Feedback & Support
+                            </Typography>
+                          </CardTitle>
+                          <CardContent sx={{ p: 3 }}>
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              paragraph
                             >
-                              Reset
-                            </ActionButton>
-                            <ActionButton
-                              variant="contained"
-                              color="primary"
-                              onClick={handleChangePassword}
-                              disabled={
-                                isLoading ||
-                                !currentPassword ||
-                                !newPassword ||
-                                !confirmPassword
-                              }
-                              startIcon={
-                                isLoading ? (
-                                  <CircularProgress size={20} />
-                                ) : (
-                                  <SaveIcon />
-                                )
-                              }
+                              We're constantly improving our platform based on
+                              your feedback. Let us know how we can make your
+                              experience better.
+                            </Typography>
+
+                            <Box
+                              sx={{
+                                mt: 3,
+                                p: 3,
+                                borderRadius: 2,
+                                bgcolor: alpha("#000", 0.04),
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                textAlign: "center",
+                              }}
                             >
-                              {isLoading ? "Updating..." : "Update Password"}
-                            </ActionButton>
-                          </Box>
-                        </CardContent>
-                      </SectionCard>
+                              <MailOutlineIcon
+                                sx={{
+                                  fontSize: 40,
+                                  color: "primary.main",
+                                  mb: 2,
+                                }}
+                              />
+                              <Typography
+                                variant="subtitle2"
+                                gutterBottom
+                                fontWeight={600}
+                              >
+                                Have Questions or Feedback?
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{ mb: 3 }}
+                              >
+                                Our team is here to help! Reach out with any
+                                questions, suggestions, or issues.
+                              </Typography>
+                              <ActionButton
+                                variant="contained"
+                                color="primary"
+                                startIcon={<MailOutlineIcon />}
+                                onClick={() =>
+                                  window.open(
+                                    `mailto:support@yourapp.com?subject=Feedback&body=Hello,%20I'd%20like%20to%20share%20some%20feedback...`
+                                  )
+                                }
+                              >
+                                Contact Support
+                              </ActionButton>
+                            </Box>
+                          </CardContent>
+                        </SectionCard>
+                      </Grid>
                     </Grid>
+                  </>
+                )}
 
-                    <Grid item xs={12}>
-                      <SectionCard>
-                        <CardTitle>
-                          <SecurityIcon
-                            sx={{ color: "text.secondary", mr: 1.5 }}
-                          />
-                          <Typography variant="subtitle1" fontWeight="600">
-                            Password Security Tips
-                          </Typography>
-                        </CardTitle>
-                        <CardContent>
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            gutterBottom
-                          >
-                            Creating a strong password is essential for keeping
-                            your account secure. Follow these guidelines:
-                          </Typography>
-                          <Box sx={{ mt: 2 }}>
+                {currentTab === 2 && (
+                  <>
+                    <SectionTitle variant="h6">
+                      <NotificationsIcon /> Notification Settings
+                    </SectionTitle>
+
+                    <Alert
+                      severity="info"
+                      sx={{
+                        mb: 3,
+                        borderRadius: 2,
+                        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+                      }}
+                    >
+                      <Typography variant="subtitle2" fontWeight={600}>
+                        Coming Soon
+                      </Typography>
+                      <Typography variant="body2">
+                        Notification preferences will be available in an
+                        upcoming update. Check back soon!
+                      </Typography>
+                    </Alert>
+
+                    <Grid container spacing={3}>
+                      <Grid item xs={12}>
+                        <SectionCard>
+                          <CardTitle>
+                            <IconAvatar>
+                              <NotificationsIcon />
+                            </IconAvatar>
+                            <Typography variant="subtitle1" fontWeight="600">
+                              Notification Preview
+                            </Typography>
+                          </CardTitle>
+                          <CardContent sx={{ p: 3 }}>
                             <Typography
                               variant="body2"
+                              color="text.secondary"
+                              paragraph
+                            >
+                              Soon you'll be able to customize your notification
+                              preferences here, including:
+                            </Typography>
+
+                            <Box sx={{ mt: 2 }}>
+                              <SecurityTip>
+                                <Typography variant="body2" className="icon">
+                                  •
+                                </Typography>
+                                <Typography variant="body2">
+                                  Email notifications for job applications
+                                </Typography>
+                              </SecurityTip>
+
+                              <SecurityTip>
+                                <Typography variant="body2" className="icon">
+                                  •
+                                </Typography>
+                                <Typography variant="body2">
+                                  Browser notifications for account activity
+                                </Typography>
+                              </SecurityTip>
+
+                              <SecurityTip>
+                                <Typography variant="body2" className="icon">
+                                  •
+                                </Typography>
+                                <Typography variant="body2">
+                                  Weekly summary reports and analytics
+                                </Typography>
+                              </SecurityTip>
+
+                              <SecurityTip>
+                                <Typography variant="body2" className="icon">
+                                  •
+                                </Typography>
+                                <Typography variant="body2">
+                                  Security alerts and account notifications
+                                </Typography>
+                              </SecurityTip>
+                            </Box>
+
+                            <Box
                               sx={{
+                                mt: 3,
+                                pt: 2,
+                                borderTop: "1px solid",
+                                borderColor: "divider",
                                 display: "flex",
-                                alignItems: "center",
-                                mb: 1,
+                                justifyContent: "flex-end",
                               }}
                             >
-                              • Use at least 12 characters
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                mb: 1,
-                              }}
-                            >
-                              • Include a mix of uppercase and lowercase letters
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                mb: 1,
-                              }}
-                            >
-                              • Add numbers and special characters
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                mb: 1,
-                              }}
-                            >
-                              • Avoid using personal information
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              sx={{ display: "flex", alignItems: "center" }}
-                            >
-                              • Don't reuse passwords across multiple services
-                            </Typography>
-                          </Box>
-                        </CardContent>
-                      </SectionCard>
+                              <ActionButton
+                                variant="outlined"
+                                color="primary"
+                                disabled
+                              >
+                                Settings Coming Soon
+                              </ActionButton>
+                            </Box>
+                          </CardContent>
+                        </SectionCard>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </SettingsContent>
-              </SettingsCard>
-            </Grid>
-          </Grid>
-        </Container>
-      </SettingsContainer>
+                  </>
+                )}
+              </Box>
+            </PageContainer>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 };
