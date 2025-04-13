@@ -9,7 +9,6 @@ import {
   Select,
   FormControl,
   InputLabel,
-  Container,
   Grid,
   Card,
   CardContent,
@@ -272,6 +271,11 @@ export const AnalyticsPage = () => {
   const [initialLoading, setInitialLoading] = useState(true);
 
   const [biasSummary, setBiasSummary] = useState<BiasSummary | null>(null);
+  const [sidebarMinimized, setSidebarMinimized] = useState(false);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
 
   const fetchJobs = async () => {
     try {
@@ -345,10 +349,6 @@ export const AnalyticsPage = () => {
   useEffect(() => {
     fetchJobs();
   }, []);
-
-  const handleLogout = async () => {
-    await signOut(auth);
-  };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setCurrentTab(newValue);
@@ -1168,15 +1168,33 @@ export const AnalyticsPage = () => {
         onLogout={handleLogout}
         onSearch={(value) => setSearchTerm(value)}
       />
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={3}>
-            <Sidebar />
-          </Grid>
 
-          <Grid item xs={12} md={9}>
+      <Box sx={{ mt: 4, mb: 4, px: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            transition: "all 0.3s ease",
+            gap: 2,
+          }}
+        >
+          <Box
+            sx={{
+              width: sidebarMinimized ? 80 : 240,
+              transition: "width 0.3s ease",
+              flexShrink: 0,
+            }}
+          >
+            <Sidebar
+              minimized={sidebarMinimized}
+              onToggleMinimize={() => setSidebarMinimized(!sidebarMinimized)}
+              onLogout={handleLogout}
+            />
+          </Box>
+
+          <Box sx={{ flexGrow: 1, pr: 2 }}>
             <PageContainer>
-              <Container maxWidth="lg">
+              <Box sx={{ px: 4 }}>
                 <Box sx={{ mb: 4 }}>
                   <Typography variant="h4" fontWeight="700" gutterBottom>
                     Candidate Analysis
@@ -1281,11 +1299,11 @@ export const AnalyticsPage = () => {
                 {currentTab === 1 && renderAnalyticsOverview()}
 
                 {currentTab === 2 && renderDetailedAnalysis()}
-              </Container>
+              </Box>
             </PageContainer>
-          </Grid>
-        </Grid>
-      </Container>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 };
