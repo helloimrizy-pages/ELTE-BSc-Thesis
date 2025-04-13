@@ -83,7 +83,10 @@ import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 const PageContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: "#fafafa",
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? theme.palette.background.default
+      : "#fafafa",
   minHeight: "calc(100vh - 64px)",
   paddingTop: theme.spacing(4),
   paddingBottom: theme.spacing(6),
@@ -131,7 +134,22 @@ const JobCardHeader = styled(Box)(({ theme }) => ({
 }));
 
 const JobCardContent = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2, 3),
+  padding: theme.spacing(2.5, 3),
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? alpha(theme.palette.background.paper, 0.6)
+      : alpha(theme.palette.background.paper, 0.8),
+  position: "relative",
+  transition: "background-color 0.2s ease",
+  "&:hover": {
+    backgroundColor:
+      theme.palette.mode === "dark"
+        ? alpha(theme.palette.background.paper, 0.8)
+        : alpha(theme.palette.background.paper, 1),
+  },
+  "& > *:not(:last-child)": {
+    marginBottom: theme.spacing(1.5),
+  },
 }));
 
 const JobCardFooter = styled(Box)(({ theme }) => ({
