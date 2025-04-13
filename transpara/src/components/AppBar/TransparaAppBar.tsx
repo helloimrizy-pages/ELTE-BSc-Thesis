@@ -69,6 +69,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   position: "sticky",
   top: 0,
   zIndex: theme.zIndex.drawer + 1,
+  borderBottom: `1px solid ${theme.palette.divider}`, // 👈 add this line
 }));
 
 const LogoContainer = styled(Box)(({ theme }) => ({
@@ -78,27 +79,40 @@ const LogoContainer = styled(Box)(({ theme }) => ({
   marginRight: theme.spacing(2),
 }));
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius * 2,
-  backgroundColor: alpha(theme.palette.common.black, 0.04),
-  transition: "all 0.3s ease",
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.black, 0.06),
-    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
-  },
-  "&:focus-within": {
-    backgroundColor: alpha(theme.palette.common.black, 0.06),
-    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-  },
-  width: "100%",
-  marginRight: theme.spacing(2),
-  [theme.breakpoints.up("sm")]: {
-    width: "auto",
-    flexGrow: 1,
-    maxWidth: 600,
-  },
-}));
+const Search = styled("div")(({ theme }) => {
+  const isDark = theme.palette.mode === "dark";
+  return {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius * 2,
+    backgroundColor: isDark
+      ? alpha(theme.palette.common.white, 0.08)
+      : alpha(theme.palette.common.black, 0.04),
+    transition: "all 0.3s ease",
+    "&:hover": {
+      backgroundColor: isDark
+        ? alpha(theme.palette.common.white, 0.12)
+        : alpha(theme.palette.common.black, 0.06),
+      boxShadow: isDark
+        ? "0 2px 6px rgba(255, 255, 255, 0.05)"
+        : "0 2px 8px rgba(0, 0, 0, 0.05)",
+    },
+    "&:focus-within": {
+      backgroundColor: isDark
+        ? alpha(theme.palette.common.white, 0.15)
+        : alpha(theme.palette.common.black, 0.06),
+      boxShadow: isDark
+        ? "0 2px 10px rgba(255, 255, 255, 0.08)"
+        : "0 2px 8px rgba(0, 0, 0, 0.08)",
+    },
+    width: "100%",
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      width: "auto",
+      flexGrow: 1,
+      maxWidth: 600,
+    },
+  };
+});
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -136,13 +150,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const ActionButton = styled(IconButton)(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.primary.main, 0.05),
   borderRadius: theme.shape.borderRadius * 1.5,
-  marginLeft: theme.spacing(1),
-  padding: theme.spacing(1),
+  padding: theme.spacing(0.75),
+  backgroundColor: alpha(theme.palette.text.primary, 0.05),
+  color: theme.palette.text.primary,
   transition: "all 0.2s ease",
   "&:hover": {
-    backgroundColor: alpha(theme.palette.primary.main, 0.12),
+    backgroundColor: alpha(theme.palette.text.primary, 0.12),
   },
 }));
 
@@ -151,11 +165,11 @@ const ProfileButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius * 1.5,
   padding: theme.spacing(0.5, 1.5, 0.5, 1),
   textTransform: "none",
-  backgroundColor: alpha(theme.palette.primary.main, 0.05),
+  backgroundColor: alpha(theme.palette.text.primary, 0.05),
   color: theme.palette.text.primary,
   transition: "all 0.2s ease",
   "&:hover": {
-    backgroundColor: alpha(theme.palette.primary.main, 0.12),
+    backgroundColor: alpha(theme.palette.text.primary, 0.12),
   },
 }));
 
