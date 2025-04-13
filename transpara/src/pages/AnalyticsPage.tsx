@@ -19,7 +19,6 @@ import {
   Divider,
   Tabs,
   Tab,
-  TextField,
   Alert,
   Skeleton,
   IconButton,
@@ -72,7 +71,6 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import InfoIcon from "@mui/icons-material/Info";
 import WarningIcon from "@mui/icons-material/Warning";
-import SearchIcon from "@mui/icons-material/Search";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SkillsIcon from "@mui/icons-material/Psychology";
 import EducationIcon from "@mui/icons-material/School";
@@ -100,7 +98,11 @@ const AnalyticsCard = styled(Card)(({ theme }) => ({
   borderRadius: theme.spacing(2),
   boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
   height: "100%",
-  overflow: "visible",
+  transition: "transform 0.2s ease, box-shadow 0.2s ease",
+  "&:hover": {
+    boxShadow: "0 6px 25px rgba(0, 0, 0, 0.1)",
+    transform: "translateY(-2px)",
+  },
 }));
 
 const CardTitle = styled(Typography)(({ theme }) => ({
@@ -162,20 +164,6 @@ const CandidateCard = styled(Card)(({ theme }) => ({
   "&:hover": {
     boxShadow: "0 6px 25px rgba(0, 0, 0, 0.1)",
     transform: "translateY(-2px)",
-  },
-}));
-
-const SearchField = styled(TextField)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-  "& .MuiOutlinedInput-root": {
-    borderRadius: theme.spacing(1.5),
-    paddingLeft: theme.spacing(1),
-    transition: "all 0.3s ease",
-    "&:hover": {
-      "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: theme.palette.primary.main,
-      },
-    },
   },
 }));
 
@@ -1180,136 +1168,124 @@ export const AnalyticsPage = () => {
         onLogout={handleLogout}
         onSearch={(value) => setSearchTerm(value)}
       />
-
-      <PageContainer>
-        <Container maxWidth="lg">
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={3}>
-              <Sidebar />
-            </Grid>
-
-            <Grid item xs={12} md={9}>
-              <Box sx={{ mb: 4 }}>
-                <Typography variant="h4" fontWeight="700" gutterBottom>
-                  Candidate Analysis
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  Compare and analyze candidate data for better hiring decisions
-                </Typography>
-              </Box>
-
-              <AnalyticsCard elevation={0} sx={{ mb: 4 }}>
-                <CardContent sx={{ p: 3 }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: { xs: "column", sm: "row" },
-                      alignItems: { xs: "stretch", sm: "flex-end" },
-                      gap: 2,
-                    }}
-                  >
-                    <FormControl fullWidth>
-                      <InputLabel>Select Job</InputLabel>
-                      <Select
-                        value={selectedJobId}
-                        onChange={(e) => setSelectedJobId(e.target.value)}
-                        label="Select Job"
-                        sx={{
-                          borderRadius: 1.5,
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: alpha(theme.palette.primary.main, 0.2),
-                          },
-                        }}
-                      >
-                        {initialLoading ? (
-                          <MenuItem disabled>Loading jobs...</MenuItem>
-                        ) : jobs.length === 0 ? (
-                          <MenuItem disabled>No jobs available</MenuItem>
-                        ) : (
-                          jobs.map((job) => (
-                            <MenuItem key={job.id} value={job.id}>
-                              {job.title}
-                            </MenuItem>
-                          ))
-                        )}
-                      </Select>
-                    </FormControl>
-
-                    <ActionButton
-                      variant="contained"
-                      onClick={fetchAnalysis}
-                      disabled={!selectedJobId || loading}
-                      startIcon={
-                        loading ? (
-                          <CircularProgress size={20} color="inherit" />
-                        ) : (
-                          <RefreshIcon />
-                        )
-                      }
-                      sx={{ minWidth: 150 }}
-                    >
-                      {loading ? "Analyzing..." : "Run Analysis"}
-                    </ActionButton>
-                  </Box>
-                </CardContent>
-              </AnalyticsCard>
-
-              {!loading && selectedJobId && data.length > 0 && (
-                <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
-                  Showing cached analysis results. Click "Run Analysis" to
-                  refresh data.
-                </Alert>
-              )}
-
-              <StyledTabs
-                value={currentTab}
-                onChange={handleTabChange}
-                indicatorColor="primary"
-                textColor="primary"
-              >
-                <Tab
-                  label="Candidates"
-                  icon={<PersonIcon />}
-                  iconPosition="start"
-                />
-                <Tab
-                  label="Analytics"
-                  icon={<AssessmentIcon />}
-                  iconPosition="start"
-                />
-                <Tab
-                  label="Detailed Analysis"
-                  icon={<DescriptionIcon />}
-                  iconPosition="start"
-                />
-              </StyledTabs>
-
-              {currentTab === 0 && (
-                <Box>
-                  <Box sx={{ display: "flex", mb: 3 }}>
-                    <SearchField
-                      fullWidth
-                      placeholder="Search candidates..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      InputProps={{
-                        startAdornment: (
-                          <SearchIcon color="action" sx={{ mr: 1 }} />
-                        ),
-                      }}
-                    />
-                  </Box>
-                  {renderCandidateCards()}
-                </Box>
-              )}
-
-              {currentTab === 1 && renderAnalyticsOverview()}
-
-              {currentTab === 2 && renderDetailedAnalysis()}
-            </Grid>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={3}>
+            <Sidebar />
           </Grid>
-        </Container>
-      </PageContainer>
+
+          <Grid item xs={12} md={9}>
+            <PageContainer>
+              <Container maxWidth="lg">
+                <Box sx={{ mb: 4 }}>
+                  <Typography variant="h4" fontWeight="700" gutterBottom>
+                    Candidate Analysis
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    Compare and analyze candidate data for better hiring
+                    decisions
+                  </Typography>
+                </Box>
+
+                <AnalyticsCard elevation={0} sx={{ mb: 2 }}>
+                  <CardContent sx={{ p: 3 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        alignItems: { xs: "stretch", sm: "flex-end" },
+                        gap: 2,
+                      }}
+                    >
+                      <FormControl fullWidth>
+                        <InputLabel>Select Job</InputLabel>
+                        <Select
+                          value={selectedJobId}
+                          onChange={(e) => setSelectedJobId(e.target.value)}
+                          label="Select Job"
+                          sx={{
+                            borderRadius: 1.5,
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: alpha(
+                                theme.palette.primary.main,
+                                0.2
+                              ),
+                            },
+                          }}
+                        >
+                          {initialLoading ? (
+                            <MenuItem disabled>Loading jobs...</MenuItem>
+                          ) : jobs.length === 0 ? (
+                            <MenuItem disabled>No jobs available</MenuItem>
+                          ) : (
+                            jobs.map((job) => (
+                              <MenuItem key={job.id} value={job.id}>
+                                {job.title}
+                              </MenuItem>
+                            ))
+                          )}
+                        </Select>
+                      </FormControl>
+
+                      <ActionButton
+                        variant="contained"
+                        onClick={fetchAnalysis}
+                        disabled={!selectedJobId || loading}
+                        startIcon={
+                          loading ? (
+                            <CircularProgress size={20} color="inherit" />
+                          ) : (
+                            <RefreshIcon />
+                          )
+                        }
+                        sx={{ minWidth: 150 }}
+                      >
+                        {loading ? "Analyzing..." : "Run Analysis"}
+                      </ActionButton>
+                    </Box>
+                  </CardContent>
+                </AnalyticsCard>
+
+                {!loading && selectedJobId && data.length > 0 && (
+                  <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+                    Showing cached analysis results. Click "Run Analysis" to
+                    refresh data.
+                  </Alert>
+                )}
+
+                <StyledTabs
+                  value={currentTab}
+                  onChange={handleTabChange}
+                  indicatorColor="primary"
+                  textColor="primary"
+                >
+                  <Tab
+                    label="Candidates"
+                    icon={<PersonIcon />}
+                    iconPosition="start"
+                  />
+                  <Tab
+                    label="Analytics"
+                    icon={<AssessmentIcon />}
+                    iconPosition="start"
+                  />
+                  <Tab
+                    label="Detailed Analysis"
+                    icon={<DescriptionIcon />}
+                    iconPosition="start"
+                  />
+                </StyledTabs>
+
+                {currentTab === 0 && <Box>{renderCandidateCards()}</Box>}
+
+                {currentTab === 1 && renderAnalyticsOverview()}
+
+                {currentTab === 2 && renderDetailedAnalysis()}
+              </Container>
+            </PageContainer>
+          </Grid>
+        </Grid>
+      </Container>
     </Box>
   );
 };

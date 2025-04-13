@@ -1,11 +1,19 @@
 {
-  "analysis_id": "gender_bias_8e798aa8-b01b-449d-b484-db33bb226dc5",
+  "analysis_id": "gender_bias_3c8b5287-dcc5-4631-9b4d-4ae0b6ce3c61",
   "title": "Gender Bias Analysis Report",
   "understanding": {
     "description": "The Gender Bias Score measures the imbalance between masculine and feminine terms in the text. A score of 0 indicates perfect balance, while higher scores indicate more gender-specific language.",
     "calculation": "(|male_terms - female_terms| / total_words) * 100"
   },
   "candidate_analysis": [
+    {
+      "id": "WdvZA8BZpeHVOSfbOpau",
+      "candidate_file": "Alfarizy Alfarizy",
+      "gender_bias_score": 0.0,
+      "male_terms": "none",
+      "female_terms": "none",
+      "recommendation": "This resume uses gender-neutral language effectively."
+    },
     {
       "id": "Y3ESdrmcISD9s8QNZrqw",
       "candidate_file": "Anna Schmidt",
@@ -25,11 +33,11 @@
     "Review for unconscious bias in language describing leadership, technical skills, etc."
   ],
   "summary": {
-    "average_bias": 3.48,
-    "min_bias": 3.48,
+    "average_bias": 1.74,
+    "min_bias": 0.0,
     "max_bias": 3.48,
-    "median_bias": 3.48,
-    "most_neutral_candidate": "Anna Schmidt",
+    "median_bias": 1.74,
+    "most_neutral_candidate": "Alfarizy Alfarizy",
     "least_neutral_candidate": "Anna Schmidt"
   }
 }

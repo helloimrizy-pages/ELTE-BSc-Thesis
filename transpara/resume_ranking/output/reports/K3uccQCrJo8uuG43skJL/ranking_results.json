@@ -1,9 +1,15 @@
 {
-  "analysis_id": "ranking_79b003fc-7704-4e97-832d-443726674c43",
+  "analysis_id": "ranking_ee35d658-d22d-4b76-b08b-bcf4372a32a1",
   "ranking": [
     {
-      "id": "Y3ESdrmcISD9s8QNZrqw",
+      "id": "WdvZA8BZpeHVOSfbOpau",
       "rank": 1,
+      "candidate_file": "Alfarizy Alfarizy",
+      "score": 0.8385
+    },
+    {
+      "id": "Y3ESdrmcISD9s8QNZrqw",
+      "rank": 2,
       "candidate_file": "Anna Schmidt",
       "score": 0.7318
     }

@@ -1,6 +1,74 @@
 {
-  "analysis_id": "shap_a6e7c0a7-8dfe-4903-ae80-5c16d0132716",
+  "analysis_id": "shap_9c267a09-fcde-4e5b-8da0-b5d7b3e7233b",
   "shap": [
+    {
+      "id": "WdvZA8BZpeHVOSfbOpau",
+      "candidate_file": "Alfarizy Alfarizy",
+      "base_value": 0.7620010049564142,
+      "prediction": 0.8384683731857708,
+      "contributors": [
+        {
+          "feature": "Overall CV-Job Similarity",
+          "impact": 0.05375136968118422,
+          "value": 0.9493207931518555,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 450",
+          "impact": 0.0022877607269260625,
+          "value": -0.06787942349910736,
+          "positive": true
+        },
+        {
+          "feature": "Feature: Skill Kubernetes",
+          "impact": 0.0022483423854373435,
+          "value": 4.0,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 345",
+          "impact": 0.001985218376924475,
+          "value": -0.3200262188911438,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 765",
+          "impact": 0.0018515734576395194,
+          "value": 0.45366203784942627,
+          "positive": true
+        },
+        {
+          "feature": "Feature: Skill Docker",
+          "impact": 0.0017742510538626389,
+          "value": 3.0,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 210",
+          "impact": 0.0017250967572267379,
+          "value": -0.21124549210071564,
+          "positive": true
+        },
+        {
+          "feature": "Concept Gap 720",
+          "impact": 0.001324359851444318,
+          "value": 0.039307236671447754,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 375",
+          "impact": 0.001211066386751334,
+          "value": 0.33848482370376587,
+          "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 0",
+          "impact": 0.0011839930981634651,
+          "value": 0.26775062084198,
+          "positive": true
+        }
+      ]
+    },
     {
       "id": "Y3ESdrmcISD9s8QNZrqw",
       "candidate_file": "Anna Schmidt",
