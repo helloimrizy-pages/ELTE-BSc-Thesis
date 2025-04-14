@@ -248,6 +248,7 @@ const JobPostingPage: React.FC = () => {
   const [jobsLoading, setJobsLoading] = useState(true);
   const [currentTab, setCurrentTab] = useState(0);
   const [sidebarMinimized, setSidebarMinimized] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [analyticsData, setAnalyticsData] = useState<{
     totalViews: number;
     totalApplications: number;
@@ -460,6 +461,10 @@ const JobPostingPage: React.FC = () => {
     setCurrentTab(newValue);
   };
 
+  const filteredJobs = jobs.filter((job) =>
+    job.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const renderJobCards = () => {
     if (jobsLoading) {
       return Array(3)
@@ -514,7 +519,7 @@ const JobPostingPage: React.FC = () => {
         ));
     }
 
-    if (jobs.length === 0) {
+    if (filteredJobs.length === 0) {
       return (
         <Box sx={{ textAlign: "center", py: 6 }}>
           <BusinessCenterIcon
@@ -543,7 +548,7 @@ const JobPostingPage: React.FC = () => {
       );
     }
 
-    return jobs.map((job) => (
+    return filteredJobs.map((job) => (
       <JobCard key={job.id} elevation={0}>
         <JobCardHeader>
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -881,7 +886,10 @@ const JobPostingPage: React.FC = () => {
 
   return (
     <Box>
-      <TransparaAppBar onLogout={handleLogout} onSearch={() => {}} />
+      <TransparaAppBar
+        onLogout={handleLogout}
+        onSearch={(value) => setSearchTerm(value)}
+      />
 
       <Box sx={{ mt: 4, mb: 4, px: 2 }}>
         <Box
