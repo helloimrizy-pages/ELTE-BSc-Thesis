@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { TransparaAppBar } from "../AppBar/TransparaAppBar";
 import Sidebar from "../AppBar/Sidebar";
-import { signOut, onAuthStateChanged } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { auth, db } from "../../firebase";
 import { collectionGroup, getDocs, Timestamp } from "firebase/firestore";
 import {
@@ -49,12 +49,6 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("Current UID:", user.uid);
-  }
-});
 
 const PageContainer = styled(Box)(({ theme }) => ({
   backgroundColor:
@@ -873,13 +867,28 @@ const Dashboard: React.FC = () => {
                       </SectionTitle>
 
                       <CSVLink
-                        data={candidates.map((c) => ({
+                        headers={[
+                          { label: "Candidate ID", key: "id" },
+                          { label: "Job ID", key: "jobId" },
+                          { label: "Full Name", key: "name" },
+                          { label: "Email", key: "email" },
+                          { label: "Phone Number", key: "phone" },
+                          { label: "Location", key: "location" },
+                          { label: "Job Title", key: "jobTitle" },
+                          { label: "Application Status", key: "status" },
+                          { label: "Applied At", key: "appliedAt" },
+                        ]}
+                        data={enrichedCandidates.map((c) => ({
+                          id: c.id,
+                          jobId: c.jobId,
                           name: `${c.firstName} ${c.lastName}`,
                           email: c.email,
+                          phone: c.phoneFormatted,
+                          location: c.placeOfResidence || "N/A",
+                          jobTitle: c.jobTitle || "N/A",
                           status: c.status || "applied",
                           appliedAt:
-                            c.appliedAt &&
-                            typeof c.appliedAt.seconds === "number"
+                            c.appliedAt instanceof Timestamp
                               ? new Date(
                                   c.appliedAt.seconds * 1000
                                 ).toLocaleDateString()
