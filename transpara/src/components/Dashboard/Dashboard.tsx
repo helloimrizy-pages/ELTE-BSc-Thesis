@@ -1,29 +1,359 @@
-import React, { useState } from "react";
-import { Box } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Grid,
+  Typography,
+  Card,
+  CardContent,
+  Button,
+  TextField,
+  MenuItem,
+  useTheme,
+  alpha,
+  styled,
+  Chip,
+  IconButton,
+  Tooltip,
+  CircularProgress,
+  Paper,
+} from "@mui/material";
 import { TransparaAppBar } from "../AppBar/TransparaAppBar";
-import { auth } from "../../firebase";
-import { signOut } from "firebase/auth";
 import Sidebar from "../AppBar/Sidebar";
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../../firebase";
+import { collectionGroup, getDocs, Timestamp } from "firebase/firestore";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip as ReTooltip,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  CartesianGrid,
+} from "recharts";
+import { CSVLink } from "react-csv";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+
+import DownloadIcon from "@mui/icons-material/Download";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import DescriptionIcon from "@mui/icons-material/Description";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("Current UID:", user.uid);
+  }
+});
+
+const PageContainer = styled(Box)(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? theme.palette.background.default
+      : "#fafafa",
+  minHeight: "calc(100vh - 64px)",
+  paddingTop: theme.spacing(4),
+  paddingBottom: theme.spacing(6),
+  borderRadius: theme.spacing(2),
+}));
+
+const DashboardCard = styled(Card)(({ theme }) => ({
+  borderRadius: theme.spacing(2),
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+  height: "100%",
+  transition: "transform 0.2s ease, box-shadow 0.2s ease",
+  "&:hover": {
+    boxShadow: "0 6px 25px rgba(0, 0, 0, 0.1)",
+    transform: "translateY(-2px)",
+  },
+}));
+
+const StatsCard = styled(Card)(({ theme }) => ({
+  borderRadius: theme.spacing(2),
+  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
+  padding: theme.spacing(2.5),
+  display: "flex",
+  alignItems: "center",
+  height: "100%",
+}));
+
+const SectionTitle = styled(Typography)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  fontWeight: 600,
+  display: "flex",
+  alignItems: "center",
+  "& svg": {
+    marginRight: theme.spacing(1),
+    color: theme.palette.primary.main,
+  },
+}));
+
+const IconAvatar = styled(Box)(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.primary.main, 0.1),
+  color:
+    theme.palette.mode === "dark"
+      ? alpha(theme.palette.primary.main, 0.7)
+      : theme.palette.primary.main,
+  width: 50,
+  height: 50,
+  borderRadius: 25,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  marginRight: theme.spacing(2),
+}));
+
+const StyledChip = styled(Chip)(({ theme }) => ({
+  borderRadius: theme.spacing(1),
+  fontWeight: 500,
+  textTransform: "capitalize",
+}));
+
+const ActionButton = styled(Button)(({ theme }) => ({
+  borderRadius: theme.spacing(1.5),
+  padding: theme.spacing(1, 3),
+  textTransform: "none",
+  fontWeight: 600,
+  boxShadow: "0 4px 14px rgba(0, 0, 0, 0.1)",
+  transition: "all 0.3s ease",
+  "&:hover": {
+    transform: "translateY(-2px)",
+    boxShadow: "0 6px 20px rgba(0, 0, 0, 0.15)",
+  },
+}));
+
+const FilterSelect = styled(TextField)(({ theme }) => ({
+  "& .MuiOutlinedInput-root": {
+    borderRadius: theme.spacing(1.5),
+    backgroundColor: alpha(theme.palette.background.paper, 0.8),
+    transition: "all 0.3s ease",
+    "&:hover": {
+      backgroundColor: theme.palette.background.paper,
+    },
+    "&.Mui-focused": {
+      backgroundColor: theme.palette.background.paper,
+    },
+  },
+}));
+
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#A569BD",
+  "#5DADE2",
+];
+
+const STATUS_COLORS: Record<string, string> = {
+  applied: "#9e9e9e",
+  shortlisted: "#4caf50",
+  interviewed: "#2196f3",
+  offered: "#ff9800",
+  hired: "#673ab7",
+  rejected: "#f44336",
+};
+
+interface Candidate {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  status: string;
+  appliedAt: Timestamp;
+}
 
 const Dashboard: React.FC = () => {
+  const theme = useTheme();
   const [sidebarMinimized, setSidebarMinimized] = useState(false);
+  const [dateFilter, setDateFilter] = useState("30");
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
   const handleLogout = async () => {
     await signOut(auth);
   };
+
+  const enrichedCandidates = candidates.map((c) => ({
+    ...c,
+    name: `${c.firstName} ${c.lastName}`,
+    appliedAtFormatted:
+      c.appliedAt instanceof Timestamp
+        ? new Date(c.appliedAt.seconds * 1000).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })
+        : "N/A",
+  }));
+
+  const fetchCandidates = async () => {
+    try {
+      setRefreshing(true);
+      const snapshot = await getDocs(collectionGroup(db, "applications"));
+      const list: Candidate[] = [];
+
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+
+        if (data.firstName && data.appliedAt instanceof Timestamp) {
+          list.push({
+            id: docSnap.id,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email || "",
+            status: data.status || "applied",
+            appliedAt: data.appliedAt,
+          });
+        }
+      });
+
+      list.sort((a, b) => b.appliedAt.seconds - a.appliedAt.seconds);
+      const validCandidates = list.filter(
+        (c) => c && c.appliedAt instanceof Timestamp
+      );
+      setCandidates(validCandidates);
+    } catch (err) {
+      console.error("Error loading candidates:", err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCandidates();
+  }, []);
+
+  const refreshData = () => {
+    fetchCandidates();
+  };
+
+  const applied = candidates.filter(
+    (c) => c.status === "applied" || !c.status
+  ).length;
+  const shortlisted = candidates.filter(
+    (c) => c.status === "shortlisted"
+  ).length;
+  const hired = candidates.filter((c) => c.status === "hired").length;
+  const offered = candidates.filter((c) => c.status === "offered").length;
+  const interviewed = candidates.filter(
+    (c) => c.status === "interviewed"
+  ).length;
+  const rejected = candidates.filter((c) => c.status === "rejected").length;
+
+  const filteredCandidates = candidates.filter((c) => {
+    const daysAgo =
+      (Timestamp.now().seconds - c.appliedAt.seconds) / (60 * 60 * 24);
+    return daysAgo <= parseInt(dateFilter);
+  });
+
+  const chartData = filteredCandidates.reduce(
+    (acc: Record<string, number>, candidate) => {
+      const dateStr = new Date(
+        candidate.appliedAt.seconds * 1000
+      ).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+      acc[dateStr] = (acc[dateStr] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
+
+  const chartArray = Object.entries(chartData).map(([date, count]) => ({
+    date,
+    applications: count,
+  }));
+
+  const statusData = [
+    { name: "Applied", value: applied },
+    { name: "Shortlisted", value: shortlisted },
+    { name: "Interviewed", value: interviewed },
+    { name: "Offered", value: offered },
+    { name: "Hired", value: hired },
+    { name: "Rejected", value: rejected },
+  ].filter((item) => item.value > 0);
+
+  const columns: GridColDef[] = [
+    {
+      field: "name",
+      headerName: "Candidate Name",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "appliedAtFormatted",
+      headerName: "Applied Date",
+      flex: 1,
+      minWidth: 150,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      renderCell: (params) => {
+        const status = (params.value as string) || "applied";
+        const color = STATUS_COLORS[status] || STATUS_COLORS.applied;
+
+        return (
+          <StyledChip
+            label={status}
+            size="small"
+            sx={{
+              backgroundColor: alpha(color, 0.1),
+              color: color,
+              border: `1px solid ${alpha(color, 0.3)}`,
+            }}
+          />
+        );
+      },
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+      minWidth: 220,
+    },
+  ];
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <CircularProgress size={50} />
+        <Typography variant="h6" color="text.secondary">
+          Loading dashboard data...
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box>
       <TransparaAppBar onLogout={handleLogout} onSearch={() => {}} />
 
       <Box sx={{ mt: 4, mb: 4, px: 2 }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            transition: "all 0.3s ease",
-            gap: 2,
-          }}
-        >
+        <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
           <Box
             sx={{
               width: sidebarMinimized ? 80 : 240,
@@ -38,7 +368,399 @@ const Dashboard: React.FC = () => {
             />
           </Box>
 
-          <Box sx={{ flexGrow: 1, pr: 2 }}></Box>
+          <Box sx={{ flexGrow: 1, pr: 2 }}>
+            <PageContainer>
+              <Box sx={{ px: 4 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: 4,
+                  }}
+                >
+                  <Box>
+                    <Typography variant="h4" fontWeight="700" gutterBottom>
+                      Dashboard
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                      Track your recruitment metrics and candidate pipeline
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: "flex", gap: 2 }}>
+                    <Tooltip title="Refresh Data">
+                      <IconButton
+                        onClick={refreshData}
+                        sx={{
+                          bgcolor: alpha(theme.palette.primary.main, 0.1),
+                          "&:hover": {
+                            bgcolor: alpha(theme.palette.primary.main, 0.2),
+                          },
+                        }}
+                        disabled={refreshing}
+                      >
+                        {refreshing ? (
+                          <CircularProgress size={24} color="primary" />
+                        ) : (
+                          <RefreshIcon />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+
+                    <FilterSelect
+                      select
+                      label="Date Range"
+                      value={dateFilter}
+                      onChange={(e) => setDateFilter(e.target.value)}
+                      size="small"
+                      sx={{ width: 150 }}
+                      InputProps={{
+                        startAdornment: (
+                          <CalendarTodayIcon
+                            sx={{
+                              mr: 1,
+                              color: "text.secondary",
+                              fontSize: 20,
+                            }}
+                          />
+                        ),
+                      }}
+                    >
+                      {[7, 14, 30, 60, 90].map((d) => (
+                        <MenuItem key={d} value={d.toString()}>
+                          Last {d} days
+                        </MenuItem>
+                      ))}
+                    </FilterSelect>
+                  </Box>
+                </Box>
+
+                <Grid container spacing={3} sx={{ mb: 4 }}>
+                  <Grid item xs={12} sm={6} md={3}>
+                    <StatsCard>
+                      <IconAvatar>
+                        <PeopleAltIcon fontSize="large" />
+                      </IconAvatar>
+                      <Box>
+                        <Typography variant="h4" fontWeight="600">
+                          {candidates.length}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Total Candidates
+                        </Typography>
+                      </Box>
+                    </StatsCard>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6} md={3}>
+                    <StatsCard>
+                      <IconAvatar
+                        sx={{
+                          bgcolor: alpha(STATUS_COLORS.shortlisted, 0.1),
+                          color: STATUS_COLORS.shortlisted,
+                        }}
+                      >
+                        <PersonSearchIcon fontSize="large" />
+                      </IconAvatar>
+                      <Box>
+                        <Typography variant="h4" fontWeight="600">
+                          {shortlisted}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Shortlisted
+                        </Typography>
+                      </Box>
+                    </StatsCard>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6} md={3}>
+                    <StatsCard>
+                      <IconAvatar
+                        sx={{
+                          bgcolor: alpha(STATUS_COLORS.offered, 0.1),
+                          color: STATUS_COLORS.offered,
+                        }}
+                      >
+                        <ThumbUpIcon fontSize="large" />
+                      </IconAvatar>
+                      <Box>
+                        <Typography variant="h4" fontWeight="600">
+                          {offered}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Offers Extended
+                        </Typography>
+                      </Box>
+                    </StatsCard>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6} md={3}>
+                    <StatsCard>
+                      <IconAvatar
+                        sx={{
+                          bgcolor: alpha(STATUS_COLORS.hired, 0.1),
+                          color: STATUS_COLORS.hired,
+                        }}
+                      >
+                        <CheckCircleIcon fontSize="large" />
+                      </IconAvatar>
+                      <Box>
+                        <Typography variant="h4" fontWeight="600">
+                          {hired}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Hired
+                        </Typography>
+                      </Box>
+                    </StatsCard>
+                  </Grid>
+                </Grid>
+
+                <Grid container spacing={3} sx={{ mb: 4 }}>
+                  <Grid item xs={12} md={8}>
+                    <DashboardCard>
+                      <CardContent sx={{ p: 3 }}>
+                        <SectionTitle variant="h6">
+                          <TrendingUpIcon /> Application Trends
+                        </SectionTitle>
+                        {chartArray.length > 0 ? (
+                          <ResponsiveContainer width="100%" height={300}>
+                            <BarChart
+                              data={chartArray}
+                              margin={{
+                                top: 10,
+                                right: 30,
+                                left: 0,
+                                bottom: 5,
+                              }}
+                            >
+                              <CartesianGrid
+                                strokeDasharray="3 3"
+                                vertical={false}
+                              />
+                              <XAxis dataKey="date" />
+                              <YAxis allowDecimals={false} />
+                              <ReTooltip
+                                formatter={(value: number) => [
+                                  `${value} Applications`,
+                                  "Count",
+                                ]}
+                                contentStyle={{
+                                  borderRadius: 8,
+                                  border: "none",
+                                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
+                                }}
+                              />
+                              <Bar
+                                dataKey="applications"
+                                name="Applications"
+                                fill={theme.palette.primary.main}
+                                radius={[4, 4, 0, 0]}
+                              />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        ) : (
+                          <Box
+                            sx={{
+                              height: 300,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexDirection: "column",
+                              bgcolor: alpha(
+                                theme.palette.background.default,
+                                0.5
+                              ),
+                              borderRadius: 2,
+                            }}
+                          >
+                            <CalendarTodayIcon
+                              sx={{
+                                fontSize: 40,
+                                color: "text.disabled",
+                                mb: 2,
+                              }}
+                            />
+                            <Typography variant="body1" color="text.secondary">
+                              No application data available for the selected
+                              time period.
+                            </Typography>
+                          </Box>
+                        )}
+                      </CardContent>
+                    </DashboardCard>
+                  </Grid>
+
+                  <Grid item xs={12} md={4}>
+                    <DashboardCard>
+                      <CardContent sx={{ p: 3 }}>
+                        <SectionTitle variant="h6">
+                          <PersonAddIcon /> Candidate Status
+                        </SectionTitle>
+                        {statusData.length > 0 ? (
+                          <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                              <Pie
+                                data={statusData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={60}
+                                outerRadius={90}
+                                paddingAngle={1}
+                                dataKey="value"
+                                label={({ name, percent }) =>
+                                  `${name} ${(percent * 100).toFixed(0)}%`
+                                }
+                              >
+                                {statusData.map((entry, index) => (
+                                  <Cell
+                                    key={`cell-${index}`}
+                                    fill={
+                                      Object.values(STATUS_COLORS)[
+                                        index %
+                                          Object.values(STATUS_COLORS).length
+                                      ]
+                                    }
+                                  />
+                                ))}
+                              </Pie>
+                              <Legend />
+                              <ReTooltip
+                                formatter={(value: number, name: string) => [
+                                  `${value} Candidates`,
+                                  name,
+                                ]}
+                                contentStyle={{
+                                  borderRadius: 8,
+                                  border: "none",
+                                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
+                                }}
+                              />
+                            </PieChart>
+                          </ResponsiveContainer>
+                        ) : (
+                          <Box
+                            sx={{
+                              height: 300,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexDirection: "column",
+                              bgcolor: alpha(
+                                theme.palette.background.default,
+                                0.5
+                              ),
+                              borderRadius: 2,
+                            }}
+                          >
+                            <PeopleAltIcon
+                              sx={{
+                                fontSize: 40,
+                                color: "text.disabled",
+                                mb: 2,
+                              }}
+                            />
+                            <Typography variant="body1" color="text.secondary">
+                              No candidates available to display status
+                              distribution.
+                            </Typography>
+                          </Box>
+                        )}
+                      </CardContent>
+                    </DashboardCard>
+                  </Grid>
+                </Grid>
+
+                <DashboardCard>
+                  <CardContent sx={{ p: 3 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        mb: 3,
+                      }}
+                    >
+                      <SectionTitle variant="h6" sx={{ mb: 0 }}>
+                        <DescriptionIcon /> Candidate Details
+                      </SectionTitle>
+
+                      <CSVLink
+                        data={candidates.map((c) => ({
+                          name: `${c.firstName} ${c.lastName}`,
+                          email: c.email,
+                          status: c.status || "applied",
+                          appliedAt:
+                            c.appliedAt &&
+                            typeof c.appliedAt.seconds === "number"
+                              ? new Date(
+                                  c.appliedAt.seconds * 1000
+                                ).toLocaleDateString()
+                              : "N/A",
+                        }))}
+                        filename={`candidates_export_${
+                          new Date().toISOString().split("T")[0]
+                        }.csv`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <ActionButton
+                          variant="outlined"
+                          color="primary"
+                          startIcon={<DownloadIcon />}
+                        >
+                          Export to CSV
+                        </ActionButton>
+                      </CSVLink>
+                    </Box>
+
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        height: 500,
+                        width: "100%",
+                        borderRadius: theme.spacing(2),
+                        overflow: "hidden",
+                        border: `1px solid ${theme.palette.divider}`,
+                      }}
+                    >
+                      <DataGrid
+                        rows={enrichedCandidates}
+                        columns={columns}
+                        getRowId={(row) => row.id}
+                        pageSizeOptions={[10, 25, 50, 100]}
+                        initialState={{
+                          pagination: {
+                            paginationModel: { pageSize: 10, page: 0 },
+                          },
+                          sorting: {
+                            sortModel: [{ field: "appliedAt", sort: "desc" }],
+                          },
+                        }}
+                        disableRowSelectionOnClick
+                        sx={{
+                          border: "none",
+                          "& .MuiDataGrid-cell:focus": {
+                            outline: "none",
+                          },
+                          "& .MuiDataGrid-columnHeaders": {
+                            backgroundColor: alpha(
+                              theme.palette.primary.main,
+                              0.05
+                            ),
+                            borderBottom: "none",
+                          },
+                          "& .MuiDataGrid-virtualScroller": {
+                            backgroundColor: theme.palette.background.paper,
+                          },
+                        }}
+                      />
+                    </Paper>
+                  </CardContent>
+                </DashboardCard>
+              </Box>
+            </PageContainer>
+          </Box>
         </Box>
       </Box>
     </Box>
