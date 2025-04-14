@@ -141,6 +141,7 @@ const ProfilePage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [company, setCompany] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
   const [photoURL, setPhotoURL] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -173,6 +174,7 @@ const ProfilePage: React.FC = () => {
           setEmail(data.email || auth.currentUser.email || "");
           setUsername(data.username || "");
           setCompany(data.company || "");
+          setJobTitle(data.jobTitle || "");
           setPhotoURL(auth.currentUser.photoURL);
         }
       } catch (error) {
@@ -354,7 +356,7 @@ const ProfilePage: React.FC = () => {
                           variant="subtitle1"
                           sx={{ opacity: 0.9, mt: 0.5 }}
                         >
-                          {company}
+                          {company} - {jobTitle}
                         </Typography>
                       </>
                     )}
@@ -479,7 +481,7 @@ const ProfilePage: React.FC = () => {
                     </SectionCard>
                   </Grid>
 
-                  <Grid item xs={12}>
+                  <Grid item xs={12} md={6}>
                     <SectionCard>
                       <CardTitle>
                         <BusinessIcon
@@ -501,6 +503,41 @@ const ProfilePage: React.FC = () => {
                             fullWidth
                             label="Company"
                             value={company}
+                            disabled
+                            InputProps={{
+                              startAdornment: (
+                                <BusinessIcon color="action" sx={{ mr: 1 }} />
+                              ),
+                            }}
+                            sx={{ mb: 0 }}
+                          />
+                        )}
+                      </CardContent>
+                    </SectionCard>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
+                    <SectionCard>
+                      <CardTitle>
+                        <BusinessIcon
+                          sx={{ color: "text.secondary", mr: 1.5 }}
+                        />
+                        <Typography variant="subtitle1" fontWeight="600">
+                          Job Information
+                        </Typography>
+                      </CardTitle>
+                      <CardContent>
+                        {isLoading ? (
+                          <Skeleton
+                            variant="rectangular"
+                            height={56}
+                            sx={{ borderRadius: 1 }}
+                          />
+                        ) : (
+                          <StyledTextField
+                            fullWidth
+                            label="Job Title"
+                            value={jobTitle}
                             disabled
                             InputProps={{
                               startAdornment: (
