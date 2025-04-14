@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Grid,
@@ -156,11 +157,17 @@ const STATUS_COLORS: Record<string, string> = {
 
 interface Candidate {
   id: string;
+  jobId: string;
   firstName: string;
   lastName: string;
   email: string;
   status: string;
   appliedAt: Timestamp;
+  jobTitle?: string;
+  linkedinUrl?: string;
+  phoneCountryCode?: string;
+  phoneNumber?: string;
+  placeOfResidence?: string;
 }
 
 const Dashboard: React.FC = () => {
@@ -170,6 +177,7 @@ const Dashboard: React.FC = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -186,6 +194,13 @@ const Dashboard: React.FC = () => {
             day: "numeric",
           })
         : "N/A",
+    phoneFormatted:
+      c.phoneCountryCode && c.phoneNumber
+        ? `+${c.phoneCountryCode} ${c.phoneNumber.replace(
+            /(\d{3})(\d{3})(\d+)/,
+            "$1 $2 $3"
+          )}`
+        : "N/A",
   }));
 
   const fetchCandidates = async () => {
@@ -196,8 +211,10 @@ const Dashboard: React.FC = () => {
 
       snapshot.forEach((docSnap) => {
         const data = docSnap.data();
+        const pathSegments = docSnap.ref.path.split("/");
+        const jobId = pathSegments.length > 1 ? pathSegments[1] : null;
 
-        if (data.firstName && data.appliedAt instanceof Timestamp) {
+        if (data.firstName && data.appliedAt instanceof Timestamp && jobId) {
           list.push({
             id: docSnap.id,
             firstName: data.firstName,
@@ -205,6 +222,12 @@ const Dashboard: React.FC = () => {
             email: data.email || "",
             status: data.status || "applied",
             appliedAt: data.appliedAt,
+            jobTitle: data.jobTitle || "",
+            linkedinUrl: data.linkedinUrl || "",
+            phoneCountryCode: data.phoneCountryCode || "",
+            phoneNumber: data.phoneNumber || "",
+            placeOfResidence: data.placeOfResidence || "",
+            jobId,
           });
         }
       });
@@ -315,13 +338,31 @@ const Dashboard: React.FC = () => {
       field: "name",
       headerName: "Candidate Name",
       flex: 1,
-      minWidth: 200,
+      minWidth: 180,
     },
     {
-      field: "appliedAtFormatted",
-      headerName: "Applied Date",
+      field: "jobTitle",
+      headerName: "Position",
+      flex: 1,
+      minWidth: 180,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+      minWidth: 220,
+    },
+    {
+      field: "phoneFormatted",
+      headerName: "Phone",
       flex: 1,
       minWidth: 150,
+    },
+    {
+      field: "placeOfResidence",
+      headerName: "Location",
+      flex: 1,
+      minWidth: 180,
     },
     {
       field: "status",
@@ -345,10 +386,52 @@ const Dashboard: React.FC = () => {
       },
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "appliedAtFormatted",
+      headerName: "Applied Date",
       flex: 1,
-      minWidth: 220,
+      minWidth: 150,
+    },
+    {
+      field: "linkedinUrl",
+      headerName: "LinkedIn",
+      width: 120,
+      align: "center",
+      headerAlign: "center",
+      renderCell: (params) => {
+        const linkedinUrl = params.row?.linkedinUrl;
+        return linkedinUrl ? (
+          <IconButton
+            size="small"
+            component="a"
+            href={linkedinUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ color: "#0A66C2" }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+            </svg>
+          </IconButton>
+        ) : (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              width: "100%",
+              alignContent: "center",
+              height: "100%",
+            }}
+          >
+            N/A
+          </Typography>
+        );
+      },
     },
   ];
 
@@ -438,7 +521,7 @@ const Dashboard: React.FC = () => {
                       value={dateFilter}
                       onChange={(e) => setDateFilter(e.target.value)}
                       size="small"
-                      sx={{ width: 150 }}
+                      sx={{ width: "100%" }}
                       InputProps={{
                         startAdornment: (
                           <CalendarTodayIcon
@@ -831,6 +914,13 @@ const Dashboard: React.FC = () => {
                         rows={enrichedCandidates}
                         columns={columns}
                         getRowId={(row) => row.id}
+                        onRowClick={(params) => {
+                          const candidateId = params.row.id;
+                          const jobId = params.row.jobId;
+                          navigate(
+                            `/jobs/${jobId}/applications/${candidateId}`
+                          );
+                        }}
                         pageSizeOptions={[10, 25, 50, 100]}
                         initialState={{
                           pagination: {
@@ -856,6 +946,7 @@ const Dashboard: React.FC = () => {
                           "& .MuiDataGrid-virtualScroller": {
                             backgroundColor: theme.palette.background.paper,
                           },
+                          cursor: "pointer",
                         }}
                       />
                     </Paper>
