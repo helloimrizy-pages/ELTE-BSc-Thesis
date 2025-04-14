@@ -654,7 +654,7 @@ export const ApplicationPage: React.FC = () => {
             />
 
             <StyledTextField
-              label="Place of Residence"
+              label="Place of Residence (City, Country)"
               value={placeOfResidence}
               onChange={(e) => setPlaceOfResidence(e.target.value)}
               fullWidth
