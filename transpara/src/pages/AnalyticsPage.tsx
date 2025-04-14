@@ -276,7 +276,10 @@ export const AnalyticsPage = () => {
   const [initialLoading, setInitialLoading] = useState(true);
 
   const [biasSummary, setBiasSummary] = useState<BiasSummary | null>(null);
-  const [sidebarMinimized, setSidebarMinimized] = useState(false);
+  const [sidebarMinimized, setSidebarMinimized] = useState(() => {
+    return localStorage.getItem("sidebarMinimized") === "true";
+  });
+
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -1204,7 +1207,12 @@ export const AnalyticsPage = () => {
           >
             <Sidebar
               minimized={sidebarMinimized}
-              onToggleMinimize={() => setSidebarMinimized(!sidebarMinimized)}
+              onToggleMinimize={() =>
+                setSidebarMinimized((prev) => {
+                  localStorage.setItem("sidebarMinimized", String(!prev));
+                  return !prev;
+                })
+              }
               onLogout={handleLogout}
             />
           </Box>

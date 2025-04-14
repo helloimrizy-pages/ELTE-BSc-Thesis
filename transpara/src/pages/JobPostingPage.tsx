@@ -247,7 +247,9 @@ const JobPostingPage: React.FC = () => {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [jobsLoading, setJobsLoading] = useState(true);
   const [currentTab, setCurrentTab] = useState(0);
-  const [sidebarMinimized, setSidebarMinimized] = useState(false);
+  const [sidebarMinimized, setSidebarMinimized] = useState(() => {
+    return localStorage.getItem("sidebarMinimized") === "true";
+  });
   const [searchTerm, setSearchTerm] = useState("");
   const [analyticsData, setAnalyticsData] = useState<{
     totalViews: number;
@@ -909,7 +911,12 @@ const JobPostingPage: React.FC = () => {
           >
             <Sidebar
               minimized={sidebarMinimized}
-              onToggleMinimize={() => setSidebarMinimized(!sidebarMinimized)}
+              onToggleMinimize={() =>
+                setSidebarMinimized((prev) => {
+                  localStorage.setItem("sidebarMinimized", String(!prev));
+                  return !prev;
+                })
+              }
               onLogout={handleLogout}
             />
           </Box>

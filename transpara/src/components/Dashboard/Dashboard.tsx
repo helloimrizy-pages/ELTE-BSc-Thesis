@@ -166,7 +166,9 @@ interface Candidate {
 
 const Dashboard: React.FC = () => {
   const theme = useTheme();
-  const [sidebarMinimized, setSidebarMinimized] = useState(false);
+  const [sidebarMinimized, setSidebarMinimized] = useState(() => {
+    return localStorage.getItem("sidebarMinimized") === "true";
+  });
   const [dateFilter, setDateFilter] = useState("30");
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(true);
@@ -470,7 +472,12 @@ const Dashboard: React.FC = () => {
           >
             <Sidebar
               minimized={sidebarMinimized}
-              onToggleMinimize={() => setSidebarMinimized(!sidebarMinimized)}
+              onToggleMinimize={() =>
+                setSidebarMinimized((prev) => {
+                  localStorage.setItem("sidebarMinimized", String(!prev));
+                  return !prev;
+                })
+              }
               onLogout={handleLogout}
             />
           </Box>
