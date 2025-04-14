@@ -280,6 +280,7 @@ export const AnalyticsPage = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    localStorage.removeItem("selectedJobId");
     await signOut(auth);
   };
 
@@ -353,6 +354,10 @@ export const AnalyticsPage = () => {
   }, [selectedJobId]);
 
   useEffect(() => {
+    const savedJobId = localStorage.getItem("selectedJobId");
+    if (savedJobId) {
+      setSelectedJobId(savedJobId);
+    }
     fetchJobs();
   }, []);
 
@@ -1231,7 +1236,11 @@ export const AnalyticsPage = () => {
                         <InputLabel>Select Job</InputLabel>
                         <Select
                           value={selectedJobId}
-                          onChange={(e) => setSelectedJobId(e.target.value)}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setSelectedJobId(value);
+                            localStorage.setItem("selectedJobId", value);
+                          }}
                           label="Select Job"
                           sx={{
                             borderRadius: 1.5,
