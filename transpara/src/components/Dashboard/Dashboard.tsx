@@ -171,6 +171,7 @@ const Dashboard: React.FC = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -260,10 +261,12 @@ const Dashboard: React.FC = () => {
   ).length;
   const rejected = candidates.filter((c) => c.status === "rejected").length;
 
-  const filteredCandidates = candidates.filter((c) => {
-    const daysAgo =
-      (Timestamp.now().seconds - c.appliedAt.seconds) / (60 * 60 * 24);
-    return daysAgo <= parseInt(dateFilter);
+  const filteredCandidates = enrichedCandidates.filter((c) => {
+    const searchableText =
+      `${c.firstName} ${c.lastName} ${c.email} ${c.jobTitle} ${c.placeOfResidence}`.toLowerCase();
+    const matchesSearch = searchableText.includes(searchTerm.toLowerCase());
+
+    return matchesSearch;
   });
 
   const prepareTimelineData = () => {
@@ -451,7 +454,10 @@ const Dashboard: React.FC = () => {
 
   return (
     <Box>
-      <TransparaAppBar onLogout={handleLogout} onSearch={() => {}} />
+      <TransparaAppBar
+        onLogout={handleLogout}
+        onSearch={(value) => setSearchTerm(value)}
+      />
 
       <Box sx={{ mt: 4, mb: 4, px: 2 }}>
         <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
@@ -920,8 +926,13 @@ const Dashboard: React.FC = () => {
                       }}
                     >
                       <DataGrid
-                        rows={enrichedCandidates}
+                        rows={filteredCandidates}
                         columns={columns}
+                        localeText={{
+                          noRowsLabel: searchTerm
+                            ? "No matching candidates found"
+                            : "No candidates available",
+                        }}
                         getRowId={(row) => row.id}
                         onRowClick={(params) => {
                           const candidateId = params.row.id;
