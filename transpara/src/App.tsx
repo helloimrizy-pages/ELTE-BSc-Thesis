@@ -21,7 +21,7 @@ import JobPostings from "./pages/JobPostingPage";
 import { ThemeProvider } from "./context/ThemeContext";
 import { useEffect } from "react";
 
-// Navigate to /?logout=true to logout
+// Navigate to ?logout=true to log out
 function LogoutHandler({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
@@ -75,6 +75,11 @@ function App() {
               path="/profile/:jobId/:candidateId"
               element={<CandidateProfilePage />}
             />
+            <Route
+              path="/jobs/:jobId/applications/:candidateId"
+              element={<CandidateProfilePage />}
+            />
+
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </LogoutHandler>
