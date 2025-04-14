@@ -23,17 +23,17 @@ import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../../firebase";
 import { collectionGroup, getDocs, Timestamp } from "firebase/firestore";
 import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
-  Tooltip as ReTooltip,
+  CartesianGrid,
+  Tooltip as MUITooltip,
+  Legend,
+  ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
-  Legend,
-  CartesianGrid,
 } from "recharts";
 import { CSVLink } from "react-csv";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -145,15 +145,6 @@ const FilterSelect = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#A569BD",
-  "#5DADE2",
-];
-
 const STATUS_COLORS: Record<string, string> = {
   applied: "#9e9e9e",
   shortlisted: "#4caf50",
@@ -258,24 +249,57 @@ const Dashboard: React.FC = () => {
     return daysAgo <= parseInt(dateFilter);
   });
 
-  const chartData = filteredCandidates.reduce(
-    (acc: Record<string, number>, candidate) => {
+  const prepareTimelineData = () => {
+    const dateMap = new Map<string, { date: string; applications: number }>();
+
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(endDate.getDate() - parseInt(dateFilter));
+
+    for (
+      let d = new Date(startDate);
+      d <= endDate;
+      d.setDate(d.getDate() + 1)
+    ) {
+      const dateStr = d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+      dateMap.set(dateStr, { date: dateStr, applications: 0 });
+    }
+
+    filteredCandidates.forEach((candidate) => {
       const dateStr = new Date(
         candidate.appliedAt.seconds * 1000
       ).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
       });
-      acc[dateStr] = (acc[dateStr] || 0) + 1;
-      return acc;
-    },
-    {}
-  );
 
-  const chartArray = Object.entries(chartData).map(([date, count]) => ({
-    date,
-    applications: count,
-  }));
+      if (dateMap.has(dateStr)) {
+        const current = dateMap.get(dateStr);
+        if (current) {
+          dateMap.set(dateStr, {
+            ...current,
+            applications: current.applications + 1,
+          });
+        }
+      }
+    });
+
+    return Array.from(dateMap.values())
+      .sort((a, b) => {
+        const dateA = new Date(a.date + ", " + new Date().getFullYear());
+        const dateB = new Date(b.date + ", " + new Date().getFullYear());
+        return dateA.getTime() - dateB.getTime();
+      })
+      .map((item) => ({
+        ...item,
+        displayApplications: item.applications > 0 ? item.applications : null,
+      }));
+  };
+
+  const lineChartData = prepareTimelineData();
 
   const statusData = [
     { name: "Applied", value: applied },
@@ -524,10 +548,10 @@ const Dashboard: React.FC = () => {
                         <SectionTitle variant="h6">
                           <TrendingUpIcon /> Application Trends
                         </SectionTitle>
-                        {chartArray.length > 0 ? (
+                        {lineChartData.length > 0 ? (
                           <ResponsiveContainer width="100%" height={300}>
-                            <BarChart
-                              data={chartArray}
+                            <LineChart
+                              data={lineChartData}
                               margin={{
                                 top: 10,
                                 right: 30,
@@ -539,26 +563,103 @@ const Dashboard: React.FC = () => {
                                 strokeDasharray="3 3"
                                 vertical={false}
                               />
-                              <XAxis dataKey="date" />
-                              <YAxis allowDecimals={false} />
-                              <ReTooltip
+                              <XAxis
+                                dataKey="date"
+                                tickLine={false}
+                                axisLine={{
+                                  stroke: alpha(
+                                    theme.palette.text.primary,
+                                    0.2
+                                  ),
+                                }}
+                                interval="preserveStartEnd"
+                                tickFormatter={(value, index) => {
+                                  if (parseInt(dateFilter) <= 14) {
+                                    const totalDataPoints =
+                                      lineChartData.length;
+                                    if (
+                                      index === 0 ||
+                                      index === totalDataPoints - 1 ||
+                                      index === Math.floor(totalDataPoints / 2)
+                                    ) {
+                                      return value;
+                                    }
+                                    return "";
+                                  }
+
+                                  if (parseInt(dateFilter) <= 30) {
+                                    if (
+                                      index % 5 === 0 ||
+                                      index === lineChartData.length - 1
+                                    ) {
+                                      return value;
+                                    }
+                                    return "";
+                                  }
+
+                                  if (
+                                    index % 10 === 0 ||
+                                    index === lineChartData.length - 1
+                                  ) {
+                                    return value;
+                                  }
+                                  return "";
+                                }}
+                              />
+                              <YAxis
+                                allowDecimals={false}
+                                tickLine={false}
+                                axisLine={{
+                                  stroke: alpha(
+                                    theme.palette.text.primary,
+                                    0.2
+                                  ),
+                                }}
+                              />
+                              <MUITooltip
                                 formatter={(value: number) => [
                                   `${value} Applications`,
-                                  "Count",
+                                  "Applications",
                                 ]}
                                 contentStyle={{
                                   borderRadius: 8,
                                   border: "none",
                                   boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
+                                  backgroundColor:
+                                    theme.palette.background.paper,
                                 }}
                               />
-                              <Bar
+                              <Legend />
+                              <Line
+                                type="monotone"
                                 dataKey="applications"
                                 name="Applications"
-                                fill={theme.palette.primary.main}
-                                radius={[4, 4, 0, 0]}
+                                stroke={theme.palette.primary.main}
+                                strokeWidth={3}
+                                connectNulls={true}
+                                dot={false}
+                                activeDot={{
+                                  r: 6,
+                                  fill: theme.palette.primary.main,
+                                  stroke: theme.palette.background.paper,
+                                  strokeWidth: 2,
+                                }}
                               />
-                            </BarChart>
+
+                              <Line
+                                type="monotone"
+                                dataKey="displayApplications"
+                                stroke="none"
+                                dot={{
+                                  r: 4,
+                                  fill: theme.palette.background.paper,
+                                  stroke: theme.palette.primary.main,
+                                  strokeWidth: 3,
+                                }}
+                                activeDot={false}
+                                legendType="none"
+                              />
+                            </LineChart>
                           </ResponsiveContainer>
                         ) : (
                           <Box
@@ -626,7 +727,7 @@ const Dashboard: React.FC = () => {
                                 ))}
                               </Pie>
                               <Legend />
-                              <ReTooltip
+                              <MUITooltip
                                 formatter={(value: number, name: string) => [
                                   `${value} Candidates`,
                                   name,
@@ -635,6 +736,8 @@ const Dashboard: React.FC = () => {
                                   borderRadius: 8,
                                   border: "none",
                                   boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
+                                  backgroundColor:
+                                    theme.palette.background.paper,
                                 }}
                               />
                             </PieChart>
