@@ -21,8 +21,14 @@ import {
   Tooltip,
   LinearProgress,
   ButtonProps,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Fade,
+  Snackbar,
+  Alert,
 } from "@mui/material";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -40,6 +46,7 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlined";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import { updateDoc, doc } from "firebase/firestore";
 
 const PageContainer = styled(Box)(({ theme }) => ({
   backgroundColor:
@@ -92,7 +99,7 @@ const InfoRow = styled(Box)(({ theme }) => ({
   },
 }));
 
-const ActionButton = styled(Button)<ButtonProps<"a">>(({ theme }) => ({
+const ActionButton = styled(Button)<ButtonProps>(({ theme }) => ({
   borderRadius: theme.spacing(1.5),
   padding: theme.spacing(1, 3),
   textTransform: "none",
@@ -133,6 +140,7 @@ interface Candidate {
   placeOfResidence: string;
   portfolioUrl?: string;
   websiteUrl?: string;
+  status?: string;
 }
 
 const CandidateProfilePage: React.FC = () => {
@@ -142,6 +150,13 @@ const CandidateProfilePage: React.FC = () => {
   const [candidate, setCandidate] = useState<Candidate | null>(null);
   const [currentTab, setCurrentTab] = useState(0);
   const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorEl);
+  const [statusSnackbarOpen, setStatusSnackbarOpen] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [statusSeverity, setStatusSeverity] = useState<"success" | "error">(
+    "success"
+  );
 
   const handleShareProfile = () => {
     const link = `${window.location.origin}/job/${jobId}/candidate/${candidateId}`;
@@ -155,7 +170,9 @@ const CandidateProfilePage: React.FC = () => {
         .catch(console.error);
     } else {
       navigator.clipboard.writeText(link);
-      alert("Candidate profile link copied to clipboard!");
+      setStatusMessage("Candidate profile link copied to clipboard!");
+      setStatusSeverity("success");
+      setStatusSnackbarOpen(true);
     }
   };
 
@@ -185,6 +202,56 @@ const CandidateProfilePage: React.FC = () => {
 
   const formatPhoneNumber = (phoneNumber: string) => {
     return phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
+  };
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleStatusSelect = async (
+    status: "shortlisted" | "rejected" | "interviewed" | "offered" | "hired"
+  ) => {
+    if (!jobId || !candidateId) return;
+
+    try {
+      const docRef = doc(db, "jobs", jobId, "applications", candidateId);
+      await updateDoc(docRef, { status });
+      setCandidate((prev) => prev && { ...prev, status });
+
+      let statusLabel = "";
+      switch (status) {
+        case "shortlisted":
+          statusLabel = "shortlisted";
+          break;
+        case "interviewed":
+          statusLabel = "marked as interviewed";
+          break;
+        case "offered":
+          statusLabel = "sent an offer";
+          break;
+        case "hired":
+          statusLabel = "hired";
+          break;
+        case "rejected":
+          statusLabel = "rejected";
+          break;
+      }
+
+      setStatusMessage(`Candidate ${statusLabel} successfully`);
+      setStatusSeverity(status === "rejected" ? "error" : "success");
+      setStatusSnackbarOpen(true);
+    } catch (error) {
+      console.error("Error updating status:", error);
+      setStatusMessage("Failed to update candidate status");
+      setStatusSeverity("error");
+      setStatusSnackbarOpen(true);
+    } finally {
+      handleMenuClose();
+    }
   };
 
   if (loading) {
@@ -352,7 +419,14 @@ const CandidateProfilePage: React.FC = () => {
                     </Box>
                   </Box>
 
-                  <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                    }}
+                  >
                     <ActionButton
                       component="a"
                       href={`mailto:${candidate.email}`}
@@ -365,21 +439,207 @@ const CandidateProfilePage: React.FC = () => {
                     </ActionButton>
 
                     <ActionButton
-                      variant="outlined"
-                      color="success"
-                      startIcon={<CheckCircleOutlineIcon />}
+                      variant="contained"
+                      color={
+                        candidate.status === "shortlisted"
+                          ? "success"
+                          : candidate.status === "interviewed"
+                          ? "info"
+                          : candidate.status === "offered"
+                          ? "warning"
+                          : candidate.status === "hired"
+                          ? "success"
+                          : candidate.status === "rejected"
+                          ? "error"
+                          : "primary"
+                      }
+                      startIcon={
+                        candidate.status === "shortlisted" ? (
+                          <CheckCircleOutlineIcon />
+                        ) : candidate.status === "interviewed" ? (
+                          <PersonAddOutlinedIcon />
+                        ) : candidate.status === "offered" ? (
+                          <WorkOutlineOutlinedIcon />
+                        ) : candidate.status === "hired" ? (
+                          <EuroOutlinedIcon />
+                        ) : candidate.status === "rejected" ? (
+                          <HighlightOffOutlinedIcon />
+                        ) : (
+                          <CheckCircleOutlineIcon />
+                        )
+                      }
                       size="small"
+                      onClick={handleMenuClick}
+                      sx={{
+                        ...(candidate.status === "hired" && {
+                          bgcolor: theme.palette.success.dark,
+                        }),
+                      }}
                     >
-                      Shortlist
+                      {candidate.status === "shortlisted"
+                        ? "Shortlisted"
+                        : candidate.status === "interviewed"
+                        ? "Interviewed"
+                        : candidate.status === "offered"
+                        ? "Offered"
+                        : candidate.status === "hired"
+                        ? "Hired"
+                        : candidate.status === "rejected"
+                        ? "Rejected"
+                        : "Set Status"}
                     </ActionButton>
-                    <ActionButton
-                      variant="outlined"
-                      color="error"
-                      startIcon={<HighlightOffOutlinedIcon />}
-                      size="small"
+
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={openMenu}
+                      onClose={handleMenuClose}
+                      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                      transformOrigin={{ vertical: "top", horizontal: "right" }}
+                      PaperProps={{
+                        elevation: 3,
+                        sx: {
+                          mt: 1.5,
+                          overflow: "visible",
+                          borderRadius: 2,
+                          filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.15))",
+                          "&:before": {
+                            content: '""',
+                            display: "block",
+                            position: "absolute",
+                            top: 0,
+                            right: 14,
+                            width: 10,
+                            height: 10,
+                            bgcolor: "background.paper",
+                            transform: "translateY(-50%) rotate(45deg)",
+                            zIndex: 0,
+                          },
+                          minWidth: 180,
+                        },
+                      }}
+                      TransitionComponent={Fade}
                     >
-                      Reject
-                    </ActionButton>
+                      <MenuItem
+                        onClick={() => handleStatusSelect("shortlisted")}
+                        sx={{
+                          py: 1.5,
+                          borderRadius: 1,
+                          my: 0.5,
+                          mx: 0.5,
+                          "&:hover": {
+                            bgcolor: alpha(theme.palette.success.main, 0.1),
+                          },
+                        }}
+                      >
+                        <ListItemIcon>
+                          <CheckCircleOutlineIcon
+                            fontSize="small"
+                            color="success"
+                            sx={{ mr: 1 }}
+                          />
+                        </ListItemIcon>
+                        <Typography variant="body2" fontWeight={500}>
+                          Shortlist Candidate
+                        </Typography>
+                      </MenuItem>
+
+                      <MenuItem
+                        onClick={() => handleStatusSelect("interviewed")}
+                        sx={{
+                          py: 1.5,
+                          borderRadius: 1,
+                          my: 0.5,
+                          mx: 0.5,
+                          "&:hover": {
+                            bgcolor: alpha(theme.palette.info.main, 0.1),
+                          },
+                        }}
+                      >
+                        <ListItemIcon>
+                          <PersonAddOutlinedIcon
+                            fontSize="small"
+                            color="info"
+                            sx={{ mr: 1 }}
+                          />
+                        </ListItemIcon>
+                        <Typography variant="body2" fontWeight={500}>
+                          Mark as Interviewed
+                        </Typography>
+                      </MenuItem>
+
+                      <MenuItem
+                        onClick={() => handleStatusSelect("offered")}
+                        sx={{
+                          py: 1.5,
+                          borderRadius: 1,
+                          my: 0.5,
+                          mx: 0.5,
+                          "&:hover": {
+                            bgcolor: alpha(theme.palette.warning.main, 0.1),
+                          },
+                        }}
+                      >
+                        <ListItemIcon>
+                          <WorkOutlineOutlinedIcon
+                            fontSize="small"
+                            color="warning"
+                            sx={{ mr: 1 }}
+                          />
+                        </ListItemIcon>
+                        <Typography variant="body2" fontWeight={500}>
+                          Offered
+                        </Typography>
+                      </MenuItem>
+
+                      <MenuItem
+                        onClick={() => handleStatusSelect("hired")}
+                        sx={{
+                          py: 1.5,
+                          borderRadius: 1,
+                          my: 0.5,
+                          mx: 0.5,
+                          "&:hover": {
+                            bgcolor: alpha(theme.palette.success.dark, 0.1),
+                          },
+                        }}
+                      >
+                        <ListItemIcon>
+                          <EuroOutlinedIcon
+                            fontSize="small"
+                            sx={{ mr: 1, color: theme.palette.success.dark }}
+                          />
+                        </ListItemIcon>
+                        <Typography variant="body2" fontWeight={500}>
+                          Hired
+                        </Typography>
+                      </MenuItem>
+
+                      <Divider sx={{ my: 1 }} />
+
+                      <MenuItem
+                        onClick={() => handleStatusSelect("rejected")}
+                        sx={{
+                          py: 1.5,
+                          borderRadius: 1,
+                          my: 0.5,
+                          mx: 0.5,
+                          "&:hover": {
+                            bgcolor: alpha(theme.palette.error.main, 0.1),
+                          },
+                        }}
+                      >
+                        <ListItemIcon>
+                          <HighlightOffOutlinedIcon
+                            fontSize="small"
+                            color="error"
+                            sx={{ mr: 1 }}
+                          />
+                        </ListItemIcon>
+                        <Typography variant="body2" fontWeight={500}>
+                          Reject Candidate
+                        </Typography>
+                      </MenuItem>
+                    </Menu>
                   </Box>
                 </Box>
               </Grid>
@@ -599,7 +859,7 @@ const CandidateProfilePage: React.FC = () => {
                             {new Intl.NumberFormat().format(
                               Number(candidate.expectedSalary)
                             )}{" "}
-                            per year
+                            per month
                           </Typography>
                         </Box>
                       </InfoRow>
@@ -699,7 +959,6 @@ const CandidateProfilePage: React.FC = () => {
                           variant="contained"
                           color="primary"
                           href={candidate.cvUrl}
-                          target="_blank"
                           rel="noopener noreferrer"
                         >
                           View CV
@@ -713,6 +972,22 @@ const CandidateProfilePage: React.FC = () => {
           </Box>
         </ProfileCard>
       </Box>
+
+      <Snackbar
+        open={statusSnackbarOpen}
+        autoHideDuration={4000}
+        onClose={() => setStatusSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setStatusSnackbarOpen(false)}
+          severity={statusSeverity}
+          elevation={6}
+          variant="filled"
+        >
+          {statusMessage}
+        </Alert>
+      </Snackbar>
     </PageContainer>
   );
 };
