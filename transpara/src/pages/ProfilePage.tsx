@@ -152,7 +152,9 @@ const ProfilePage: React.FC = () => {
     "success"
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [sidebarMinimized, setSidebarMinimized] = useState(false);
+  const [sidebarMinimized, setSidebarMinimized] = useState(() => {
+    return localStorage.getItem("sidebarMinimized") === "true";
+  });
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -292,7 +294,12 @@ const ProfilePage: React.FC = () => {
           >
             <Sidebar
               minimized={sidebarMinimized}
-              onToggleMinimize={() => setSidebarMinimized(!sidebarMinimized)}
+              onToggleMinimize={() =>
+                setSidebarMinimized((prev) => {
+                  localStorage.setItem("sidebarMinimized", String(!prev));
+                  return !prev;
+                })
+              }
               onLogout={handleLogout}
             />
           </Box>
