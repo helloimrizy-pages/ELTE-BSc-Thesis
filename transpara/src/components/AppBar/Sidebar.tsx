@@ -40,6 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const location = useLocation();
   const [user] = useAuthState(auth);
   const [firstName, setFirstName] = useState<string>("");
+  const [nameLoading, setNameLoading] = useState<boolean>(true);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -52,6 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         const data = docSnap.data();
         setFirstName(data.firstName || "User");
       }
+      setNameLoading(false);
     };
 
     fetchUser();
@@ -90,9 +92,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       >
         {!minimized && (
           <Typography variant="subtitle1" fontWeight="bold">
-            Hi, {firstName || "User"}!
+            Hi{nameLoading ? "," : `, ${firstName}!`}
           </Typography>
         )}
+
         <IconButton
           size="small"
           onClick={toggleSidebar}
