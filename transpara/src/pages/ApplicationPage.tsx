@@ -446,6 +446,10 @@ export const ApplicationPage: React.FC = () => {
       const uploadSnapshot = await uploadBytes(cvRef, cvFile);
       const cvUrl = await getDownloadURL(uploadSnapshot.ref);
 
+      const jobDocSnap = await getDoc(doc(db, "jobs", jobId));
+      const ownerUid = jobDocSnap.exists() ? jobDocSnap.data().ownerUid : null;
+      if (!ownerUid) throw new Error("Job owner UID not found.");
+
       const applicationData = {
         candidateID,
         jobId,
@@ -467,6 +471,7 @@ export const ApplicationPage: React.FC = () => {
           ? availableStartDate.toISOString()
           : null,
         appliedAt: new Date(),
+        ownerUid,
       };
 
       await setDoc(applicationRef, applicationData);
