@@ -27,7 +27,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 interface SidebarProps {
   minimized?: boolean;
-  onToggleMinimize?: () => void;
+  onToggleMinimize?: (value: boolean) => void;
   onLogout?: () => void;
 }
 
@@ -59,10 +59,17 @@ const Sidebar: React.FC<SidebarProps> = ({
     fetchUser();
   }, [user]);
 
-  const toggleSidebar = () => {
-    if (onToggleMinimize) {
-      onToggleMinimize();
+  useEffect(() => {
+    const savedMinimized = localStorage.getItem("sidebarMinimized");
+    if (savedMinimized !== null) {
+      onToggleMinimize?.(savedMinimized === "true");
     }
+  }, []);
+
+  const toggleSidebar = () => {
+    const newState = !minimized;
+    localStorage.setItem("sidebarMinimized", String(newState));
+    onToggleMinimize?.();
   };
 
   return (
