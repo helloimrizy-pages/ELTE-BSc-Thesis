@@ -163,7 +163,9 @@ const SettingsPage: React.FC = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const { toggleColorMode, mode } = useThemeContext();
   const [currentTab, setCurrentTab] = useState(0);
-  const [sidebarMinimized, setSidebarMinimized] = useState(false);
+  const [sidebarMinimized, setSidebarMinimized] = useState(() => {
+    return localStorage.getItem("sidebarMinimized") === "true";
+  });
 
   const showSnackbar = (message: string, severity: "success" | "error") => {
     setSnackbarMessage(message);
@@ -300,7 +302,12 @@ const SettingsPage: React.FC = () => {
           >
             <Sidebar
               minimized={sidebarMinimized}
-              onToggleMinimize={() => setSidebarMinimized(!sidebarMinimized)}
+              onToggleMinimize={() =>
+                setSidebarMinimized((prev) => {
+                  localStorage.setItem("sidebarMinimized", String(!prev));
+                  return !prev;
+                })
+              }
               onLogout={handleLogout}
             />
           </Box>
