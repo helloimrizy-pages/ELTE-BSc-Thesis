@@ -1268,7 +1268,10 @@ export const AnalyticsPage = () => {
                             <RefreshIcon />
                           )
                         }
-                        sx={{ minWidth: 150 }}
+                        sx={{
+                          minWidth: 170,
+                          height: 56,
+                        }}
                       >
                         {loading ? "Analyzing..." : "Run Analysis"}
                       </ActionButton>
