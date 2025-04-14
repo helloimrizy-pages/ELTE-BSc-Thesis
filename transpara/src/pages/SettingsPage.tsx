@@ -39,7 +39,6 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import PersonIcon from "@mui/icons-material/Person";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import ShieldIcon from "@mui/icons-material/Shield";
 
 import { useThemeContext } from "../context/ThemeContext";
@@ -341,11 +340,6 @@ const SettingsPage: React.FC = () => {
                   <Tab
                     label="Preferences"
                     icon={<PersonIcon />}
-                    iconPosition="start"
-                  />
-                  <Tab
-                    label="Notifications"
-                    icon={<NotificationsIcon />}
                     iconPosition="start"
                   />
                 </StyledTabs>
@@ -817,113 +811,6 @@ const SettingsPage: React.FC = () => {
                                 }
                               >
                                 Contact Support
-                              </ActionButton>
-                            </Box>
-                          </CardContent>
-                        </SectionCard>
-                      </Grid>
-                    </Grid>
-                  </>
-                )}
-
-                {currentTab === 2 && (
-                  <>
-                    <SectionTitle variant="h6">
-                      <NotificationsIcon /> Notification Settings
-                    </SectionTitle>
-
-                    <Alert
-                      severity="info"
-                      sx={{
-                        mb: 3,
-                        borderRadius: 2,
-                        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.05)",
-                      }}
-                    >
-                      <Typography variant="subtitle2" fontWeight={600}>
-                        Coming Soon
-                      </Typography>
-                      <Typography variant="body2">
-                        Notification preferences will be available in an
-                        upcoming update. Check back soon!
-                      </Typography>
-                    </Alert>
-
-                    <Grid container spacing={3}>
-                      <Grid item xs={12}>
-                        <SectionCard>
-                          <CardTitle>
-                            <IconAvatar>
-                              <NotificationsIcon />
-                            </IconAvatar>
-                            <Typography variant="subtitle1" fontWeight="600">
-                              Notification Preview
-                            </Typography>
-                          </CardTitle>
-                          <CardContent sx={{ p: 3 }}>
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                              paragraph
-                            >
-                              Soon you'll be able to customize your notification
-                              preferences here, including:
-                            </Typography>
-
-                            <Box sx={{ mt: 2 }}>
-                              <SecurityTip>
-                                <Typography variant="body2" className="icon">
-                                  •
-                                </Typography>
-                                <Typography variant="body2">
-                                  Email notifications for job applications
-                                </Typography>
-                              </SecurityTip>
-
-                              <SecurityTip>
-                                <Typography variant="body2" className="icon">
-                                  •
-                                </Typography>
-                                <Typography variant="body2">
-                                  Browser notifications for account activity
-                                </Typography>
-                              </SecurityTip>
-
-                              <SecurityTip>
-                                <Typography variant="body2" className="icon">
-                                  •
-                                </Typography>
-                                <Typography variant="body2">
-                                  Weekly summary reports and analytics
-                                </Typography>
-                              </SecurityTip>
-
-                              <SecurityTip>
-                                <Typography variant="body2" className="icon">
-                                  •
-                                </Typography>
-                                <Typography variant="body2">
-                                  Security alerts and account notifications
-                                </Typography>
-                              </SecurityTip>
-                            </Box>
-
-                            <Box
-                              sx={{
-                                mt: 3,
-                                pt: 2,
-                                borderTop: "1px solid",
-                                borderColor: "divider",
-                                display: "flex",
-                                justifyContent: "flex-end",
-                              }}
-                            >
-                              <ActionButton
-                                variant="outlined"
-                                color="primary"
-                                disabled
-                              >
-                                Settings Coming Soon
                               </ActionButton>
                             </Box>
                           </CardContent>
