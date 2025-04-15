@@ -90,6 +90,34 @@ def rank_candidates(
     save_to_json(existing_ranking, ranking_results_path)
     print(f"Ranking results saved to {ranking_results_path}")
 
+    candidate_texts_path = os.path.join(output_folders["reports"], "candidate_texts.json")
+    if os.path.exists(candidate_texts_path):
+        existing_texts = load_from_json(candidate_texts_path)
+        if "analysis_id" not in existing_texts:
+            existing_texts["analysis_id"] = "candidate_texts_" + str(uuid4())
+        if "texts" not in existing_texts:
+            existing_texts["texts"] = []
+    else:
+        existing_texts = {"analysis_id": "candidate_texts_" + str(uuid4()), "texts": []}
+
+    existing_text_ids = {entry["id"] for entry in existing_texts.get("texts", [])}
+    for i in range(len(candidate_files)):
+        file_name = os.path.basename(candidate_files[i])
+        user_id = extract_user_id(file_name)
+        candidate_id = get_candidate_id_from_firestore(job_id, user_id)
+        candidate_name = get_candidate_name_from_firestore(job_id, user_id)
+        if candidate_id in existing_text_ids:
+            print(f"Candidate text for {candidate_name} already exists, skipping.")
+            continue
+        entry = {
+            "id": candidate_id,
+            "candidate_file": candidate_name,
+            "extracted_text": candidate_texts[i]
+        }
+        existing_texts["texts"].append(entry)
+    save_to_json(existing_texts, candidate_texts_path)
+    print(f"Candidate texts saved to {candidate_texts_path}")
+
     explanations, shap_values, shap_df = generate_model_explanations(
         ranking_model, feature_names, test_features
     )
