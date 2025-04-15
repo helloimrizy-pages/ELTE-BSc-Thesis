@@ -98,6 +98,7 @@ def analyze_candidates(request: AnalyzeRequest):
         "shap_explanations": load_json_report(os.path.join(output_dir, "shap_explanations.json")),
         "chatgpt_explanations": load_json_report(os.path.join(output_dir, "chatgpt_explanations.json")),
         "gender_bias_report": load_json_report(os.path.join(output_dir, "gender_bias_analysis.json")),
+        "candidate_texts": load_json_report(os.path.join(output_dir, "candidate_texts.json"))
     }
 
 @app.get("/api/get-analysis/{job_id}")
@@ -108,6 +109,7 @@ def get_analysis(job_id: str):
         "shap_explanations": load_json_report(os.path.join(output_dir, "shap_explanations.json")),
         "chatgpt_explanations": load_json_report(os.path.join(output_dir, "chatgpt_explanations.json")),
         "gender_bias_report": load_json_report(os.path.join(output_dir, "gender_bias_analysis.json")),
+        "candidate_texts": load_json_report(os.path.join(output_dir, "candidate_texts.json"))
     }
 
 if __name__ == "__main__":
