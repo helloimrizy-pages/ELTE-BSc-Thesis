@@ -1,16 +1,16 @@
 {
-  "analysis_id": "shap_9c267a09-fcde-4e5b-8da0-b5d7b3e7233b",
+  "analysis_id": "shap_b5372898-aff3-4c7c-9224-822005b85c65",
   "shap": [
     {
       "id": "WdvZA8BZpeHVOSfbOpau",
       "candidate_file": "Alfarizy Alfarizy",
       "base_value": 0.7620010049564142,
-      "prediction": 0.8384683731857708,
+      "prediction": 0.8354332038283698,
       "contributors": [
         {
           "feature": "Overall CV-Job Similarity",
-          "impact": 0.05375136968118422,
-          "value": 0.9493207931518555,
+          "impact": 0.05267795218744836,
+          "value": 0.9519067406654358,
           "positive": true
         },
         {
@@ -33,7 +33,7 @@
         },
         {
           "feature": "Semantic Context Factor 765",
-          "impact": 0.0018515734576395194,
+          "impact": 0.0018441889682556379,
           "value": 0.45366203784942627,
           "positive": true
         },
@@ -45,14 +45,8 @@
         },
         {
           "feature": "Semantic Context Factor 210",
-          "impact": 0.0017250967572267379,
+          "impact": 0.0017247656119216198,
           "value": -0.21124549210071564,
-          "positive": true
-        },
-        {
-          "feature": "Concept Gap 720",
-          "impact": 0.001324359851444318,
-          "value": 0.039307236671447754,
           "positive": true
         },
         {
@@ -66,6 +60,12 @@
           "impact": 0.0011839930981634651,
           "value": 0.26775062084198,
           "positive": true
+        },
+        {
+          "feature": "Semantic Context Factor 150",
+          "impact": 0.0010901251756607188,
+          "value": -0.4550672173500061,
+          "positive": true
         }
       ]
     },
@@ -73,67 +73,67 @@
       "id": "Y3ESdrmcISD9s8QNZrqw",
       "candidate_file": "Anna Schmidt",
       "base_value": 0.7620010049564142,
-      "prediction": 0.731752825787554,
+      "prediction": 0.7645683269699692,
       "contributors": [
         {
           "feature": "Overall CV-Job Similarity",
-          "impact": -0.01164939937290803,
-          "value": 0.7698413729667664,
-          "positive": false
+          "impact": 0.020260147933481517,
+          "value": 0.7726320028305054,
+          "positive": true
         },
         {
           "feature": "Semantic Context Factor 375",
-          "impact": -0.0048703054225654905,
+          "impact": -0.004314815634358056,
           "value": 0.2732675075531006,
           "positive": false
         },
         {
           "feature": "Concept Gap 255",
-          "impact": -0.0027992567542534422,
-          "value": 0.03158906102180481,
-          "positive": false
-        },
-        {
-          "feature": "Concept Gap 60",
-          "impact": -0.0021353034154824937,
-          "value": 0.33662092685699463,
-          "positive": false
-        },
-        {
-          "feature": "Gender Neutrality Score",
-          "impact": -0.0008880942894842644,
-          "value": 2.9850746120145546,
-          "positive": false
-        },
-        {
-          "feature": "Semantic Context Factor 60",
-          "impact": -0.0007854725454061094,
-          "value": 0.4206012785434723,
+          "impact": -0.0024193518659089462,
+          "value": 0.022254496812820435,
           "positive": false
         },
         {
           "feature": "Semantic Context Factor 210",
-          "impact": -0.0007470957808383172,
+          "impact": -0.0013768780203987693,
           "value": 0.2492104321718216,
           "positive": false
         },
         {
-          "feature": "Semantic Context Factor 255",
-          "impact": -0.0006907836352029915,
-          "value": 0.2386358082294464,
+          "feature": "Semantic Context Factor 450",
+          "impact": -0.0013339514004232754,
+          "value": 0.5854504704475403,
           "positive": false
         },
         {
-          "feature": "Semantic Context Factor 405",
-          "impact": -0.0006488661480347279,
-          "value": -0.3941868543624878,
+          "feature": "Concept Gap 750",
+          "impact": 0.0009798287524684448,
+          "value": 0.0617079883813858,
+          "positive": true
+        },
+        {
+          "feature": "Gender Neutrality Score",
+          "impact": -0.000885741030655941,
+          "value": 2.9850746120145546,
+          "positive": false
+        },
+        {
+          "feature": "Concept Gap 60",
+          "impact": -0.0007818879206920458,
+          "value": 0.34472787380218506,
           "positive": false
         },
         {
           "feature": "Semantic Context Factor 765",
-          "impact": -0.0004956081007322181,
+          "impact": -0.0007338430681054877,
           "value": 1.1433411836624146,
           "positive": false
+        },
+        {
+          "feature": "Concept Gap 480",
+          "impact": 0.000715551891262887,
+          "value": 0.07535702735185623,
+          "positive": true
         }
       ]
     }

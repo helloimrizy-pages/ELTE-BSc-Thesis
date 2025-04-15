@@ -265,6 +265,17 @@ const COLORS = [
   "#82ca9d",
 ];
 
+interface CandidateTextEntry {
+  id: string;
+  candidate_file: string;
+  extracted_text: string;
+}
+
+interface CandidateTextsResponse {
+  analysis_id: string;
+  texts: CandidateTextEntry[];
+}
+
 export const AnalyticsPage = () => {
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
@@ -274,6 +285,10 @@ export const AnalyticsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentTab, setCurrentTab] = useState(0);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [candidateTexts, setCandidateTexts] = useState<CandidateTextsResponse>({
+    analysis_id: "",
+    texts: [],
+  });
 
   const [biasSummary, setBiasSummary] = useState<BiasSummary | null>(null);
   const [sidebarMinimized, setSidebarMinimized] = useState(() => {
@@ -309,12 +324,14 @@ export const AnalyticsPage = () => {
         jobId: selectedJobId,
       });
 
+      const candidateTextData = res.data?.candidate_texts || {};
       const explanationData =
         res.data?.chatgpt_explanations?.explanations || [];
       const bias = res.data?.gender_bias_report?.summary || null;
 
       setData(explanationData);
       setBiasSummary(bias);
+      setCandidateTexts(candidateTextData);
     } catch (err) {
       console.error("Error fetching analysis:", err);
       alert("Failed to fetch analysis. Check console for details.");
@@ -336,18 +353,22 @@ export const AnalyticsPage = () => {
         const explanationData =
           res.data?.chatgpt_explanations?.explanations || [];
         const bias = res.data?.gender_bias_report?.summary || null;
+        const candidateTextData = res.data?.candidate_texts || {};
 
         if (explanationData.length > 0) {
           setData(explanationData);
           setBiasSummary(bias);
+          setCandidateTexts(candidateTextData);
         } else {
           setData([]);
           setBiasSummary(null);
+          setCandidateTexts({ analysis_id: "", texts: [] });
         }
       } catch {
         console.warn("No cached analysis found or error fetching it.");
         setData([]);
         setBiasSummary(null);
+        setCandidateTexts({ analysis_id: "", texts: [] });
       } finally {
         setLoading(false);
       }
@@ -395,42 +416,78 @@ export const AnalyticsPage = () => {
   };
 
   const renderSkillsRadarChart = () => {
-    const skills = getSkillsFromCandidates();
-    if (skills.length === 0) return null;
+    if (
+      !candidateTexts ||
+      !candidateTexts.texts ||
+      candidateTexts.texts.length === 0
+    )
+      return null;
+
+    const candidateMapping: Record<string, string> =
+      candidateTexts.texts.reduce(
+        (acc: Record<string, string>, entry: CandidateTextEntry) => {
+          acc[entry.id] = entry.extracted_text.toLowerCase();
+          return acc;
+        },
+        {}
+      );
+
+    const candidateIds = data.map((c) => c.id);
+    const skillList = getSkillsFromCandidates();
+
+    const skillCounts: Record<string, Record<string, number>> = {};
+
+    candidateIds.forEach((id) => {
+      const text = candidateMapping[id] || "";
+      skillCounts[id] = {};
+      skillList.forEach((skill) => {
+        const regex = new RegExp(`\\b${skill.toLowerCase()}\\b`, "g");
+        const count = (text.match(regex) || []).length;
+        skillCounts[id][skill] = count;
+      });
+    });
+
+    const totalSkillFreq: Record<string, number> = {};
+    skillList.forEach((skill) => {
+      totalSkillFreq[skill] = candidateIds.reduce(
+        (sum, id) => sum + (skillCounts[id]?.[skill] || 0),
+        0
+      );
+    });
+
+    const topSkills = Object.entries(totalSkillFreq)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([skill]) => skill);
+
+    const radarData = topSkills.map((skill) => {
+      const entry: Record<string, number | string> = { skill };
+      let maxVal = Math.max(
+        ...candidateIds.map((id) => skillCounts[id]?.[skill] || 0)
+      );
+      if (maxVal === 0) maxVal = 1;
+
+      data.forEach((candidate) => {
+        entry[candidate.id] =
+          (skillCounts[candidate.id]?.[skill] || 0) / maxVal;
+      });
+
+      return entry;
+    });
 
     return (
       <ResponsiveContainer width="100%" height={400}>
-        <RadarChart
-          outerRadius={150}
-          width={500}
-          height={400}
-          data={skills.map((skill) => ({
-            skill,
-            ...data.reduce((acc, candidate) => {
-              const hasSkill =
-                candidate.chatgpt_explanation?.direct_observations?.skills?.some(
-                  (s) => s.toLowerCase() === skill.toLowerCase()
-                )
-                  ? 1
-                  : 0;
-              return {
-                ...acc,
-                [candidate.candidate_file]: hasSkill,
-              };
-            }, {}),
-          }))}
-        >
+        <RadarChart outerRadius={150} width={500} height={400} data={radarData}>
           <PolarGrid />
           <PolarAngleAxis dataKey="skill" />
           <PolarRadiusAxis angle={30} domain={[0, 1]} />
-
-          {data.slice(0, 4).map((candidate, index) => (
+          {data.slice(0, 4).map((candidate, i) => (
             <Radar
-              key={candidate.candidate_file}
+              key={candidate.id}
               name={candidate.candidate_file}
-              dataKey={candidate.candidate_file}
-              stroke={COLORS[index % COLORS.length]}
-              fill={COLORS[index % COLORS.length]}
+              dataKey={candidate.id}
+              stroke={COLORS[i % COLORS.length]}
+              fill={COLORS[i % COLORS.length]}
               fillOpacity={0.2}
             />
           ))}

@@ -1,6 +1,6 @@
-<p>Kulio is a fast-growing tech company dedicated to transforming how people connect with digital tools across Southeast Asia. We build platforms that simplify everyday life, empower communities, and deliver impact at scale. At Kulio, we value innovation, ownership, and collaboration.</p>
+<p>Transpara is a fast-growing HR tech company dedicated to transforming hiring process to be more fair and transparant. We build platforms that simplify the recruiting process, automatic process, and deliver transparency at scale. At Transpara, we value innovation, ownership, and collaboration.</p>
 <p></p>
-<p>As a Software Engineer at Kulio, you'll be part of a cross-functional product team, responsible for building, scaling, and maintaining robust web and mobile applications that serve thousands of users. You will work closely with product managers, designers, and other engineers to deliver high-quality features in a fast-paced environment.</p>
+<p>As a Software Engineer at Transpara, you'll be part of a cross-functional product team, responsible for building, scaling, and maintaining robust web application that serve thousands of users. You will work closely with product managers, designers, and other engineers to deliver high-quality features in a fast-paced environment.</p>
 <p></p>
 <p><strong>Responsibilities</strong></p>
 <p>1. Design, develop, test, and deploy scalable software solutions</p>
@@ -29,4 +29,4 @@
 <p>4. Health insurance coverage</p>
 <p>5. Stock options for high performers</p>
 <p>6. Monthly team events and annual company retreat</p>
-<p>7. Opportunity to grow with a mission-driven, innovative team<br><br>Apply now by clicking the button below. Please feel free to reach out to <a href="" target="_self"><strong>careers@kulio.com</strong></a><strong> </strong>for any inquiries</p>
+<p>7. Opportunity to grow with a mission-driven, innovative team<br><br>Apply now by clicking the button below. Please feel free to reach out to <a href="" target="_self"><strong>careers@transpara.com</strong></a> for any inquiries</p>
