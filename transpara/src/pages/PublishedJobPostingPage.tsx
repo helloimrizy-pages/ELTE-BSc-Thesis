@@ -288,7 +288,6 @@ export const PublishedJobPostingPage: React.FC = () => {
                   color="text.secondary"
                   gutterBottom
                 >
-                  {job?.company || "Company Name"} • Posted{" "}
                   {job?.createdAt?.toDate().toLocaleDateString(undefined, {
                     year: "numeric",
                     month: "long",
