@@ -1,0 +1,156 @@
+{
+  "analysis_id": "chatgpt_ff750a7a-bdcc-4d10-a139-d47ff490321e",
+  "explanations": [
+    {
+      "id": "WdvZA8BZpeHVOSfbOpau",
+      "candidate_file": "WdvZA8BZpeHVOSfbOpau",
+      "rank": 1,
+      "similarity_score": 0.8354,
+      "bias_score": 0.0,
+      "chatgpt_explanation": {
+        "job_position": "Software Engineer",
+        "similarity": {
+          "score": 0.84,
+          "max_score": 1,
+          "comment": "The candidate demonstrates a strong alignment with the job requirements, showcasing relevant skills and experiences."
+        },
+        "shap_analysis": {
+          "positive_contributors": [
+            {
+              "feature": "Overall CV-Job Similarity",
+              "impact": "+0.053",
+              "comment": "Indicates a high degree of relevance between the candidate's background and the job description."
+            },
+            {
+              "feature": "Skill Kubernetes",
+              "impact": "+0.002",
+              "comment": "Experience with Kubernetes aligns with the company's focus on modern technologies."
+            },
+            {
+              "feature": "Skill Docker",
+              "impact": "+0.002",
+              "comment": "Proficiency in Docker supports the role's requirements for containerization."
+            }
+          ],
+          "negative_contributors": []
+        },
+        "direct_observations": {
+          "skills": [
+            "Python",
+            "React",
+            "TypeScript",
+            "Java",
+            "SQL",
+            "Docker",
+            "Kubernetes"
+          ],
+          "experience": [
+            "2+ years in software development",
+            "Full-stack development",
+            "Cloud services (AWS, Firebase)",
+            "RESTful API design"
+          ],
+          "education": "Bachelor of Science in Computer Science (Expected June 2025)",
+          "comment": "The candidate has a solid educational background and relevant work experience in software engineering."
+        },
+        "notable_gaps_and_missing_requirements": "While the candidate has strong skills in relevant programming languages and frameworks, they have less than 2 years of professional experience, which may be a concern for immediate contributions in a fast-paced environment.",
+        "gender_bias": {
+          "score": 0,
+          "max_score": 100,
+          "comment": "No gender bias detected, indicating a fair evaluation."
+        },
+        "conclusion": "Overall, the candidate is a strong fit for the Software Engineer position at Transpara. They possess the necessary technical skills, relevant experience, and a proactive approach to learning and development. Their background in full-stack development and cloud technologies aligns well with the company's goals of innovation and collaboration. However, the candidate's relatively limited professional experience may require additional support during the onboarding process to ensure they can quickly adapt to the fast-paced work environment."
+      }
+    },
+    {
+      "id": "Y3ESdrmcISD9s8QNZrqw",
+      "candidate_file": "Y3ESdrmcISD9s8QNZrqw",
+      "rank": 2,
+      "similarity_score": 0.7646,
+      "bias_score": 3.48,
+      "chatgpt_explanation": {
+        "job_position": "Software Engineer",
+        "similarity": {
+          "score": 0.76,
+          "max_score": 1,
+          "comment": "The candidate demonstrates a strong alignment with the job requirements, particularly in educational background and professional experience."
+        },
+        "shap_analysis": {
+          "positive_contributors": [
+            {
+              "feature": "Overall CV-Job Similarity",
+              "impact": "+0.020",
+              "comment": "Indicates a good match between the candidate's qualifications and the job description."
+            },
+            {
+              "feature": "Concept Gap 750",
+              "impact": "+0.001",
+              "comment": "Suggests minor alignment in specific technical skills."
+            },
+            {
+              "feature": "Concept Gap 480",
+              "impact": "+0.001",
+              "comment": "Shows slight relevance in areas related to software engineering."
+            }
+          ],
+          "negative_contributors": [
+            {
+              "feature": "Semantic Context Factor 375",
+              "impact": "-0.004",
+              "comment": "Indicates some misalignment in the context of software engineering."
+            },
+            {
+              "feature": "Concept Gap 255",
+              "impact": "-0.002",
+              "comment": "Highlights a gap in specific software development skills."
+            },
+            {
+              "feature": "Semantic Context Factor 210",
+              "impact": "-0.001",
+              "comment": "Suggests a lack of direct relevance to the software engineering role."
+            },
+            {
+              "feature": "Semantic Context Factor 450",
+              "impact": "-0.001",
+              "comment": "Points to a minor disconnect in the expected software engineering context."
+            },
+            {
+              "feature": "Gender Neutrality Score",
+              "impact": "-0.001",
+              "comment": "Indicates a slight bias in the evaluation process."
+            },
+            {
+              "feature": "Concept Gap 60",
+              "impact": "-0.001",
+              "comment": "Reveals a gap in certain required technical competencies."
+            },
+            {
+              "feature": "Semantic Context Factor 765",
+              "impact": "-0.001",
+              "comment": "Suggests a lack of alignment with the collaborative aspects of the role."
+            }
+          ]
+        },
+        "direct_observations": {
+          "skills": [
+            "Networking",
+            "Security",
+            "Tools"
+          ],
+          "experience": [
+            "Network Architect at Deutsche Telekom"
+          ],
+          "education": "Master of Science in Network Engineering",
+          "comment": "While the candidate has a strong educational background and relevant experience in network engineering, they lack direct experience in software development and the required programming languages."
+        },
+        "notable_gaps_and_missing_requirements": "The candidate does not meet the requirement for 2+ years of professional experience in software development, nor do they demonstrate proficiency in modern programming languages or frameworks such as React or Node.js.",
+        "gender_bias": {
+          "score": 3.5,
+          "max_score": 100,
+          "comment": "The candidate's gender bias score is low, indicating a fair evaluation process."
+        },
+        "conclusion": "While Anna Schmidt possesses a strong educational background and relevant experience in network engineering, she does not meet the core requirements for the Software Engineer position at Transpara, particularly in software development experience and proficiency in required programming languages. Therefore, it is recommended not to proceed with her application for this role."
+      }
+    }
+  ]
+}
