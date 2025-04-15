@@ -69,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const toggleSidebar = () => {
     const newState = !minimized;
     localStorage.setItem("sidebarMinimized", String(newState));
-    onToggleMinimize?.();
+    onToggleMinimize?.(!minimized);
   };
 
   return (
