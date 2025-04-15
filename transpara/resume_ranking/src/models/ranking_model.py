@@ -56,6 +56,10 @@ def rank_candidates(
 
     print("Predicting match scores...\n")
     predictions, results_df = predict_with_ranking_model(ranking_model, test_features)
+    # 💾 Save test features for testing purposes (only in dev/test mode)
+    if os.getenv("SAVE_TEST_FEATURES") == "1":
+        test_features.to_json("tests/sample_data/test_features.json", orient="records", indent=2)
+
     ranked_indices = np.argsort(-predictions)
 
     ranking_results_path = os.path.join(output_folders['reports'], "ranking_results.json")
