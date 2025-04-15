@@ -10,10 +10,5 @@
     "resolveJsonModule": true,
     "types": ["jest", "node"]
   },
-  "include": ["src", "tests", "**/*.ts", "**/*.tsx"],
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "include": ["src", "tests", "**/*.ts", "**/*.tsx"]
 }
