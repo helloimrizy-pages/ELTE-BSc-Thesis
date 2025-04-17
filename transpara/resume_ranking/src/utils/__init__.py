@@ -2,7 +2,8 @@ from src.utils.file_utils import (
     ensure_dir_exists,
     save_to_json,
     load_from_json,
-    extract_user_id
+    extract_user_id,
+    clean_html
 )
 
 from src.utils.text_utils import (
@@ -32,6 +33,7 @@ __all__ = [
     'save_to_json',
     'load_from_json',
     'extract_user_id',
+    'clean_html',
     'extract_skill_keywords',
     'preprocess_text',
     'tokenize',
