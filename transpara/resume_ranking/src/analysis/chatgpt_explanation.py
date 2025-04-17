@@ -66,6 +66,6 @@ def generate_chatgpt_explanations(
         }
         existing_explanations["explanations"].append(entry)
 
-    save_to_json(existing_explanations, report_path)
+    save_to_json(existing_explanations, report_path, upload_to_firebase=True)
     print(f"\nChatGPT explanations generated and saved to {report_path}")
     return report_path
