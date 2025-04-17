@@ -18,7 +18,9 @@ from src.utils.io_utils import (
 
 from src.utils.firebase_utils import (
     get_candidate_name_from_firestore,
-    get_candidate_id_from_firestore
+    get_candidate_id_from_firestore,
+    upload_json_to_firebase,
+    load_json_from_firebase
 )
 
 from src.utils.firebase_init import (
@@ -37,5 +39,7 @@ __all__ = [
     'load_candidate_pdfs',
     'get_candidate_name_from_firestore',
     'get_candidate_id_from_firestore',
+    'upload_json_to_firebase',
+    'load_json_from_firebase',
     'initialize_firebase'
 ]
