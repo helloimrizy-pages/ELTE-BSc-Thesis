@@ -114,3 +114,11 @@ def get_analysis(job_id: str):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+@app.get("/api/analysis-metadata/{job_id}")
+def get_analysis_metadata(job_id: str):
+    doc_ref = firestore_db.collection("jobs").document(job_id).collection("analysis_metadata").document("summary")
+    doc = doc_ref.get()
+    if doc.exists:
+        return doc.to_dict()
+    return {}
