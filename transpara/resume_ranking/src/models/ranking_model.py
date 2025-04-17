@@ -1,7 +1,11 @@
 import os
 import json
-from uuid import uuid4
 import numpy as np
+import tempfile
+import json
+
+from firebase_admin import storage
+from uuid import uuid4
 from joblib import load
 from typing import List
 from src.data.embeddings import get_text_embedding, create_feature_vectors_dataset
@@ -9,8 +13,8 @@ from src.models.linguistic_debiasing import mitigate_gender_bias
 from src.models.embedding_debiasing import compute_gender_subspace
 from src.analysis.shap_explanation import generate_model_explanations
 from api.openai_client import initialize_openai_client
-from src.utils.file_utils import save_to_json, load_from_json, extract_user_id
-from src.utils.firebase_utils import get_candidate_id_from_firestore, get_candidate_name_from_firestore
+from src.utils.file_utils import save_to_json, load_from_json, extract_user_id, clean_html
+from src.utils.firebase_utils import get_candidate_id_from_firestore, get_candidate_name_from_firestore, load_json_from_firebase
 
 def load_ranking_model(model_path: str) -> any:
     if not os.path.exists(model_path):
@@ -33,7 +37,9 @@ def rank_candidates(
     output_folders: dict = None,
     job_id: str = None,
 ) -> dict:
-
+    
+    job_description_text = clean_html(job_description_text)
+    print("ranking job description text:", job_description_text)
     job_description_text_mitigated = mitigate_gender_bias(job_description_text)
     candidate_texts_mitigated = [mitigate_gender_bias(text) for text in candidate_texts]
 
@@ -56,7 +62,6 @@ def rank_candidates(
 
     print("Predicting match scores...\n")
     predictions, results_df = predict_with_ranking_model(ranking_model, test_features)
-    # 💾 Save test features for testing purposes (only in dev/test mode)
     if os.getenv("SAVE_TEST_FEATURES") == "1":
         test_features.to_json("tests/sample_data/test_features.json", orient="records", indent=2)
 
@@ -91,7 +96,7 @@ def rank_candidates(
         }
         existing_ranking["ranking"].append(entry)
 
-    save_to_json(existing_ranking, ranking_results_path)
+    save_to_json(existing_ranking, ranking_results_path, upload_to_firebase=True)
     print(f"Ranking results saved to {ranking_results_path}")
 
     candidate_texts_path = os.path.join(output_folders["reports"], "candidate_texts.json")
@@ -119,7 +124,7 @@ def rank_candidates(
             "extracted_text": candidate_texts[i]
         }
         existing_texts["texts"].append(entry)
-    save_to_json(existing_texts, candidate_texts_path)
+    save_to_json(existing_texts, candidate_texts_path, upload_to_firebase=True)
     print(f"Candidate texts saved to {candidate_texts_path}")
 
     explanations, shap_values, shap_df = generate_model_explanations(
@@ -135,9 +140,12 @@ def rank_candidates(
         "explanations": explanations
     }
 
-def display_ranking(ranking_path: str):
-    with open(ranking_path, "r", encoding="utf-8") as f:
-        ranking = json.load(f)
-    print("\nCandidate Ranking Results:")
-    for result in ranking["ranking"]:
-        print(f"{result['rank']}. {result['candidate_file']} - Score: {result['score']:.4f}")
+def display_ranking(job_id: str):
+    try:
+        ranking = load_json_from_firebase(job_id, "ranking_results.json")
+        print("\n📊 Candidate Ranking Results:")
+        for result in ranking.get("ranking", []):
+            print(f"{result['rank']}. {result['candidate_file']} - Score: {result['score']:.4f}")
+    except Exception as e:
+        print(f"⚠️ Error displaying ranking: {e}")
+
