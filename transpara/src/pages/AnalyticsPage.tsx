@@ -48,8 +48,9 @@ import {
   Cell,
 } from "recharts";
 import axios from "axios";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from "../firebase";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -289,7 +290,7 @@ export const AnalyticsPage = () => {
     analysis_id: "",
     texts: [],
   });
-
+  const [noNewCandidates, setNoNewCandidates] = useState(false);
   const [biasSummary, setBiasSummary] = useState<BiasSummary | null>(null);
   const [sidebarMinimized, setSidebarMinimized] = useState(() => {
     return localStorage.getItem("sidebarMinimized") === "true";
@@ -303,12 +304,20 @@ export const AnalyticsPage = () => {
   };
 
   const fetchJobs = async () => {
+    if (!auth.currentUser) return;
+
     try {
-      const snapshot = await getDocs(collection(db, "jobs"));
+      const q = query(
+        collection(db, "jobs"),
+        where("ownerUid", "==", auth.currentUser.uid)
+      );
+      const snapshot = await getDocs(q);
+
       const jobList: Job[] = snapshot.docs.map((doc) => ({
         id: doc.id,
         title: doc.data().title,
       }));
+
       setJobs(jobList);
     } catch (error) {
       console.error("Error fetching jobs:", error);
@@ -317,24 +326,89 @@ export const AnalyticsPage = () => {
     }
   };
 
+  const fetchAnalysisFromFirebase = async (jobId: string) => {
+    const storage = getStorage();
+    const basePath = `reports/${jobId}`;
+
+    const files = {
+      chatgpt_explanations: "chatgpt_explanations.json",
+      gender_bias_report: "gender_bias_analysis.json",
+      candidate_texts: "candidate_texts.json",
+    };
+
+    try {
+      const urls = await Promise.all(
+        Object.values(files).map((file) =>
+          getDownloadURL(ref(storage, `${basePath}/${file}`))
+        )
+      );
+
+      const [chatgptRes, biasRes, textRes] = await Promise.all(
+        urls.map((url) => fetch(url).then((r) => r.json()))
+      );
+
+      setData(chatgptRes.explanations || []);
+      setBiasSummary(biasRes.summary || null);
+      setCandidateTexts(textRes || { analysis_id: "", texts: [] });
+      return true;
+    } catch (err) {
+      console.warn("Some reports not found, running analysis...", err);
+      return false;
+    }
+  };
+
   const fetchAnalysis = async () => {
+    if (!selectedJobId) return;
     try {
       setLoading(true);
-      const res = await axios.post("/api/analyze-candidates", {
-        jobId: selectedJobId,
+
+      const analysisExists = await fetchAnalysisFromFirebase(selectedJobId);
+
+      const jobRef = collection(db, "jobs", selectedJobId, "applications");
+      const snapshot = await getDocs(jobRef);
+      const actualApplicants = snapshot.size;
+
+      const metadataRef = collection(
+        db,
+        "jobs",
+        selectedJobId,
+        "analysis_metadata"
+      );
+      const metadataSnapshot = await getDocs(metadataRef);
+      let expectedApplicants = 0;
+
+      metadataSnapshot.forEach((doc) => {
+        if (doc.id === "summary") {
+          expectedApplicants = doc.data().numApplicants || 0;
+        }
       });
 
-      const candidateTextData = res.data?.candidate_texts || {};
-      const explanationData =
-        res.data?.chatgpt_explanations?.explanations || [];
-      const bias = res.data?.gender_bias_report?.summary || null;
+      const needsUpdate = actualApplicants !== expectedApplicants;
 
-      setData(explanationData);
-      setBiasSummary(bias);
-      setCandidateTexts(candidateTextData);
+      if (!analysisExists || needsUpdate) {
+        console.log(
+          "Running backend analysis due to new applicants or missing reports."
+        );
+        const res = await axios.post("/api/analyze-candidates", {
+          jobId: selectedJobId,
+        });
+
+        const chatgpt = res.data?.chatgpt_explanations?.explanations || [];
+        const bias = res.data?.gender_bias_report?.summary || null;
+        const texts = res.data?.candidate_texts || {
+          analysis_id: "",
+          texts: [],
+        };
+
+        setData(chatgpt);
+        setBiasSummary(bias);
+        setCandidateTexts(texts);
+      } else {
+        console.log("Using cached analysis from Firebase Storage.");
+      }
     } catch (err) {
-      console.error("Error fetching analysis:", err);
-      alert("Failed to fetch analysis. Check console for details.");
+      console.error("Error during analysis:", err);
+      alert("Failed to fetch or generate analysis.");
     } finally {
       setLoading(false);
     }
@@ -345,44 +419,66 @@ export const AnalyticsPage = () => {
   );
 
   useEffect(() => {
-    const tryFetchCachedAnalysis = async () => {
+    const autoFetch = async () => {
       if (!selectedJobId) return;
-      try {
-        setLoading(true);
-        const res = await axios.get(`/api/get-analysis/${selectedJobId}`);
-        const explanationData =
-          res.data?.chatgpt_explanations?.explanations || [];
-        const bias = res.data?.gender_bias_report?.summary || null;
-        const candidateTextData = res.data?.candidate_texts || {};
 
-        if (explanationData.length > 0) {
-          setData(explanationData);
-          setBiasSummary(bias);
-          setCandidateTexts(candidateTextData);
-        } else {
-          setData([]);
-          setBiasSummary(null);
-          setCandidateTexts({ analysis_id: "", texts: [] });
+      setLoading(true);
+
+      const analysisExists = await fetchAnalysisFromFirebase(selectedJobId);
+
+      const jobRef = collection(db, "jobs", selectedJobId, "applications");
+      const snapshot = await getDocs(jobRef);
+      const actualApplicants = snapshot.size;
+
+      const metadataRef = collection(
+        db,
+        "jobs",
+        selectedJobId,
+        "analysis_metadata"
+      );
+      const metadataSnapshot = await getDocs(metadataRef);
+
+      let expectedApplicants = 0;
+      metadataSnapshot.forEach((doc) => {
+        if (doc.id === "summary") {
+          expectedApplicants = doc.data().numApplicants || 0;
         }
-      } catch {
-        console.warn("No cached analysis found or error fetching it.");
-        setData([]);
-        setBiasSummary(null);
-        setCandidateTexts({ analysis_id: "", texts: [] });
-      } finally {
-        setLoading(false);
+      });
+
+      const needsUpdate = actualApplicants !== expectedApplicants;
+
+      if (!analysisExists || needsUpdate) {
+        console.log(
+          "Running backend analysis due to missing/outdated reports."
+        );
+        await fetchAnalysis(); // this triggers backend and sets all data
       }
+
+      if (analysisExists && !needsUpdate) {
+        console.log("No new candidates. Showing cached results.");
+        setNoNewCandidates(true);
+      } else {
+        setNoNewCandidates(false);
+      }
+      setLoading(false);
     };
 
-    tryFetchCachedAnalysis();
+    autoFetch();
   }, [selectedJobId]);
 
   useEffect(() => {
-    const savedJobId = localStorage.getItem("selectedJobId");
-    if (savedJobId) {
-      setSelectedJobId(savedJobId);
-    }
-    fetchJobs();
+    const init = async () => {
+      const savedJobId = localStorage.getItem("selectedJobId");
+      if (savedJobId) setSelectedJobId(savedJobId);
+
+      await fetchJobs();
+
+      if (savedJobId && !jobs.some((job) => job.id === savedJobId)) {
+        localStorage.removeItem("selectedJobId");
+        setSelectedJobId("");
+      }
+    };
+    init();
   }, []);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -1304,6 +1400,7 @@ export const AnalyticsPage = () => {
                           onChange={(e) => {
                             const value = e.target.value;
                             setSelectedJobId(value);
+                            setNoNewCandidates(false);
                             localStorage.setItem("selectedJobId", value);
                           }}
                           label="Select Job"
@@ -1354,10 +1451,19 @@ export const AnalyticsPage = () => {
                 </AnalyticsCard>
 
                 {!loading && selectedJobId && data.length > 0 && (
-                  <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
-                    Showing cached analysis results. Click "Run Analysis" to
-                    refresh data.
-                  </Alert>
+                  <>
+                    {noNewCandidates ? (
+                      <Alert severity="success" sx={{ mb: 2, borderRadius: 2 }}>
+                        No new candidates since last analysis. Showing cached
+                        analysis.
+                      </Alert>
+                    ) : (
+                      <Alert severity="warning" sx={{ mb: 2, borderRadius: 2 }}>
+                        New candidates have applied since the last analysis.
+                        Click "Run Analysis" to update the results.
+                      </Alert>
+                    )}
+                  </>
                 )}
 
                 <StyledTabs
