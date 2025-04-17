@@ -16,6 +16,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from src.data.document_extraction import extract_text_from_pdf
 from src.data.embeddings import load_mbert_model
 from config.settings import create_output_folders, DEFAULT_SKILLS, MODEL_SETTINGS
+from src.utils.file_utils import clean_html
 
 def prepare_training_data(
     job_description_text: str,
@@ -47,7 +48,8 @@ def prepare_training_data(
     
     if skill_keywords is None:
         skill_keywords = DEFAULT_SKILLS
-    
+
+    job_description_text = clean_html(job_description_text)
     job_embedding = get_text_embedding(job_description_text, tokenizer, model)
     cv_embeddings = [get_text_embedding(text, tokenizer, model) for text in candidate_texts]
     
