@@ -122,7 +122,10 @@ const Sidebar: React.FC<SidebarProps> = ({
             <Tooltip title={minimized ? "Job Dashboard" : ""} placement="right">
               <ListItemButton
                 onClick={() => navigate("/")}
-                selected={isActive("/")}
+                selected={
+                  location.pathname === "/" ||
+                  location.pathname === "/dashboard"
+                }
                 sx={{
                   justifyContent: minimized ? "center" : "flex-start",
                   "&.Mui-selected": {
