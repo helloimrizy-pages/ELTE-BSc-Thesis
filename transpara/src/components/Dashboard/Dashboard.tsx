@@ -22,7 +22,7 @@ import { TransparaAppBar } from "../AppBar/TransparaAppBar";
 import Sidebar from "../AppBar/Sidebar";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../../firebase";
-import { collectionGroup, getDocs, Timestamp } from "firebase/firestore";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 import {
   LineChart,
   Line,
@@ -200,40 +200,53 @@ const Dashboard: React.FC = () => {
         : "N/A",
   }));
 
+  const getOwnedJobIds = async (uid: string): Promise<string[]> => {
+    const jobSnapshot = await getDocs(collection(db, "jobs"));
+
+    const ownedJobs = jobSnapshot.docs.filter(
+      (doc) => doc.data().ownerUid === uid
+    );
+
+    return ownedJobs.map((doc) => doc.id);
+  };
+
   const fetchCandidates = async () => {
     try {
+      if (!auth.currentUser) return;
       setRefreshing(true);
-      const snapshot = await getDocs(collectionGroup(db, "applications"));
+
+      const jobIds = await getOwnedJobIds(auth.currentUser.uid);
       const list: Candidate[] = [];
 
-      snapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        const pathSegments = docSnap.ref.path.split("/");
-        const jobId = pathSegments.length > 1 ? pathSegments[1] : null;
+      for (const jobId of jobIds) {
+        const appsSnapshot = await getDocs(
+          collection(db, "jobs", jobId, "applications")
+        );
 
-        if (data.firstName && data.appliedAt instanceof Timestamp && jobId) {
-          list.push({
-            id: docSnap.id,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email || "",
-            status: data.status || "applied",
-            appliedAt: data.appliedAt,
-            jobTitle: data.jobTitle || "",
-            linkedinUrl: data.linkedinUrl || "",
-            phoneCountryCode: data.phoneCountryCode || "",
-            phoneNumber: data.phoneNumber || "",
-            placeOfResidence: data.placeOfResidence || "",
-            jobId,
-          });
-        }
-      });
+        appsSnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+
+          if (data.firstName && data.appliedAt instanceof Timestamp) {
+            list.push({
+              id: docSnap.id,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: data.email || "",
+              status: data.status || "applied",
+              appliedAt: data.appliedAt,
+              jobTitle: data.jobTitle || "",
+              linkedinUrl: data.linkedinUrl || "",
+              phoneCountryCode: data.phoneCountryCode || "",
+              phoneNumber: data.phoneNumber || "",
+              placeOfResidence: data.placeOfResidence || "",
+              jobId,
+            });
+          }
+        });
+      }
 
       list.sort((a, b) => b.appliedAt.seconds - a.appliedAt.seconds);
-      const validCandidates = list.filter(
-        (c) => c && c.appliedAt instanceof Timestamp
-      );
-      setCandidates(validCandidates);
+      setCandidates(list);
     } catch (err) {
       console.error("Error loading candidates:", err);
     } finally {
