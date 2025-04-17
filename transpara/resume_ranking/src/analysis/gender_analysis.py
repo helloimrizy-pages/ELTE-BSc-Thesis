@@ -121,7 +121,7 @@ def generate_gender_bias_report(
         existing_report["summary"] = {}
 
     if report_path:
-        save_to_json(existing_report, report_path)
+        save_to_json(existing_report, report_path, upload_to_firebase=True)
         print(f"\nGender bias analysis generated and saved to {report_path}.")
 
     return json.dumps(existing_report, indent=2)
