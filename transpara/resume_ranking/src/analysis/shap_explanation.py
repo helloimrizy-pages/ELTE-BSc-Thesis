@@ -97,7 +97,7 @@ def generate_shap_explanations(
         }
         existing_shap["shap"].append(entry)
 
-    save_to_json(existing_shap, shap_results_path)
+    save_to_json(existing_shap, shap_results_path, upload_to_firebase=True)
     print(f"SHAP analysis saved to {shap_results_path}")
 
 def _get_descriptive_feature_name(feature_name: str, skill_keywords: Optional[List[str]] = None) -> str:
