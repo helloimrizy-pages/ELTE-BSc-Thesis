@@ -334,6 +334,8 @@ export const AnalyticsPage = () => {
       chatgpt_explanations: "chatgpt_explanations.json",
       gender_bias_report: "gender_bias_analysis.json",
       candidate_texts: "candidate_texts.json",
+      ranking_result: "ranking_results.json",
+      shap_explanation: "shap_explanations.json",
     };
 
     try {
