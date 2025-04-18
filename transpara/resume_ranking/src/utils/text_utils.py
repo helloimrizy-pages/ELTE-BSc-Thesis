@@ -1,8 +1,9 @@
 import re
 import string
 import spacy
-from typing import Dict, List, Set, Tuple, Optional, Any, Union
+import hashlib
 
+from typing import Dict, List, Set, Tuple, Optional, Any, Union
 from config.settings import DEFAULT_SKILLS
 
 try:
@@ -121,3 +122,15 @@ def filter_text_by_keywords(text: str, keywords: List[str], window_size: int = 2
             segments.append(segment)
             
     return segments
+
+def compute_text_hash(text: str) -> str:
+    return hashlib.md5(text.encode("utf-8")).hexdigest()
+
+def extract_matched_keywords(text: str, keywords: list[str]) -> list[str]:
+    text_lower = text.lower()
+    matched = []
+    for keyword in keywords:
+        pattern = r'\b' + re.escape(keyword.lower()) + r'\b'
+        if re.search(pattern, text_lower):
+            matched.append(keyword)
+    return matched
