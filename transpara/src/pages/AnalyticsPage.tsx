@@ -422,67 +422,59 @@ export const AnalyticsPage = () => {
   );
 
   useEffect(() => {
-    const autoFetch = async () => {
-      if (!selectedJobId) return;
+    const init = async () => {
+      await fetchJobs();
 
+      const savedJobId = localStorage.getItem("selectedJobId");
+      if (savedJobId && jobs.some((job) => job.id === savedJobId)) {
+        setSelectedJobId(savedJobId);
+      } else {
+        setSelectedJobId("");
+        localStorage.removeItem("selectedJobId");
+      }
+    };
+
+    init();
+  }, []);
+
+  useEffect(() => {
+    const checkAndLoadCachedAnalysis = async () => {
+      if (!selectedJobId) return;
       setLoading(true);
 
       const analysisExists = await fetchAnalysisFromFirebase(selectedJobId);
 
-      const jobRef = collection(db, "jobs", selectedJobId, "applications");
-      const snapshot = await getDocs(jobRef);
-      const actualApplicants = snapshot.size;
+      if (analysisExists) {
+        const jobRef = collection(db, "jobs", selectedJobId, "applications");
+        const snapshot = await getDocs(jobRef);
+        const actualApplicants = snapshot.size;
 
-      const metadataRef = collection(
-        db,
-        "jobs",
-        selectedJobId,
-        "analysis_metadata"
-      );
-      const metadataSnapshot = await getDocs(metadataRef);
-
-      let expectedApplicants = 0;
-      metadataSnapshot.forEach((doc) => {
-        if (doc.id === "summary") {
-          expectedApplicants = doc.data().numApplicants || 0;
-        }
-      });
-
-      const needsUpdate = actualApplicants !== expectedApplicants;
-
-      if (!analysisExists || needsUpdate) {
-        console.log(
-          "Running backend analysis due to missing/outdated reports."
+        const metadataRef = collection(
+          db,
+          "jobs",
+          selectedJobId,
+          "analysis_metadata"
         );
-        await fetchAnalysis(); // this triggers backend and sets all data
-      }
+        const metadataSnapshot = await getDocs(metadataRef);
+        let expectedApplicants = 0;
 
-      if (analysisExists && !needsUpdate) {
-        console.log("No new candidates. Showing cached results.");
-        setNoNewCandidates(true);
+        metadataSnapshot.forEach((doc) => {
+          if (doc.id === "summary") {
+            expectedApplicants = doc.data().numApplicants || 0;
+          }
+        });
+
+        const needsUpdate = actualApplicants !== expectedApplicants;
+        setNoNewCandidates(!needsUpdate);
       } else {
         setNoNewCandidates(false);
       }
+
       setLoading(false);
     };
 
-    autoFetch();
+    checkAndLoadCachedAnalysis();
   }, [selectedJobId]);
-
-  useEffect(() => {
-    const init = async () => {
-      const savedJobId = localStorage.getItem("selectedJobId");
-      if (savedJobId) setSelectedJobId(savedJobId);
-
-      await fetchJobs();
-
-      if (savedJobId && !jobs.some((job) => job.id === savedJobId)) {
-        localStorage.removeItem("selectedJobId");
-        setSelectedJobId("");
-      }
-    };
-    init();
-  }, []);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setCurrentTab(newValue);
