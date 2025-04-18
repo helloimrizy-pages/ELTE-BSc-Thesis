@@ -91,11 +91,6 @@ def create_feature_vector(
         for skill, count in skill_counts.items():
             features[f"skill_{skill}"] = count
     
-    if text is not None:
-        from src.models.linguistic_debiasing import compute_gender_bias_score
-        gender_bias = compute_gender_bias_score(text)
-        features["gender_bias_score"] = gender_bias
-    
     return features
 
 def create_feature_vectors_dataset(
