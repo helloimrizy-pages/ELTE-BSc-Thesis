@@ -106,8 +106,6 @@ def _get_descriptive_feature_name(feature_name: str, skill_keywords: Optional[Li
         return f"Skill: {skill_name.capitalize()}"
     elif feature_name == "cosine_similarity":
         return "Overall CV-Job Similarity"
-    elif feature_name == "gender_bias_score":
-        return "Gender Neutrality Score"
     elif feature_name.startswith("embed_dim_"):
         dim_num = feature_name.replace("embed_dim_", "")
         return f"Semantic Context Factor {dim_num}"
