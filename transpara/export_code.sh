@@ -17,7 +17,7 @@ if [ -f "$output_file" ]; then
 fi
 
 # List of directories to look for
-directories=("src/components" "src/constants" "src/pages" "src/services" "src/types" "src/utils" "resume_ranking/api" "resume_ranking/backend" "resume_ranking/config" "resume_ranking/src")
+directories=("src/components" "src/constants" "src/pages" "src/context" "src/tests" "src/types" "src/utils" "resume_ranking/api" "resume_ranking/backend" "resume_ranking/config" "resume_ranking/src" "resume_ranking/training")
 
 # List of specific files to include
 specific_files=("src/App.tsx" "src/firebase.ts" "src/setupGlobal.ts" "resume_ranking/main.py")
