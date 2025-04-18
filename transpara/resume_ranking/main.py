@@ -13,7 +13,6 @@ from datetime import datetime
 def run_pipeline(job_description_path: str, candidates_dir: str, job_id: str):
     job_description_text = load_job_description(job_description_path)
     job_description_text = clean_html(job_description_text)
-    print("Job description text:", job_description_text)
     candidate_files, candidate_texts = load_candidate_pdfs(candidates_dir)
     tokenizer, model = load_mbert_model()
 
