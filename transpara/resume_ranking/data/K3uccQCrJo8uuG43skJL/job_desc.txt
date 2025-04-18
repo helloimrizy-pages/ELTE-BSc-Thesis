@@ -1,4 +1,4 @@
-<p>Transpara is a fast-growing multinational HR tech company dedicated to transforming hiring process to be more fair and transparant. We build platforms that simplify the recruiting process, automatic process, and deliver transparency at scale. At Transpara, we value innovation, ownership, and collaboration.</p>
+<p>Transpara is a fast-growing HR tech company dedicated to transforming hiring process to be more fair and transparant. We build platforms that simplify the recruiting process, automatic process, and deliver transparency at scale. At Transpara, we value innovation, ownership, and collaboration.</p>
 <p></p>
 <p>As a Software Engineer at Transpara, you'll be part of a cross-functional product team, responsible for building, scaling, and maintaining robust web application that serve thousands of users. You will work closely with product managers, designers, and other engineers to deliver high-quality features in a fast-paced environment.</p>
 <p></p>

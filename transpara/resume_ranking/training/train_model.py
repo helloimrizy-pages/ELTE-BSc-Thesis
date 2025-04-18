@@ -17,6 +17,7 @@ from src.data.document_extraction import extract_text_from_pdf
 from src.data.embeddings import load_mbert_model
 from config.settings import create_output_folders, DEFAULT_SKILLS, MODEL_SETTINGS
 from src.utils.file_utils import clean_html
+from src.utils.text_utils import extract_matched_keywords
 
 def prepare_training_data(
     job_description_text: str,
@@ -55,16 +56,22 @@ def prepare_training_data(
     job_embedding = get_text_embedding(job_description_text, tokenizer, model)
     cv_embeddings = [get_text_embedding(text, tokenizer, model) for text in candidate_texts]
     
-    if synthetic:
-        scores = []
-        for i, cv_text in enumerate(candidate_texts):
+    match_counts = []
+    keyword_ratios = []
+    scores = []
+
+    for i, text in enumerate(candidate_texts):
+        matched_keywords = extract_matched_keywords(text, skill_keywords)
+        match_count = len(matched_keywords)
+        ratio = match_count / len(skill_keywords)
+
+        match_counts.append(match_count)
+        keyword_ratios.append(ratio)
+
+        if synthetic:
             cosine_score = cosine_similarity(job_embedding, cv_embeddings[i])
-            skill_match_score = get_skill_match_score(cv_text, skill_keywords)
-            combined_score = 0.6 * cosine_score + 0.4 * skill_match_score
+            combined_score = 0.6 * cosine_score + 0.4 * ratio
             scores.append(combined_score)
-    else:
-        print("Warning: Non-synthetic mode selected but no human scores provided.")
-        scores = None
     
     feature_df = create_feature_vectors_dataset(
         job_embedding, 
@@ -76,10 +83,6 @@ def prepare_training_data(
     )
     
     return feature_df
-
-def get_skill_match_score(text: str, job_skills: List[str]) -> float:
-    count = sum(1 for skill in job_skills if skill in text.lower())
-    return count / len(job_skills)
 
 def train_ranking_model(
     features_df: pd.DataFrame,
