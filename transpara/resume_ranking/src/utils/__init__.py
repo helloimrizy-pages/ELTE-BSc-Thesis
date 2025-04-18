@@ -28,6 +28,10 @@ from src.utils.firebase_init import (
     initialize_firebase,
 )
 
+from src.utils.job_desc_keyword_extraction import (
+    extract_keywords_from_job_description,
+)
+
 __all__ = [
     'ensure_dir_exists',
     'save_to_json',
@@ -43,5 +47,6 @@ __all__ = [
     'get_candidate_id_from_firestore',
     'upload_json_to_firebase',
     'load_json_from_firebase',
-    'initialize_firebase'
+    'initialize_firebase',
+    'extract_keywords_from_job_description'
 ]
