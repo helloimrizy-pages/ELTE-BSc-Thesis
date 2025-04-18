@@ -1,0 +1,34 @@
+Transpara is a fast-growing multinational HR tech company dedicated to transforming hiring process to be more fair and transparant. We build platforms that simplify the recruiting process, automatic process, and deliver transparency at scale. At Transpara, we value innovation, ownership, and collaboration.
+
+As a Software Engineer at Transpara, you'll be part of a cross-functional product team, responsible for building, scaling, and maintaining robust web application that serve thousands of users. You will work closely with product managers, designers, and other engineers to deliver high-quality features in a fast-paced environment.
+
+Responsibilities
+1. Design, develop, test, and deploy scalable software solutions
+2. Collaborate with product and design teams to define feature specifications
+3. Write clean, maintainable, and well-documented code
+4. Review code and provide constructive feedback to peers
+5. Participate in sprint planning, standups, and retrospectives
+6. Debug and resolve production issues efficiently
+7. Continuously explore new technologies to improve development efficiency and product performance
+
+Requirements
+1. Bachelor's degree in Computer Science, Engineering, or a related field
+2. 2+ years of professional experience in software development
+3. Proficiency in at least one modern programming language (e.g., JavaScript/TypeScript, Python, Go, or Java)
+4. Experience with React, Node.js, or similar frameworks
+5. Familiarity with RESTful APIs and database systems (SQL/NoSQL)
+6. Strong problem-solving skills and attention to detail
+7. Good communication skills and ability to work in a team
+8. Experience with cloud services (e.g., Firebase, AWS, GCP) is a plus
+9. Knowledge of CI/CD, Docker, or automated testing is a bonus
+
+Benefits
+1. Competitive salary and performance-based bonuses
+2. Flexible working hours and hybrid setup
+3. Learning & development budget
+4. Health insurance coverage
+5. Stock options for high performers
+6. Monthly team events and annual company retreat
+7. Opportunity to grow with a mission-driven, innovative team
+
+Apply now by clicking the button below. Please feel free to reach out to careers@transpara.com for any inquiries

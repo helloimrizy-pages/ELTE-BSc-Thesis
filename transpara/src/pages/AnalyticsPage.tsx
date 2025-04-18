@@ -336,6 +336,7 @@ export const AnalyticsPage = () => {
       candidate_texts: "candidate_texts.json",
       ranking_result: "ranking_results.json",
       shap_explanation: "shap_explanations.json",
+      job_desc_keywords: "keywords.json",
     };
 
     try {
