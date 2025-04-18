@@ -4,6 +4,7 @@ import numpy as np
 import tempfile
 import json
 
+from typing import Optional, Dict, Any
 from firebase_admin import storage
 from uuid import uuid4
 from joblib import load
@@ -15,6 +16,8 @@ from src.analysis.shap_explanation import generate_model_explanations
 from api.openai_client import initialize_openai_client
 from src.utils.file_utils import save_to_json, load_from_json, extract_user_id, clean_html
 from src.utils.firebase_utils import get_candidate_id_from_firestore, get_candidate_name_from_firestore, load_json_from_firebase
+from src.utils.job_desc_keyword_extraction import extract_keywords_from_job_description
+
 
 def load_ranking_model(model_path: str) -> any:
     if not os.path.exists(model_path):
@@ -36,20 +39,21 @@ def rank_candidates(
     model,
     output_folders: dict = None,
     job_id: str = None,
+    custom_model: Optional[Any] = None,
+    custom_keywords: Optional[List[str]] = None
 ) -> dict:
     
     job_description_text = clean_html(job_description_text)
-    print("ranking job description text:", job_description_text)
+
     job_description_text_mitigated = mitigate_gender_bias(job_description_text)
     candidate_texts_mitigated = [mitigate_gender_bias(text) for text in candidate_texts]
 
-    from config.settings import DEFAULT_SKILLS
-    skill_keywords = DEFAULT_SKILLS
+    skill_keywords = custom_keywords
     gender_directions = compute_gender_subspace(tokenizer, model)
 
     print("Loading ranking model...\n")
     model_path = os.path.join(output_folders['models'], "ranking_model.joblib")
-    ranking_model = load_ranking_model(model_path)
+    ranking_model = custom_model or load_ranking_model(model_path)
 
     test_features = create_feature_vectors_dataset(
         get_text_embedding(job_description_text_mitigated, tokenizer, model),
