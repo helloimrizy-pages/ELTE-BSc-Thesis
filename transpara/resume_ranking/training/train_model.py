@@ -48,17 +48,20 @@ def prepare_training_data(
     
     if skill_keywords is None:
         skill_keywords = DEFAULT_SKILLS
+    
+    print("Skills used for matching:", skill_keywords)
 
     job_description_text = clean_html(job_description_text)
     job_embedding = get_text_embedding(job_description_text, tokenizer, model)
     cv_embeddings = [get_text_embedding(text, tokenizer, model) for text in candidate_texts]
     
     if synthetic:
-        scores = [cosine_similarity(job_embedding, cv_emb) for cv_emb in cv_embeddings]
-        
-        for i, text in enumerate(candidate_texts):
-            gender_bias = compute_gender_bias_score(text)
-            scores[i] = max(0.0, scores[i] - (gender_bias / 100))
+        scores = []
+        for i, cv_text in enumerate(candidate_texts):
+            cosine_score = cosine_similarity(job_embedding, cv_embeddings[i])
+            skill_match_score = get_skill_match_score(cv_text, skill_keywords)
+            combined_score = 0.6 * cosine_score + 0.4 * skill_match_score
+            scores.append(combined_score)
     else:
         print("Warning: Non-synthetic mode selected but no human scores provided.")
         scores = None
@@ -73,6 +76,10 @@ def prepare_training_data(
     )
     
     return feature_df
+
+def get_skill_match_score(text: str, job_skills: List[str]) -> float:
+    count = sum(1 for skill in job_skills if skill in text.lower())
+    return count / len(job_skills)
 
 def train_ranking_model(
     features_df: pd.DataFrame,
@@ -121,7 +128,7 @@ def train_ranking_model(
     if save_path:
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         joblib.dump(best_model, save_path)
-        print(f"Model saved to {save_path}")
+        print(f"\nModel saved to {save_path}\n")
     
     return best_model, X.columns.tolist()
 
@@ -202,18 +209,24 @@ def get_candidate_texts(candidates_dir: str):
 
 def main():
     parser = argparse.ArgumentParser(description="Train Candidate Ranking Model")
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.abspath(os.path.join(script_dir, ".."))
+
     parser.add_argument(
         '--job_description',
         type=str,
         default='data/job_desc/data.txt',
         help="Path to the job description text file."
     )
+
     parser.add_argument(
         '--candidates_dir',
         type=str,
-        default='data',
+        default=os.path.join(project_root, 'resume_generator', 'output'),
         help="Directory containing candidate PDF files."
     )
+
     args = parser.parse_args()
 
     if not os.path.exists(args.job_description):
