@@ -33,11 +33,117 @@ MODEL_SETTINGS = {
 }
 
 DEFAULT_SKILLS = [
-    "python", "nlp", "machine learning", "deep learning", "data science",
-    "statistics", "tensorflow", "pytorch", "sklearn", "pandas", "numpy", 
-    "language models", "neural networks", "algorithms", "ai", "computer vision",
-    "data visualization", "big data", "spark", "sql", "database", "cloud",
-    "aws", "azure", "gcp", "kubernetes", "docker", "git", "ci/cd"
+    # ─────────────────────────────── Programming Languages ───────────────────────────────
+    "python", "java", "javascript", "typescript", "c", "c++", "c#", "go", "rust",
+    "kotlin", "swift", "objective-c", "php", "ruby", "scala", "groovy", "perl",
+    "bash", "powershell", "dart", "lua", "haskell", "elixir", "clojure", "f#",
+    "matlab", "r", "julia",
+
+    # ──────────────────────────────── Web / Front‑End ────────────────────────────────────
+    "html", "css", "sass", "less", "bootstrap", "tailwind", "material ui",
+    "react", "next.js", "react native", "vue", "nuxt", "angular", "svelte",
+    "ember", "backbone", "jquery", "webpack", "vite", "gulp", "grunt",
+
+    # ─────────────────────────────── Back‑End & Frameworks ───────────────────────────────
+    "node.js", "express", "nest.js", "fastify", "hapi.js", "django", "flask",
+    "fastapi", "pyramid", "spring", "spring boot", "laravel", "symfony", "rails",
+    "sinatra", "dotnet", ".net core", "asp.net", "phoenix", "gin", "fiber",
+    "play framework", "grails",
+
+    # ─────────────────────────────────── Mobile ──────────────────────────────────────────
+    "android", "ios", "swiftui", "flutter", "ionic", "cordova", "kotlin",
+
+    # ────────────────────────────────── Databases ────────────────────────────────────────
+    # Relational
+    "sql", "mysql", "postgresql", "sqlite", "mariadb", "oracle", "sql server",
+    "aurora", "redshift",
+    # NoSQL / NewSQL / Time‑series / Graph / Search
+    "mongodb", "cassandra", "dynamodb", "redis", "memcached", "couchdb",
+    "elasticsearch", "solr", "neo4j", "arangodb", "influxdb", "timescaledb",
+    "clickhouse", "snowflake", "bigquery", "druid", "kylin",
+
+    # ─────────────────────────── Messaging & Streaming ───────────────────────────────────
+    "kafka", "rabbitmq", "activemq", "sqs", "sns", "pubsub", "azure service bus",
+    "nats", "pulsar", "kinesis",
+
+    # ─────────────────────────────── DevOps / Cloud ──────────────────────────────────────
+    "docker", "docker compose", "kubernetes", "openshift", "helm", "istio",
+    "linkerd", "ansible", "terraform", "pulumi", "cloudformation", "packer",
+    "vagrant", "chef", "puppet", "saltstack",
+    "jenkins", "github actions", "gitlab ci", "circleci", "travis", "argo cd",
+    "spinnaker", "flux", "ci/cd",
+    # Cloud Providers & Services
+    "aws", "ec2", "s3", "lambda", "ecs", "eks", "rds", "route 53", "cloudfront",
+    "cloudwatch",
+    "azure", "azure devops", "azure functions", "azure service fabric",
+    "gcp", "gke", "app engine", "cloud run", "cloud build",
+    "digitalocean", "heroku", "netlify", "render", "cloudflare", "firebase",
+    "supabase",
+
+    # ────────────────────────────── Observability ────────────────────────────────────────
+    "prometheus", "grafana", "loki", "elk", "logstash", "kibana",
+    "splunk", "datadog", "new relic", "appdynamics", "sentry",
+    "jaeger", "zipkin", "opentelemetry",
+
+    # ───────────────────────────── Big‑Data & Analytics ──────────────────────────────────
+    "hadoop", "mapreduce", "hdfs", "spark", "pyspark", "flink", "beam",
+    "hive", "pig", "presto", "trino", "druid",
+
+    # ──────────────────────── Machine‑Learning & Data Science ────────────────────────────
+    "machine learning", "deep learning", "nlp", "computer vision", "data science",
+    "statistics", "pandas", "numpy", "scipy", "matplotlib", "seaborn",
+    "scikit-learn", "sklearn", "tensorflow", "pytorch", "keras", "jax", "mxnet",
+    "huggingface", "xgboost", "lightgbm", "catboost", "gensim", "spacy", "nltk",
+    "data analysis", "data visualization", "model training", "model evaluation",
+    "mlflow",
+
+    # MLOps & Workflow Orchestration
+    "kubeflow", "sagemaker", "vertex ai", "dvc", "airflow", "prefect",
+
+    # ──────────────────────────────── Security ───────────────────────────────────────────
+    "cybersecurity", "penetration testing", "ethical hacking", "owasp",
+    "encryption", "ssl", "tls", "key management", "iam", "authentication",
+    "authorization", "sso", "oauth", "saml", "jwt", "acls", "firewall",
+    "ids", "ips", "siem", "kali linux", "mitre att&ck",
+
+    # ─────────────────────────────── Networking ─────────────────────────────────────────
+    "tcp/ip", "udp", "http", "https", "websocket", "dns", "dhcp", "ssh",
+    "smtp", "ftp", "sftp", "snmp", "bgp", "ospf", "load balancing",
+    "reverse proxy", "haproxy", "nginx",
+
+    # ───────────────────────── Testing / QA / Reliability ───────────────────────────────
+    "unit testing", "integration testing", "e2e testing", "tdd", "bdd",
+    "selenium", "cypress", "playwright", "pytest", "unittest", "jest",
+    "mocha", "chai", "junit", "testng", "robot framework", "gatling",
+    "locust", "k6", "sre", "site reliability engineering",
+
+    # ─────────────────────────────── Version Control ────────────────────────────────────
+    "git", "github", "gitlab", "bitbucket", "mercurial", "svn",
+
+    # ──────────────────────────── IDEs / Editors ────────────────────────────────────────
+    "vscode", "intellij", "webstorm", "pycharm", "android studio", "xcode",
+    "eclipse", "vim", "emacs",
+
+    # ─────────────────────────── Project / Agile / PM ───────────────────────────────────
+    "scrum", "agile", "kanban", "safe", "waterfall",
+    "jira", "confluence", "trello", "asana", "monday.com", "notion",
+
+    # ───────────────────────────── UX / UI / Design ─────────────────────────────────────
+    "figma", "sketch", "adobe xd", "accessibility", "design systems",
+
+    # ─────────────────── Virtualization / OS / Infrastructure ───────────────────────────
+    "linux", "ubuntu", "debian", "centos", "red hat", "windows", "macos",
+    "freebsd", "vmware", "hyper-v", "kvm", "xen",
+
+    # ────────────────────────────── Architecture ────────────────────────────────────────
+    "microservices", "rest", "grpc", "graphql", "soap", "serverless",
+    "event-driven architecture", "domain driven design", "data engineering",
+    "etl", "elt", "data warehousing", "data lake",
+
+    # ────────────────────────────── Soft Skills ─────────────────────────────────────────
+    "problem solving", "critical thinking", "communication", "teamwork",
+    "leadership", "collaboration", "time management", "mentoring",
+    "documentation"
 ]
 
 GENDERED_TERMS = {
