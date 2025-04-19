@@ -13,7 +13,7 @@ def generate_chatgpt_explanations(
     candidate_texts: List[str],
     output_folders: Dict[str, str],
     job_id: str,
-    top_n: int = 5
+    top_n: int = 4
 ) -> str:
     report_path = os.path.join(output_folders["reports"], "chatgpt_explanations.json")
     
