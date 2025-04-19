@@ -359,201 +359,205 @@ const SettingsPage: React.FC = () => {
 
                     <Grid container spacing={3}>
                       <Grid item xs={12} md={6}>
-                        <SectionCard>
-                          <CardTitle>
-                            <IconAvatar>
-                              <KeyIcon />
-                            </IconAvatar>
-                            <Typography variant="subtitle1" fontWeight="600">
-                              Change Password
-                            </Typography>
-                          </CardTitle>
-                          <CardContent sx={{ p: 3 }}>
-                            <StyledTextField
-                              fullWidth
-                              label="Current Password"
-                              type={showCurrentPassword ? "text" : "password"}
-                              value={currentPassword}
-                              onChange={(e) =>
-                                setCurrentPassword(e.target.value)
-                              }
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    <LockIcon color="action" />
-                                  </InputAdornment>
-                                ),
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <IconButton
-                                      onClick={() =>
-                                        setShowCurrentPassword(
-                                          !showCurrentPassword
-                                        )
-                                      }
-                                      edge="end"
-                                      size="small"
-                                    >
-                                      {showCurrentPassword ? (
-                                        <VisibilityOffIcon />
-                                      ) : (
-                                        <VisibilityIcon />
-                                      )}
-                                    </IconButton>
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
+                        <form autoComplete="off">
+                          <SectionCard>
+                            <CardTitle>
+                              <IconAvatar>
+                                <KeyIcon />
+                              </IconAvatar>
+                              <Typography variant="subtitle1" fontWeight="600">
+                                Change Password
+                              </Typography>
+                            </CardTitle>
+                            <CardContent sx={{ p: 3 }}>
+                              <StyledTextField
+                                fullWidth
+                                label="Current Password"
+                                type={showCurrentPassword ? "text" : "password"}
+                                value={currentPassword}
+                                onChange={(e) =>
+                                  setCurrentPassword(e.target.value)
+                                }
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <LockIcon color="action" />
+                                    </InputAdornment>
+                                  ),
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <IconButton
+                                        onClick={() =>
+                                          setShowCurrentPassword(
+                                            !showCurrentPassword
+                                          )
+                                        }
+                                        edge="end"
+                                        size="small"
+                                      >
+                                        {showCurrentPassword ? (
+                                          <VisibilityOffIcon />
+                                        ) : (
+                                          <VisibilityIcon />
+                                        )}
+                                      </IconButton>
+                                    </InputAdornment>
+                                  ),
+                                }}
+                              />
 
-                            <StyledTextField
-                              fullWidth
-                              label="New Password"
-                              type={showNewPassword ? "text" : "password"}
-                              value={newPassword}
-                              onChange={handleNewPasswordChange}
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    <LockIcon color="action" />
-                                  </InputAdornment>
-                                ),
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <IconButton
-                                      onClick={() =>
-                                        setShowNewPassword(!showNewPassword)
-                                      }
-                                      edge="end"
-                                      size="small"
-                                    >
-                                      {showNewPassword ? (
-                                        <VisibilityOffIcon />
-                                      ) : (
-                                        <VisibilityIcon />
-                                      )}
-                                    </IconButton>
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
+                              <StyledTextField
+                                fullWidth
+                                label="New Password"
+                                type={showNewPassword ? "text" : "password"}
+                                value={newPassword}
+                                onChange={handleNewPasswordChange}
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <LockIcon color="action" />
+                                    </InputAdornment>
+                                  ),
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <IconButton
+                                        onClick={() =>
+                                          setShowNewPassword(!showNewPassword)
+                                        }
+                                        edge="end"
+                                        size="small"
+                                      >
+                                        {showNewPassword ? (
+                                          <VisibilityOffIcon />
+                                        ) : (
+                                          <VisibilityIcon />
+                                        )}
+                                      </IconButton>
+                                    </InputAdornment>
+                                  ),
+                                }}
+                              />
 
-                            {newPassword && (
-                              <PasswordStrengthIndicator>
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    mb: 0.5,
-                                  }}
-                                >
-                                  <Typography
-                                    variant="caption"
-                                    color="text.secondary"
+                              {newPassword && (
+                                <PasswordStrengthIndicator>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      mb: 0.5,
+                                    }}
                                   >
-                                    Password Strength
-                                  </Typography>
-                                  <Typography
-                                    variant="caption"
+                                    <Typography
+                                      variant="caption"
+                                      color="text.secondary"
+                                    >
+                                      Password Strength
+                                    </Typography>
+                                    <Typography
+                                      variant="caption"
+                                      color={getStrengthColor()}
+                                    >
+                                      {getStrengthLabel()}
+                                    </Typography>
+                                  </Box>
+                                  <LinearProgress
+                                    variant="determinate"
+                                    value={passwordStrength}
                                     color={getStrengthColor()}
-                                  >
-                                    {getStrengthLabel()}
-                                  </Typography>
-                                </Box>
-                                <LinearProgress
-                                  variant="determinate"
-                                  value={passwordStrength}
-                                  color={getStrengthColor()}
-                                  sx={{ height: 6, borderRadius: 3 }}
-                                />
-                              </PasswordStrengthIndicator>
-                            )}
+                                    sx={{ height: 6, borderRadius: 3 }}
+                                  />
+                                </PasswordStrengthIndicator>
+                              )}
 
-                            <StyledTextField
-                              fullWidth
-                              label="Confirm New Password"
-                              type={showConfirmPassword ? "text" : "password"}
-                              value={confirmPassword}
-                              onChange={(e) =>
-                                setConfirmPassword(e.target.value)
-                              }
-                              error={
-                                confirmPassword !== "" &&
-                                newPassword !== confirmPassword
-                              }
-                              helperText={
-                                confirmPassword !== "" &&
-                                newPassword !== confirmPassword
-                                  ? "Passwords don't match"
-                                  : ""
-                              }
-                              InputProps={{
-                                startAdornment: (
-                                  <InputAdornment position="start">
-                                    <LockIcon color="action" />
-                                  </InputAdornment>
-                                ),
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <IconButton
-                                      onClick={() =>
-                                        setShowConfirmPassword(
-                                          !showConfirmPassword
-                                        )
-                                      }
-                                      edge="end"
-                                      size="small"
-                                    >
-                                      {showConfirmPassword ? (
-                                        <VisibilityOffIcon />
-                                      ) : (
-                                        <VisibilityIcon />
-                                      )}
-                                    </IconButton>
-                                  </InputAdornment>
-                                ),
-                              }}
-                              sx={{ mb: 0 }}
-                            />
+                              <StyledTextField
+                                fullWidth
+                                label="Confirm New Password"
+                                type={showConfirmPassword ? "text" : "password"}
+                                value={confirmPassword}
+                                onChange={(e) =>
+                                  setConfirmPassword(e.target.value)
+                                }
+                                error={
+                                  confirmPassword !== "" &&
+                                  newPassword !== confirmPassword
+                                }
+                                helperText={
+                                  confirmPassword !== "" &&
+                                  newPassword !== confirmPassword
+                                    ? "Passwords don't match"
+                                    : ""
+                                }
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <LockIcon color="action" />
+                                    </InputAdornment>
+                                  ),
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <IconButton
+                                        onClick={() =>
+                                          setShowConfirmPassword(
+                                            !showConfirmPassword
+                                          )
+                                        }
+                                        edge="end"
+                                        size="small"
+                                      >
+                                        {showConfirmPassword ? (
+                                          <VisibilityOffIcon />
+                                        ) : (
+                                          <VisibilityIcon />
+                                        )}
+                                      </IconButton>
+                                    </InputAdornment>
+                                  ),
+                                }}
+                                sx={{ mb: 0 }}
+                              />
 
-                            <Box
-                              sx={{
-                                display: "flex",
-                                justifyContent: "flex-end",
-                                mt: 3,
-                              }}
-                            >
-                              <ActionButton
-                                variant="outlined"
-                                color="inherit"
-                                onClick={resetPasswordFields}
-                                sx={{ mr: 2 }}
-                                disabled={isLoading}
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "flex-end",
+                                  mt: 3,
+                                }}
                               >
-                                Reset
-                              </ActionButton>
-                              <ActionButton
-                                variant="contained"
-                                color="primary"
-                                onClick={handleChangePassword}
-                                disabled={
-                                  isLoading ||
-                                  !currentPassword ||
-                                  !newPassword ||
-                                  !confirmPassword
-                                }
-                                startIcon={
-                                  isLoading ? (
-                                    <CircularProgress size={20} />
-                                  ) : (
-                                    <SaveIcon />
-                                  )
-                                }
-                              >
-                                {isLoading ? "Updating..." : "Update Password"}
-                              </ActionButton>
-                            </Box>
-                          </CardContent>
-                        </SectionCard>
+                                <ActionButton
+                                  variant="outlined"
+                                  color="inherit"
+                                  onClick={resetPasswordFields}
+                                  sx={{ mr: 2 }}
+                                  disabled={isLoading}
+                                >
+                                  Reset
+                                </ActionButton>
+                                <ActionButton
+                                  variant="contained"
+                                  color="primary"
+                                  onClick={handleChangePassword}
+                                  disabled={
+                                    isLoading ||
+                                    !currentPassword ||
+                                    !newPassword ||
+                                    !confirmPassword
+                                  }
+                                  startIcon={
+                                    isLoading ? (
+                                      <CircularProgress size={20} />
+                                    ) : (
+                                      <SaveIcon />
+                                    )
+                                  }
+                                >
+                                  {isLoading
+                                    ? "Updating..."
+                                    : "Update Password"}
+                                </ActionButton>
+                              </Box>
+                            </CardContent>
+                          </SectionCard>
+                        </form>
                       </Grid>
 
                       <Grid item xs={12} md={6}>
