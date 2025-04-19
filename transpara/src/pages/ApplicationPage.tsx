@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, Timestamp } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { isValidFirestoreId } from "../utils/validation";
 import { CountryOption } from "../types/country";
@@ -414,6 +414,28 @@ export const ApplicationPage: React.FC = () => {
     }
   };
 
+  const createNotification = async (
+    ownerUid: string,
+    candidateID: string,
+    jobId: string,
+    jobTitle: string,
+    firstName: string,
+    lastName: string
+  ) => {
+    const notifRef = doc(collection(db, "jobs", jobId, "notifications"));
+    await setDoc(notifRef, {
+      candidateID,
+      jobId,
+      jobTitle,
+      firstName,
+      lastName,
+      timestamp: Timestamp.now(),
+      read: false,
+      type: "application",
+      userId: ownerUid,
+    });
+  };
+
   const handleApply = async () => {
     if (!jobId || !isValidFirestoreId(jobId)) {
       setError("Invalid job ID");
@@ -475,6 +497,14 @@ export const ApplicationPage: React.FC = () => {
       };
 
       await setDoc(applicationRef, applicationData);
+      await createNotification(
+        ownerUid,
+        candidateID,
+        jobId,
+        jobTitle,
+        firstName,
+        lastName
+      );
 
       setSuccessMessage("Application submitted successfully!");
       clearDraft();
