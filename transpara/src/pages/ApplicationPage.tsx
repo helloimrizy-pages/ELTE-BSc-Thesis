@@ -406,7 +406,7 @@ export const ApplicationPage: React.FC = () => {
         if (email !== confirmEmail) return false;
         return true;
       case 1:
-        return Boolean(phoneNumber && placeOfResidence);
+        return Boolean(/^\d+$/.test(phoneNumber) && placeOfResidence);
       case 2:
         return Boolean(message && cvFile && expectedSalary);
       default:
@@ -639,7 +639,13 @@ export const ApplicationPage: React.FC = () => {
             <StyledTextField
               label="Phone Number"
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={(e) => {
+                const raw = e.target.value;
+                const cleaned = raw.replace(/\s+/g, "");
+                if (/^\d*$/.test(cleaned)) {
+                  setPhoneNumber(cleaned);
+                }
+              }}
               fullWidth
               required
               variant="outlined"
@@ -956,7 +962,7 @@ export const ApplicationPage: React.FC = () => {
                 <Grid item xs={12} sm={6}>
                   <ReviewItem>
                     <Typography variant="body2" color="text.secondary">
-                      Expected Salary
+                      Expected Monthly Salary
                     </Typography>
                     <Typography variant="body1">€{expectedSalary}</Typography>
                   </ReviewItem>
