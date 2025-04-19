@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { db } from "../firebase";
 import { collection, doc, getDoc, Timestamp } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -240,26 +240,23 @@ export const ApplicationPage: React.FC = () => {
   const [confirmEmail, setConfirmEmail] = useState("");
   const [placeOfResidence, setPlaceOfResidence] = useState("");
   const [isJobOpen, setIsJobOpen] = useState<boolean | null>(null);
-
   const [selectedCountry, setSelectedCountry] = useState<CountryOption>(
     countries.find((c) => c.code === "US")!
   );
   const [phoneNumber, setPhoneNumber] = useState("");
-
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
-
   const [message, setMessage] = useState("");
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [error, setError] = useState("");
-
   const [availableStartDate, setAvailableStartDate] = useState<Date | null>(
     null
   );
   const [expectedSalary, setExpectedSalary] = useState("");
   const [portfolioUrl, setPortfolioUrl] = useState("");
-
   const [isLoading, setIsLoading] = useState(true);
+  const draftKey = `application_draft_${jobId}`;
+  const isRestoredRef = useRef(false);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -287,82 +284,81 @@ export const ApplicationPage: React.FC = () => {
     };
 
     fetchJob();
-    loadDraft();
   }, [jobId]);
 
   useEffect(() => {
-    saveDraft();
+    if (!jobId || !isRestoredRef.current) return;
+
+    const timeout = setTimeout(() => {
+      const formData = {
+        firstName,
+        lastName,
+        email,
+        confirmEmail,
+        placeOfResidence,
+        selectedCountry,
+        phoneNumber,
+        linkedinUrl,
+        websiteUrl,
+        message,
+        expectedSalary,
+        portfolioUrl,
+        availableStartDate: availableStartDate?.toISOString() || null,
+      };
+
+      localStorage.setItem(draftKey, JSON.stringify(formData));
+    }, 500); // debounce delay
+
+    return () => clearTimeout(timeout);
   }, [
     firstName,
     lastName,
     email,
     confirmEmail,
     placeOfResidence,
+    selectedCountry,
     phoneNumber,
-    message,
     linkedinUrl,
     websiteUrl,
+    message,
     expectedSalary,
     portfolioUrl,
     availableStartDate,
+    jobId,
+    draftKey,
   ]);
 
-  const loadDraft = () => {
-    const saved = localStorage.getItem("job_application_draft");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setFirstName(parsed.firstName || "");
-        setLastName(parsed.lastName || "");
-        setEmail(parsed.email || "");
-        setConfirmEmail(parsed.confirmEmail || "");
-        setPlaceOfResidence(parsed.placeOfResidence || "");
-        setPhoneNumber(parsed.phoneNumber || "");
-        setMessage(parsed.message || "");
-        setLinkedinUrl(parsed.linkedinUrl || "");
-        setWebsiteUrl(parsed.websiteUrl || "");
-        setExpectedSalary(parsed.expectedSalary || "");
-        setPortfolioUrl(parsed.portfolioUrl || "");
-        if (parsed.availableStartDate) {
-          setAvailableStartDate(new Date(parsed.availableStartDate));
-        }
-        if (parsed.selectedCountry) {
-          setSelectedCountry(parsed.selectedCountry);
-        }
+  useEffect(() => {
+    if (!jobId || isRestoredRef.current) return;
 
-        showSnackbar("Application draft loaded");
-      } catch (e) {
-        console.error("Error loading draft:", e);
+    const savedDraft = localStorage.getItem(draftKey);
+    if (savedDraft) {
+      try {
+        const data = JSON.parse(savedDraft);
+        setFirstName(data.firstName || "");
+        setLastName(data.lastName || "");
+        setEmail(data.email || "");
+        setConfirmEmail(data.confirmEmail || "");
+        setPlaceOfResidence(data.placeOfResidence || "");
+        setSelectedCountry(
+          data.selectedCountry || countries.find((c) => c.code === "US")!
+        );
+        setPhoneNumber(data.phoneNumber || "");
+        setLinkedinUrl(data.linkedinUrl || "");
+        setWebsiteUrl(data.websiteUrl || "");
+        setMessage(data.message || "");
+        setExpectedSalary(data.expectedSalary || "");
+        setPortfolioUrl(data.portfolioUrl || "");
+        setAvailableStartDate(
+          data.availableStartDate ? new Date(data.availableStartDate) : null
+        );
+      } catch (err) {
+        console.error("Failed to load draft from localStorage:", err);
       }
     }
-  };
 
-  const saveDraft = () => {
-    try {
-      const draft = {
-        firstName,
-        lastName,
-        email,
-        confirmEmail,
-        placeOfResidence,
-        phoneNumber,
-        message,
-        linkedinUrl,
-        websiteUrl,
-        expectedSalary,
-        portfolioUrl,
-        availableStartDate,
-        selectedCountry,
-      };
-      localStorage.setItem("job_application_draft", JSON.stringify(draft));
-    } catch (e) {
-      console.error("Error saving draft:", e);
-    }
-  };
-
-  const clearDraft = () => {
-    localStorage.removeItem("job_application_draft");
-  };
+    isRestoredRef.current = true;
+  }, [jobId, draftKey]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
@@ -399,16 +395,43 @@ export const ApplicationPage: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
+  const isValidEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const isFutureOrToday = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selected = new Date(date);
+    selected.setHours(0, 0, 0, 0);
+    return selected >= today;
+  };
+
   const validateStep = () => {
     switch (activeStep) {
       case 0:
-        if (!firstName || !lastName || !email) return false;
-        if (email !== confirmEmail) return false;
+        if (!firstName || !lastName || !email || !confirmEmail) return false;
+        if (!isValidEmail(email)) {
+          showSnackbar("Please enter a valid email address");
+          return false;
+        }
+        if (email !== confirmEmail) {
+          showSnackbar("Email and confirmation do not match");
+          return false;
+        }
         return true;
+
       case 1:
         return Boolean(/^\d+$/.test(phoneNumber) && placeOfResidence);
+
       case 2:
-        return Boolean(message && cvFile && expectedSalary);
+        if (!message || !cvFile || !expectedSalary) return false;
+        if (availableStartDate && !isFutureOrToday(availableStartDate)) {
+          return false;
+        }
+        return true;
+
       default:
         return true;
     }
@@ -505,9 +528,8 @@ export const ApplicationPage: React.FC = () => {
         firstName,
         lastName
       );
-
+      localStorage.removeItem(draftKey);
       setSuccessMessage("Application submitted successfully!");
-      clearDraft();
     } catch (err) {
       console.error("Application submission failed:", err);
       setError("Failed to submit application. Please try again later.");
@@ -604,10 +626,17 @@ export const ApplicationPage: React.FC = () => {
               fullWidth
               required
               variant="outlined"
-              error={email !== confirmEmail && confirmEmail !== ""}
+              error={
+                (confirmEmail !== "" && email !== confirmEmail) ||
+                (confirmEmail !== "" &&
+                  !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(confirmEmail))
+              }
               helperText={
-                email !== confirmEmail && confirmEmail !== ""
+                confirmEmail !== "" && email !== confirmEmail
                   ? "Emails do not match"
+                  : confirmEmail !== "" &&
+                    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(confirmEmail)
+                  ? "Invalid email format"
                   : ""
               }
             />
@@ -626,7 +655,7 @@ export const ApplicationPage: React.FC = () => {
               options={countries}
               autoHighlight
               value={selectedCountry}
-              onChange={(event, newValue) => {
+              onChange={(_, newValue) => {
                 if (newValue) setSelectedCountry(newValue);
               }}
               getOptionLabel={(option) => `${option.label} (+${option.phone})`}
@@ -806,6 +835,16 @@ export const ApplicationPage: React.FC = () => {
                         fullWidth: true,
                         variant: "outlined",
                         required: true,
+                        error:
+                          !!availableStartDate &&
+                          new Date(availableStartDate).setHours(0, 0, 0, 0) <
+                            new Date().setHours(0, 0, 0, 0),
+                        helperText:
+                          !!availableStartDate &&
+                          new Date(availableStartDate).setHours(0, 0, 0, 0) <
+                            new Date().setHours(0, 0, 0, 0)
+                            ? "Start date cannot be earlier than today"
+                            : "",
                         InputProps: {
                           startAdornment: (
                             <InputAdornment position="start">
@@ -968,15 +1007,16 @@ export const ApplicationPage: React.FC = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <ReviewItem>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" mb={1}>
                       Resume
                     </Typography>
+                    <AttachFileIcon />
                     {cvFile ? (
                       <FileChip
-                        icon={<AttachFileIcon />}
                         label={cvFile.name}
                         variant="outlined"
                         color="primary"
+                        sx={{ padding: 0.5 }}
                       />
                     ) : (
                       <Typography variant="body1" color="error">
@@ -987,7 +1027,7 @@ export const ApplicationPage: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <ReviewItem>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" mb={1}>
                       Expected Monthly Salary
                     </Typography>
                     <Typography variant="body1">€{expectedSalary}</Typography>
