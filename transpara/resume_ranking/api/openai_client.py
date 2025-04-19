@@ -65,36 +65,6 @@ def get_completion(
                     },
                     "required": ["score", "max_score", "comment"]
                 },
-                "shap_analysis": {
-                    "type": "object",
-                    "properties": {
-                        "positive_contributors": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "feature": {"type": "string"},
-                                    "impact": {"type": "string"},
-                                    "comment": {"type": "string"}
-                                },
-                                "required": ["feature", "impact", "comment"]
-                            }
-                        },
-                        "negative_contributors": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "feature": {"type": "string"},
-                                    "impact": {"type": "string"},
-                                    "comment": {"type": "string"}
-                                },
-                                "required": ["feature", "impact", "comment"]
-                            }
-                        }
-                    },
-                    "required": ["positive_contributors", "negative_contributors"]
-                },
                 "direct_observations": {
                     "type": "object",
                     "properties": {
