@@ -25,6 +25,7 @@ import {
   Alert,
   Container,
   Link,
+  LinearProgress,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -108,6 +109,7 @@ const AuthPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
@@ -187,6 +189,35 @@ const AuthPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const checkPasswordStrength = (password: string) => {
+    if (!password) {
+      setPasswordStrength(0);
+      return;
+    }
+
+    let strength = 0;
+    if (password.length >= 8) strength += 1;
+    if (password.length >= 12) strength += 1;
+    if (/[A-Z]/.test(password)) strength += 1;
+    if (/[a-z]/.test(password)) strength += 1;
+    if (/[0-9]/.test(password)) strength += 1;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+    setPasswordStrength((strength / 6) * 100);
+  };
+
+  const getStrengthColor = () => {
+    if (passwordStrength < 33) return "error";
+    if (passwordStrength < 66) return "warning";
+    return "success";
+  };
+
+  const getStrengthLabel = () => {
+    if (passwordStrength < 33) return "Weak";
+    if (passwordStrength < 66) return "Medium";
+    return "Strong";
   };
 
   const handleResetPasswordSubmit = async (event: React.FormEvent) => {
@@ -493,7 +524,10 @@ const AuthPage: React.FC = () => {
                       variant="outlined"
                       type={showPassword ? "text" : "password"}
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        checkPasswordStrength(e.target.value);
+                      }}
                       required
                       InputProps={{
                         startAdornment: (
@@ -518,6 +552,34 @@ const AuthPage: React.FC = () => {
                         ),
                       }}
                     />
+
+                    {!isLogin && password && (
+                      <Box sx={{ mt: -2, mb: 2 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            mb: 0.5,
+                          }}
+                        >
+                          <Typography variant="caption" color="text.secondary">
+                            Password Strength
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            color={getStrengthColor()}
+                          >
+                            {getStrengthLabel()}
+                          </Typography>
+                        </Box>
+                        <LinearProgress
+                          variant="determinate"
+                          value={passwordStrength}
+                          color={getStrengthColor()}
+                          sx={{ height: 6, borderRadius: 3 }}
+                        />
+                      </Box>
+                    )}
 
                     {!isLogin && (
                       <StyledTextField
