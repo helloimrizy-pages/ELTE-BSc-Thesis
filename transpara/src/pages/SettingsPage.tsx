@@ -359,7 +359,7 @@ const SettingsPage: React.FC = () => {
 
                     <Grid container spacing={3}>
                       <Grid item xs={12} md={6}>
-                        <form autoComplete="off">
+                        <form autoComplete="off" style={{ height: "100%" }}>
                           <SectionCard>
                             <CardTitle>
                               <IconAvatar>
