@@ -1094,8 +1094,8 @@ export const ApplicationPage: React.FC = () => {
             variant="filled"
             sx={{ mb: 3 }}
             action={
-              <Button color="inherit" onClick={() => navigate("/jobs")}>
-                Browse Jobs
+              <Button color="inherit" onClick={() => navigate(`/job/${jobId}`)}>
+                Back to job details
               </Button>
             }
           >
@@ -1108,16 +1108,9 @@ export const ApplicationPage: React.FC = () => {
                 Unable to load job application
               </Typography>
               <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-                There was a problem loading this job. Please try again later or
-                browse other available positions.
+                There was a problem loading this job. Please try again or return
+                to the job details page.
               </Typography>
-              <ActionButton
-                variant="contained"
-                onClick={() => navigate("/jobs")}
-                startIcon={<ArrowRightIcon />}
-              >
-                View All Jobs
-              </ActionButton>
             </Box>
           </ApplicationCard>
         </Container>
