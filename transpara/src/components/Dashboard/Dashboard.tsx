@@ -348,13 +348,13 @@ const Dashboard: React.FC = () => {
   const columns: GridColDef[] = [
     {
       field: "name",
-      headerName: "Candidate Name",
+      headerName: "Full Name",
       flex: 1,
       minWidth: 180,
     },
     {
       field: "jobTitle",
-      headerName: "Position",
+      headerName: "Applied Position",
       flex: 1,
       minWidth: 180,
     },
@@ -366,7 +366,7 @@ const Dashboard: React.FC = () => {
     },
     {
       field: "phoneFormatted",
-      headerName: "Phone",
+      headerName: "Phone Number",
       flex: 1,
       minWidth: 150,
     },
@@ -378,7 +378,7 @@ const Dashboard: React.FC = () => {
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "Application Status",
       width: 150,
       renderCell: (params) => {
         const status = (params.value as string) || "applied";
@@ -900,7 +900,7 @@ const Dashboard: React.FC = () => {
                           { label: "Email", key: "email" },
                           { label: "Phone Number", key: "phone" },
                           { label: "Location", key: "location" },
-                          { label: "Job Title", key: "jobTitle" },
+                          { label: "Applied Position", key: "jobTitle" },
                           { label: "Application Status", key: "status" },
                           { label: "Applied At", key: "appliedAt" },
                         ]}
