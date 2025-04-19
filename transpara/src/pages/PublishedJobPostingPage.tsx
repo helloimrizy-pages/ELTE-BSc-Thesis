@@ -134,6 +134,10 @@ interface Job {
   postedDate?: string;
 }
 
+interface User {
+  company: string;
+}
+
 export const PublishedJobPostingPage: React.FC = () => {
   const { jobId } = useParams<{ jobId: string }>();
   const navigate = useNavigate();
@@ -141,6 +145,7 @@ export const PublishedJobPostingPage: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [job, setJob] = useState<Job | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [jobDescription, setJobDescription] = useState("");
@@ -158,6 +163,14 @@ export const PublishedJobPostingPage: React.FC = () => {
           const jobData = { ...jobDoc.data(), id: jobDoc.id } as Job;
           setJob(jobData);
           setJobDescription(jobData.description || "");
+
+          if (jobData.ownerUid) {
+            const userDoc = await getDoc(doc(db, "users", jobData.ownerUid));
+            if (userDoc.exists()) {
+              const userData = userDoc.data() as User;
+              setUser(userData);
+            }
+          }
         } else {
           setError("Job not found.");
         }
@@ -275,19 +288,18 @@ export const PublishedJobPostingPage: React.FC = () => {
               }}
             >
               <Box>
-                <Typography
-                  variant="h4"
-                  component="h1"
-                  fontWeight="700"
-                  gutterBottom
-                >
-                  {job?.title}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  color="text.secondary"
-                  gutterBottom
-                >
+                {user?.company && (
+                  <Typography
+                    variant="h4"
+                    component="h1"
+                    fontWeight="700"
+                    gutterBottom
+                    sx={{ mb: 0.5 }}
+                  >
+                    {job?.title} at {user.company}
+                  </Typography>
+                )}
+                <Typography variant="subtitle1" color="text.secondary">
                   {job?.createdAt?.toDate().toLocaleDateString(undefined, {
                     year: "numeric",
                     month: "long",
