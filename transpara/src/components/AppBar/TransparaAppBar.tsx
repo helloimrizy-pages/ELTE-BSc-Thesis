@@ -6,61 +6,27 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  Badge,
-  Menu,
   InputBase,
-  ListItemText,
-  ListItemIcon,
   Avatar,
-  Tooltip,
-  Paper,
-  Fade,
-  Chip,
   Button,
   Skeleton,
-  List,
-  ListItem,
-  ListItemButton,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import ClearIcon from "@mui/icons-material/Clear";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../../firebase";
 import { ProfileMenu } from "./ProfileMenu";
 import TransparaLogo from "../../assets/transpara-logo.svg";
-import {
-  collection,
-  query,
-  where,
-  orderBy,
-  onSnapshot,
-  updateDoc,
-  doc,
-  Timestamp,
-  getDoc,
-} from "firebase/firestore";
-import { formatDistanceToNow } from "date-fns";
+import { doc, getDoc } from "firebase/firestore";
+
 import blankProfile from "../../assets/blank-profile.svg";
 
 interface AppBarProps {
   onLogout: () => Promise<void>;
   onSearch: (value: string) => void;
-}
-
-interface NotificationItem {
-  id: string;
-  candidateName: string;
-  jobTitle: string;
-  timestamp: Timestamp;
-  read: boolean;
-  jobId: string;
-  type: string;
 }
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -149,17 +115,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const ActionButton = styled(IconButton)(({ theme }) => ({
-  borderRadius: theme.shape.borderRadius * 1.5,
-  padding: theme.spacing(0.75),
-  backgroundColor: alpha(theme.palette.text.primary, 0.05),
-  color: theme.palette.text.primary,
-  transition: "all 0.2s ease",
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.text.primary, 0.12),
-  },
-}));
-
 const ProfileButton = styled(Button)(({ theme }) => ({
   marginLeft: theme.spacing(1),
   borderRadius: theme.shape.borderRadius * 1.5,
@@ -173,53 +128,6 @@ const ProfileButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const NotificationMenu = styled(Paper)(({ theme }) => ({
-  overflow: "hidden",
-  borderRadius: theme.shape.borderRadius * 2,
-  boxShadow: "0 6px 20px rgba(0, 0, 0, 0.1)",
-  width: 360,
-}));
-
-const NotificationHeader = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2, 2.5),
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  borderBottom: `1px solid ${theme.palette.divider}`,
-}));
-
-const NotificationList = styled(List)(() => ({
-  maxHeight: 400,
-  overflow: "auto",
-  padding: 0,
-}));
-
-const NotificationItem = styled(ListItem)<{ read: boolean }>(
-  ({ theme, read }) => ({
-    padding: theme.spacing(1.5, 2.5),
-    backgroundColor: read
-      ? "transparent"
-      : alpha(theme.palette.primary.main, 0.04),
-    transition: "background-color 0.2s ease",
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.primary.main, 0.08),
-    },
-    "&:last-child": {
-      borderBottom: "none",
-    },
-  })
-);
-
-const EmptyNotification = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: theme.spacing(4),
-  color: theme.palette.text.secondary,
-}));
-
 export const TransparaAppBar: React.FC<AppBarProps> = ({
   onLogout,
   onSearch,
@@ -227,14 +135,9 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
   const [user, loading] = useAuthState(auth);
   const [searchInput, setSearchInput] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [notificationAnchorEl, setNotificationAnchorEl] =
-    useState<null | HTMLElement>(null);
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [userDisplayName, setUserDisplayName] = useState<string>("");
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
-
   const isMenuOpen = Boolean(anchorEl);
-  const isNotificationsOpen = Boolean(notificationAnchorEl);
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -261,22 +164,6 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
     };
 
     fetchUserData();
-
-    const q = query(
-      collection(db, "notifications"),
-      where("userId", "==", user.uid),
-      orderBy("timestamp", "desc")
-    );
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const notifs: NotificationItem[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as Omit<NotificationItem, "id">),
-      }));
-      setNotifications(notifs);
-    });
-
-    return unsubscribe;
   }, [user]);
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -285,30 +172,10 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
 
   const handleMenuClose = () => setAnchorEl(null);
 
-  const handleNotificationOpen = (e: React.MouseEvent<HTMLElement>) =>
-    setNotificationAnchorEl(e.currentTarget);
-
-  const handleNotificationClose = () => setNotificationAnchorEl(null);
-
   const handleClearSearch = () => {
     setSearchInput("");
     onSearch("");
   };
-
-  const markAsRead = async (id: string) => {
-    await updateDoc(doc(db, "notifications", id), { read: true });
-  };
-
-  const markAllAsRead = async () => {
-    const promises = notifications
-      .filter((n) => !n.read)
-      .map((n) => updateDoc(doc(db, "notifications", n.id), { read: true }));
-
-    await Promise.all(promises);
-    handleNotificationClose();
-  };
-
-  const unreadCount = notifications.filter((n) => !n.read).length;
 
   if (loading || isLoadingProfile) {
     return (
@@ -404,34 +271,6 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Tooltip title="Notifications">
-              <ActionButton
-                color="inherit"
-                onClick={handleNotificationOpen}
-                aria-haspopup="true"
-                aria-expanded={isNotificationsOpen ? "true" : undefined}
-              >
-                <Badge
-                  badgeContent={unreadCount}
-                  color="primary"
-                  sx={{
-                    "& .MuiBadge-badge": {
-                      fontSize: "0.65rem",
-                      height: 16,
-                      minWidth: 16,
-                      padding: "0 4px",
-                    },
-                  }}
-                >
-                  {unreadCount > 0 ? (
-                    <NotificationsIcon fontSize="small" />
-                  ) : (
-                    <NotificationsNoneIcon fontSize="small" />
-                  )}
-                </Badge>
-              </ActionButton>
-            </Tooltip>
-
             <ProfileButton
               onClick={handleProfileMenuOpen}
               endIcon={<KeyboardArrowDownIcon fontSize="small" />}
@@ -462,120 +301,6 @@ export const TransparaAppBar: React.FC<AppBarProps> = ({
           </Box>
         </Toolbar>
       </StyledAppBar>
-
-      <Menu
-        anchorEl={notificationAnchorEl}
-        open={isNotificationsOpen}
-        onClose={handleNotificationClose}
-        TransitionComponent={Fade}
-        PaperProps={{ component: NotificationMenu }}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        <NotificationHeader>
-          <Typography variant="subtitle1" fontWeight={600}>
-            Notifications
-          </Typography>
-          {unreadCount > 0 && (
-            <Chip
-              label={`${unreadCount} new`}
-              size="small"
-              color="primary"
-              onClick={markAllAsRead}
-              sx={{ fontSize: "0.75rem" }}
-            />
-          )}
-        </NotificationHeader>
-
-        <NotificationList>
-          {notifications.length === 0 ? (
-            <EmptyNotification>
-              <NotificationsNoneIcon
-                sx={{ fontSize: 40, mb: 1, opacity: 0.7 }}
-              />
-              <Typography variant="body2" align="center">
-                No notifications yet
-              </Typography>
-            </EmptyNotification>
-          ) : (
-            notifications.map((notif) => (
-              <NotificationItem key={notif.id} read={notif.read} disablePadding>
-                <ListItemButton
-                  onClick={() => {
-                    markAsRead(notif.id);
-                    handleNotificationClose();
-                  }}
-                  dense
-                >
-                  <ListItemIcon sx={{ minWidth: 40 }}>
-                    <NotificationsIcon
-                      fontSize="small"
-                      color={notif.read ? "action" : "primary"}
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={
-                      <Typography
-                        variant="body2"
-                        fontWeight={notif.read ? 400 : 500}
-                        color="textPrimary"
-                      >
-                        {`${notif.candidateName} applied for ${notif.jobTitle}`}
-                      </Typography>
-                    }
-                    secondary={
-                      <Box
-                        sx={{ display: "flex", alignItems: "center", mt: 0.5 }}
-                      >
-                        <AccessTimeIcon
-                          fontSize="inherit"
-                          sx={{ fontSize: 14, mr: 0.5, opacity: 0.7 }}
-                        />
-                        <Typography
-                          variant="caption"
-                          color="textSecondary"
-                          component="span"
-                        >
-                          {notif.timestamp?.toDate()
-                            ? formatDistanceToNow(notif.timestamp.toDate(), {
-                                addSuffix: true,
-                              })
-                            : "Just now"}
-                        </Typography>
-                      </Box>
-                    }
-                  />
-                </ListItemButton>
-              </NotificationItem>
-            ))
-          )}
-        </NotificationList>
-
-        {notifications.length > 0 && (
-          <Box
-            sx={{
-              p: 2,
-              textAlign: "center",
-              borderTop: "1px solid",
-              borderColor: "divider",
-            }}
-          >
-            <Button
-              size="small"
-              color="primary"
-              onClick={handleNotificationClose}
-            >
-              View All
-            </Button>
-          </Box>
-        )}
-      </Menu>
 
       <ProfileMenu
         anchorEl={anchorEl}
