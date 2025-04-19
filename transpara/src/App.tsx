@@ -1,6 +1,5 @@
 import "./setupGlobal";
-import Dashboard from "./components/Dashboard/Dashboard";
-import AuthPage from "./components/Auth/AuthPage";
+import { useEffect } from "react";
 import { auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
@@ -11,17 +10,21 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import { ApplicationPage } from "./pages/ApplicationPage";
-import { PublishedJobPostingPage } from "./pages/PublishedJobPostingPage";
+import { ThemeProvider } from "./context/ThemeContext";
+
+import AuthPage from "./components/Auth/AuthPage";
+import Dashboard from "./components/Dashboard/Dashboard";
+import JobPostings from "./pages/JobPostingPage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
 import ProfilePage from "./pages/ProfilePage";
-import CandidateProfilePage from "./pages/CandidateProfilePage";
 import SettingsPage from "./pages/SettingsPage";
-import JobPostings from "./pages/JobPostingPage";
-import { ThemeProvider } from "./context/ThemeContext";
-import { useEffect } from "react";
+import { ApplicationPage } from "./pages/ApplicationPage";
+import { PublishedJobPostingPage } from "./pages/PublishedJobPostingPage";
+import CandidateProfilePage from "./pages/CandidateProfilePage";
+import { VerifyEmailPage } from "./pages/VerifyEmailPage";
+import { ProtectedRoute } from "./components/Auth/ProtectedRoute";
 
-// Navigate to ?logout=true to log out
+// Handle logout with query param ?logout=true
 function LogoutHandler({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
@@ -45,30 +48,55 @@ function App() {
       <Router>
         <LogoutHandler>
           <Routes>
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
+
             <Route
               path="/"
               element={user ? <Navigate to="/dashboard" /> : <AuthPage />}
             />
+
             <Route
               path="/dashboard"
-              element={user ? <Dashboard /> : <Navigate to="/" />}
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/jobs"
-              element={user ? <JobPostings /> : <Navigate to="/" />}
+              element={
+                <ProtectedRoute>
+                  <JobPostings />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/analytics"
-              element={user ? <AnalyticsPage /> : <Navigate to="/" />}
+              element={
+                <ProtectedRoute>
+                  <AnalyticsPage />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/profile"
-              element={user ? <ProfilePage /> : <Navigate to="/" />}
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/settings"
-              element={user ? <SettingsPage /> : <Navigate to="/" />}
+              element={
+                <ProtectedRoute>
+                  <SettingsPage />
+                </ProtectedRoute>
+              }
             />
+
+            {/* Public pages */}
             <Route path="/apply/:jobId" element={<ApplicationPage />} />
             <Route path="/job/:jobId" element={<PublishedJobPostingPage />} />
             <Route
