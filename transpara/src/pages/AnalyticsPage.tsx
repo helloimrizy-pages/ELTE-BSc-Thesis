@@ -257,6 +257,48 @@ interface BiasSummary {
   least_neutral_candidate: string;
 }
 
+interface RankingEntry {
+  id: string;
+  candidate_file: string;
+  score: number;
+  rank: number;
+}
+
+interface RankingResults {
+  analysis_id: string;
+  ranking: RankingEntry[];
+}
+
+interface BiasEntry {
+  id: string;
+  candidate_file: string;
+  gender_bias_score: number;
+  male_terms: string | Record<string, number>;
+  female_terms: string | Record<string, number>;
+  recommendation: string;
+}
+
+interface BiasReport {
+  analysis_id: string;
+  title: string;
+  understanding: {
+    description: string;
+    calculation: string;
+  };
+  candidate_analysis: BiasEntry[];
+  recommendations: string[];
+  summary: BiasSummary;
+}
+
+interface ChatGptResponse {
+  explanations: Explanation[];
+}
+
+interface CandidateTextsResponse {
+  analysis_id: string;
+  texts: CandidateTextEntry[];
+}
+
 const COLORS = [
   "#0088FE",
   "#00C49F",
@@ -331,10 +373,10 @@ export const AnalyticsPage = () => {
     const basePath = `reports/${jobId}`;
 
     const files = {
+      ranking_result: "ranking_results.json",
       chatgpt_explanations: "chatgpt_explanations.json",
       gender_bias_report: "gender_bias_analysis.json",
       candidate_texts: "candidate_texts.json",
-      ranking_result: "ranking_results.json",
       shap_explanation: "shap_explanations.json",
       job_desc_keywords: "keywords.json",
     };
@@ -345,14 +387,42 @@ export const AnalyticsPage = () => {
           getDownloadURL(ref(storage, `${basePath}/${file}`))
         )
       );
-
-      const [chatgptRes, biasRes, textRes] = await Promise.all(
+      const [rankingJson, chatgptJson, biasJson, textJson] = (await Promise.all(
         urls.map((url) => fetch(url).then((r) => r.json()))
-      );
+      )) as [
+        RankingResults,
+        ChatGptResponse,
+        BiasReport,
+        CandidateTextsResponse
+      ];
 
-      setData(chatgptRes.explanations || []);
-      setBiasSummary(biasRes.summary || null);
-      setCandidateTexts(textRes || { analysis_id: "", texts: [] });
+      const rankingMap: Record<string, RankingEntry> =
+        rankingJson.ranking.reduce((acc, entry) => {
+          acc[entry.id] = entry;
+          return acc;
+        }, {} as Record<string, RankingEntry>);
+
+      const biasMap: Record<string, BiasEntry> =
+        biasJson.candidate_analysis.reduce((acc, entry) => {
+          acc[entry.id] = entry;
+          return acc;
+        }, {} as Record<string, BiasEntry>);
+
+      const combined: Explanation[] = Object.values(rankingMap).map((r) => ({
+        id: r.id,
+        candidate_file: r.candidate_file,
+        similarity_score: r.score,
+        bias_score: biasMap[r.id]?.gender_bias_score ?? 0,
+        rank: r.rank,
+        chatgpt_explanation: chatgptJson.explanations?.find(
+          (c) => c.id === r.id
+        )?.chatgpt_explanation,
+      }));
+
+      setData(combined);
+      setBiasSummary(biasJson.summary || null);
+      setCandidateTexts(textJson || { analysis_id: "", texts: [] });
+
       return true;
     } catch (err) {
       console.warn("Some reports not found, running analysis...", err);
@@ -419,6 +489,10 @@ export const AnalyticsPage = () => {
 
   const filteredData = data.filter((candidate) =>
     candidate.candidate_file.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const topCandidates = filteredData.filter(
+    (candidate) => candidate.chatgpt_explanation
   );
 
   useEffect(() => {
@@ -588,7 +662,7 @@ export const AnalyticsPage = () => {
     );
   };
 
-  const renderCandidateCards = () => {
+  const renderCandidateCards = (dataToRender: Explanation[]) => {
     if (loading) {
       return Array(3)
         .fill(0)
@@ -614,15 +688,15 @@ export const AnalyticsPage = () => {
         ));
     }
 
-    if (filteredData.length === 0) {
+    if (dataToRender.length === 0) {
       return (
         <Alert severity="info" sx={{ borderRadius: 2, mb: 3 }}>
-          No candidates found. Please run analysis or adjust your search.
+          No analyzed candidates found. Run analysis and check top results.
         </Alert>
       );
     }
 
-    return filteredData.map((candidate, idx) => (
+    return dataToRender.map((candidate, idx) => (
       <CandidateCard key={candidate.candidate_file}>
         <CardHeader
           avatar={
@@ -688,55 +762,6 @@ export const AnalyticsPage = () => {
               />
             </Grid>
           </Grid>
-
-          {candidate.chatgpt_explanation && (
-            <>
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  Key Skills
-                </Typography>
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {candidate.chatgpt_explanation.direct_observations.skills
-                    .slice(0, 4)
-                    .map((skill, i) => (
-                      <Chip
-                        key={i}
-                        label={skill}
-                        size="small"
-                        sx={{
-                          borderRadius: 1,
-                          bgcolor: alpha(theme.palette.primary.main, 0.08),
-                          color: theme.palette.primary.main,
-                          fontWeight: 500,
-                        }}
-                      />
-                    ))}
-                  {candidate.chatgpt_explanation.direct_observations.skills
-                    .length > 4 && (
-                    <Chip
-                      label={`+${
-                        candidate.chatgpt_explanation.direct_observations.skills
-                          .length - 4
-                      }`}
-                      size="small"
-                      sx={{
-                        borderRadius: 1,
-                        bgcolor: alpha(theme.palette.primary.main, 0.03),
-                        color: "text.secondary",
-                      }}
-                    />
-                  )}
-                </Box>
-              </Box>
-
-              <Typography variant="body2" color="text.secondary" gutterBottom>
-                Summary
-              </Typography>
-              <Typography variant="body2" noWrap sx={{ mb: 1 }}>
-                {candidate.chatgpt_explanation.conclusion.slice(0, 120)}...
-              </Typography>
-            </>
-          )}
 
           <Divider sx={{ my: 2 }} />
 
@@ -1143,16 +1168,16 @@ export const AnalyticsPage = () => {
     );
   };
 
-  const renderDetailedAnalysis = () => {
-    if (filteredData.length === 0) {
+  const renderDetailedAnalysis = (dataToRender: Explanation[]) => {
+    if (dataToRender.length === 0) {
       return (
         <Alert severity="info" sx={{ borderRadius: 2 }}>
-          No candidates to display. Run analysis first to see detailed results.
+          No top candidates analyzed yet. Run analysis and check the results.
         </Alert>
       );
     }
 
-    return filteredData.map((candidate, idx) => (
+    return dataToRender.map((candidate, idx) => (
       <CandidateCard key={idx} sx={{ p: 0 }}>
         <CardHeader
           title={
@@ -1191,7 +1216,6 @@ export const AnalyticsPage = () => {
         {candidate.chatgpt_explanation ? (
           <CardContent sx={{ px: 3, pt: 0 }}>
             <Divider sx={{ mb: 3 }} />
-
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <Box sx={{ mb: 3 }}>
@@ -1204,7 +1228,7 @@ export const AnalyticsPage = () => {
                     </Typography>
                   </Box>
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                    {candidate.chatgpt_explanation.direct_observations.skills.map(
+                    {candidate.chatgpt_explanation?.direct_observations?.skills?.map(
                       (skill, i) => (
                         <Chip
                           key={i}
@@ -1233,15 +1257,28 @@ export const AnalyticsPage = () => {
                     </Typography>
                   </Box>
                   <Box>
-                    {candidate.chatgpt_explanation.direct_observations
-                      .experience.length > 0 ? (
+                    {candidate.chatgpt_explanation?.direct_observations
+                      ?.experience?.length > 0 ? (
                       <Box component="ul" sx={{ pl: 2, mt: 1 }}>
-                        {candidate.chatgpt_explanation.direct_observations.experience.map(
-                          (exp, i) => (
-                            <Box component="li" key={i} sx={{ mb: 0.5 }}>
-                              <Typography variant="body2">{exp}</Typography>
-                            </Box>
-                          )
+                        {Array.isArray(
+                          candidate.chatgpt_explanation?.direct_observations
+                            ?.experience
+                        ) &&
+                        candidate.chatgpt_explanation.direct_observations
+                          .experience.length > 0 ? (
+                          <Box component="ul" sx={{ pl: 2, mt: 1 }}>
+                            {candidate.chatgpt_explanation.direct_observations.experience.map(
+                              (exp, i) => (
+                                <Box component="li" key={i} sx={{ mb: 0.5 }}>
+                                  <Typography variant="body2">{exp}</Typography>
+                                </Box>
+                              )
+                            )}
+                          </Box>
+                        ) : (
+                          <Typography variant="body2" color="text.secondary">
+                            No experience data available
+                          </Typography>
                         )}
                       </Box>
                     ) : (
@@ -1262,8 +1299,8 @@ export const AnalyticsPage = () => {
                     </Typography>
                   </Box>
                   <Typography variant="body2">
-                    {candidate.chatgpt_explanation.direct_observations
-                      .education || "No education data available"}
+                    {candidate.chatgpt_explanation?.direct_observations
+                      ?.education || "No education data available"}
                   </Typography>
                 </Box>
               </Grid>
@@ -1274,7 +1311,7 @@ export const AnalyticsPage = () => {
                     Match Analysis
                   </Typography>
                   <Typography variant="body2">
-                    {candidate.chatgpt_explanation.similarity.comment}
+                    {candidate.chatgpt_explanation?.similarity?.comment}
                   </Typography>
                 </Box>
 
@@ -1283,7 +1320,7 @@ export const AnalyticsPage = () => {
                     Bias Analysis
                   </Typography>
                   <Typography variant="body2">
-                    {candidate.chatgpt_explanation.gender_bias.comment}
+                    {candidate.chatgpt_explanation?.gender_bias?.comment}
                   </Typography>
                 </Box>
 
@@ -1293,15 +1330,13 @@ export const AnalyticsPage = () => {
                   </Typography>
                   <Typography variant="body2">
                     {candidate.chatgpt_explanation
-                      .notable_gaps_and_missing_requirements ||
+                      ?.notable_gaps_and_missing_requirements ||
                       "No significant gaps identified"}
                   </Typography>
                 </Box>
               </Grid>
             </Grid>
-
             <Divider sx={{ my: 3 }} />
-
             <Box
               sx={{
                 p: 2,
@@ -1484,11 +1519,15 @@ export const AnalyticsPage = () => {
                   />
                 </StyledTabs>
 
-                {currentTab === 0 && <Box>{renderCandidateCards()}</Box>}
+                {currentTab === 0 && (
+                  <Box>{renderCandidateCards(filteredData)}</Box>
+                )}
 
                 {currentTab === 1 && renderAnalyticsOverview()}
 
-                {currentTab === 2 && renderDetailedAnalysis()}
+                {currentTab === 2 && (
+                  <>{renderDetailedAnalysis(topCandidates.slice(0, 4))}</>
+                )}
               </Box>
             </PageContainer>
           </Box>
