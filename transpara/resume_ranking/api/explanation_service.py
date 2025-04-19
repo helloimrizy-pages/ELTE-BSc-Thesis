@@ -44,7 +44,7 @@ def generate_chatgpt_explanation(
         Negative Contributors: {neg_contributors}
     
     Provide a structured evaluation of the candidate. 
-    Your responses must be complete under 450 words, and avoid being cut off mid-sentence.
+    Your responses must be complete under 550 words, avoid being cut off mid-sentence, and make sure you follow the provided JSON structure.
     """
     
     try:
