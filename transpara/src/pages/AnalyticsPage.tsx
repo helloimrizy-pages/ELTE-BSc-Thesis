@@ -762,32 +762,6 @@ export const AnalyticsPage = () => {
               />
             </Grid>
           </Grid>
-
-          <Divider sx={{ my: 2 }} />
-
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Box>
-              <Typography variant="caption" color="text.secondary">
-                Rank: <strong>#{candidate.rank || idx + 1}</strong>
-              </Typography>
-            </Box>
-            <Button
-              variant="outlined"
-              size="small"
-              sx={{ borderRadius: 1.5, textTransform: "none" }}
-              onClick={() =>
-                navigate(`/profile/${selectedJobId}/${candidate.id}`)
-              }
-            >
-              View Profile
-            </Button>
-          </Box>
         </CardContent>
       </CandidateCard>
     ));
