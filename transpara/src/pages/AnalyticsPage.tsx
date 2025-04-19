@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import {
@@ -63,6 +63,7 @@ import {
 import { TransparaAppBar } from "../components/AppBar/TransparaAppBar";
 import Sidebar from "../components/AppBar/Sidebar";
 import { signOut } from "firebase/auth";
+import { ShapFeature } from "../pages/ShapFeature";
 
 import PersonIcon from "@mui/icons-material/Person";
 import AssessmentIcon from "@mui/icons-material/Assessment";
@@ -199,6 +200,25 @@ const ScoreChip = styled(Chip)<{ level: "high" | "medium" | "low" }>(
     };
   }
 );
+interface ShapContributor {
+  feature: string;
+  impact: number;
+  value: number;
+  positive: boolean;
+}
+
+interface ShapEntry {
+  id: string;
+  candidate_file: string;
+  base_value: number;
+  prediction: number;
+  contributors: ShapContributor[];
+}
+
+interface ShapExplanationReport {
+  analysis_id: string;
+  shap: ShapEntry[];
+}
 
 interface ChatGPTExplanation {
   job_position: string;
@@ -337,8 +357,18 @@ export const AnalyticsPage = () => {
   const [sidebarMinimized, setSidebarMinimized] = useState(() => {
     return localStorage.getItem("sidebarMinimized") === "true";
   });
-
   const navigate = useNavigate();
+  const [selectedShapCandidateId, setSelectedShapCandidateId] = useState<
+    string | null
+  >(null);
+  const shapData = useRef<ShapEntry[]>([]);
+
+  const getShapDataForCandidate = (candidateId: string) => {
+    const found = shapData.current.find((entry) => entry.id === candidateId);
+    console.log("🔍 Looking for SHAP candidateId:", candidateId);
+    console.log("🔍 Found entry:", found);
+    return found;
+  };
 
   const handleLogout = async () => {
     localStorage.removeItem("selectedJobId");
@@ -387,14 +417,22 @@ export const AnalyticsPage = () => {
           getDownloadURL(ref(storage, `${basePath}/${file}`))
         )
       );
-      const [rankingJson, chatgptJson, biasJson, textJson] = (await Promise.all(
-        urls.map((url) => fetch(url).then((r) => r.json()))
-      )) as [
-        RankingResults,
-        ChatGptResponse,
-        BiasReport,
-        CandidateTextsResponse
-      ];
+      const [rankingJson, chatgptJson, biasJson, textJson, shapJson] =
+        (await Promise.all(
+          urls.map((url) => fetch(url).then((r) => r.json()))
+        )) as [
+          RankingResults,
+          ChatGptResponse,
+          BiasReport,
+          CandidateTextsResponse,
+          ShapExplanationReport
+        ];
+
+      shapData.current = Array.isArray(shapJson.shap)
+        ? shapJson.shap
+        : Object.values(shapJson.shap || {});
+
+      console.log("✅ SHAP entries:", shapData.current);
 
       const rankingMap: Record<string, RankingEntry> =
         rankingJson.ranking.reduce((acc, entry) => {
@@ -984,6 +1022,20 @@ export const AnalyticsPage = () => {
                 <CompareIcon /> Candidate Skill Comparison
               </CardTitle>
               {renderSkillsRadarChart()}
+            </CardContent>
+          </AnalyticsCard>
+        </Grid>
+
+        <Grid item xs={12}>
+          <AnalyticsCard>
+            <CardContent sx={{ p: 3 }}>
+              <ShapFeature
+                data={filteredData}
+                loading={loading}
+                selectedShapCandidateId={selectedShapCandidateId}
+                onCandidateSelect={setSelectedShapCandidateId}
+                getShapDataForCandidate={getShapDataForCandidate}
+              />
             </CardContent>
           </AnalyticsCard>
         </Grid>
