@@ -4,10 +4,11 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
+  sendEmailVerification,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import TransparaLogo from "../../assets/transpara-logo.svg";
-
+import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import {
   Grid,
@@ -112,6 +113,7 @@ const AuthPage: React.FC = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
+  const navigate = useNavigate();
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -130,7 +132,19 @@ const AuthPage: React.FC = () => {
 
     try {
       if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+
+        if (!user.emailVerified) {
+          navigate("/verify-email");
+          return;
+        }
+
+        navigate("/dashboard");
       } else {
         if (password !== confirmPassword) {
           setError("Passwords do not match");
@@ -145,6 +159,10 @@ const AuthPage: React.FC = () => {
         );
         const user = userCredential.user;
 
+        await sendEmailVerification(user, {
+          url: `${window.location.origin}/verify-email`,
+        });
+
         await setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
           email,
@@ -155,7 +173,6 @@ const AuthPage: React.FC = () => {
           createdAt: new Date(),
         });
 
-        await auth.signOut();
         showSnackbar("Account created successfully!", "success");
         setSignUpSuccess(true);
       }
