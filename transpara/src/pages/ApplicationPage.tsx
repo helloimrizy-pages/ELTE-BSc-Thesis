@@ -478,10 +478,6 @@ export const ApplicationPage: React.FC = () => {
 
       setSuccessMessage("Application submitted successfully!");
       clearDraft();
-
-      setTimeout(() => {
-        navigate("/jobs");
-      }, 3000);
     } catch (err) {
       console.error("Application submission failed:", err);
       setError("Failed to submit application. Please try again later.");
