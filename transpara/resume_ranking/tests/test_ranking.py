@@ -18,6 +18,35 @@ def test_rank_candidates_pipeline(test_model_and_tokenizer):
     }
     os.makedirs(output_folders["reports"], exist_ok=True)
 
+    skill_keywords = [
+        "ci/cd",
+        "clean code",
+        "cloud services",
+        "code review",
+        "collaboration",
+        "computer science",
+        "cross-functional",
+        "debugging",
+        "feature specifications",
+        "hiring process",
+        "hr tech",
+        "innovation",
+        "javascript",
+        "node.js",
+        "production issues",
+        "programming language",
+        "python",
+        "react",
+        "restful apis",
+        "scalable software",
+        "software development",
+        "software engineer",
+        "sprint planning",
+        "transparency",
+        "typescript",
+        "web application"
+    ]
+
     results = rank_candidates(
         job_description_text=job_text,
         candidate_texts=candidate_texts,
@@ -25,7 +54,8 @@ def test_rank_candidates_pipeline(test_model_and_tokenizer):
         tokenizer=tokenizer,
         model=model,
         output_folders=output_folders,
-        job_id=job_id
+        job_id=job_id,
+        custom_keywords=skill_keywords
     )
 
     assert "predictions" in results
