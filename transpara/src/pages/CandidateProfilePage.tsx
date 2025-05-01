@@ -866,40 +866,45 @@ const CandidateProfilePage: React.FC = () => {
                     </CardContent>
                   </SectionCard>
                 </Grid>
-
-                <Grid item xs={12}>
-                  <SectionCard>
-                    <CardContent sx={{ p: 3 }}>
-                      <Typography
-                        variant="h6"
-                        fontWeight={600}
-                        gutterBottom
-                        sx={{ mb: 2 }}
-                      >
-                        Cover Message
-                      </Typography>
-                      <Box
-                        sx={{
-                          bgcolor: alpha(theme.palette.background.default, 0.5),
-                          p: 2.5,
-                          borderRadius: 2,
-                          border: "1px solid",
-                          borderColor: alpha(theme.palette.divider, 0.5),
-                        }}
-                      >
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <SectionCard>
+                      <CardContent sx={{ p: 3 }}>
                         <Typography
-                          variant="body1"
-                          paragraph
+                          variant="h6"
+                          fontWeight={600}
+                          gutterBottom
+                          sx={{ mb: 2 }}
+                        >
+                          Cover Message
+                        </Typography>
+                        <Box
                           sx={{
-                            whiteSpace: "pre-line",
-                            lineHeight: 1.8,
+                            bgcolor: alpha(
+                              theme.palette.background.default,
+                              0.5
+                            ),
+                            p: 2.5,
+                            borderRadius: 2,
+                            border: "1px solid",
+                            borderColor: alpha(theme.palette.divider, 0.5),
                           }}
                         >
-                          {candidate.message || "No cover message provided."}
-                        </Typography>
-                      </Box>
-                    </CardContent>
-                  </SectionCard>
+                          <Typography
+                            variant="body1"
+                            component="div"
+                            paragraph
+                            sx={{
+                              whiteSpace: "normal",
+                              lineHeight: 1.8,
+                            }}
+                          >
+                            {candidate.message || "No cover message provided."}
+                          </Typography>
+                        </Box>
+                      </CardContent>
+                    </SectionCard>
+                  </Grid>
                 </Grid>
               </Grid>
             )}
