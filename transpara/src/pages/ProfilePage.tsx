@@ -20,7 +20,7 @@ import {
 import { auth, db, storage } from "../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { TransparaAppBar } from "../components/AppBar/TransparaAppBar";
+import { TransparaAppBar } from "../components/AppBar/AppBar";
 import Sidebar from "../components/AppBar/Sidebar";
 import { signOut, updateProfile } from "firebase/auth";
 
@@ -220,10 +220,18 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const allowedTypes = ["image/jpeg", "image/png"];
+
   const handlePhotoUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.[0] || !auth.currentUser) return;
 
     const file = e.target.files[0];
+
+    if (!allowedTypes.includes(file.type)) {
+      showSnackbar("Only JPG and PNG files are allowed", "error");
+      return;
+    }
+
     setIsUploading(true);
 
     try {
@@ -371,7 +379,7 @@ const ProfilePage: React.FC = () => {
                   <input
                     ref={fileInputRef}
                     type="file"
-                    accept="image/*"
+                    accept="image/jpeg, image/png"
                     onChange={handlePhotoUpload}
                     hidden
                   />
