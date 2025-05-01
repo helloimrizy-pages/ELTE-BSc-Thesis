@@ -17,8 +17,8 @@ if [ -f "$output_file" ]; then
 fi
 
 # List of directories to look for
-directories=("api" "config" "src" "backend" "training")
-
+# directories=("api" "config" "src" "backend" "training")
+directories=("api" "backend" "config" "src" "training")
 # List of specific files to include
 specific_files=("main.py")
 
