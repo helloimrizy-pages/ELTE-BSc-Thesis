@@ -26,7 +26,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../firebase";
-import { TransparaAppBar } from "../components/AppBar/TransparaAppBar";
+import { TransparaAppBar } from "../components/AppBar/AppBar";
 import Sidebar from "../components/AppBar/Sidebar";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
