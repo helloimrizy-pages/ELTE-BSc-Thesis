@@ -57,7 +57,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 
-import { TransparaAppBar } from "../components/AppBar/TransparaAppBar";
+import { TransparaAppBar } from "../components/AppBar/AppBar";
 import Sidebar from "../components/AppBar/Sidebar";
 import { signOut } from "firebase/auth";
 import { updateDoc } from "firebase/firestore";
