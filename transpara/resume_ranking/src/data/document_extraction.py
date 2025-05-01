@@ -1,6 +1,8 @@
 import os
 import pdfplumber
 import pytesseract
+import logging
+logging.getLogger("pdfminer").setLevel(logging.ERROR)
 
 from pdf2image import convert_from_path
 from typing import Optional, List
