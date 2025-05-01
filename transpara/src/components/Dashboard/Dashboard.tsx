@@ -18,7 +18,7 @@ import {
   CircularProgress,
   Paper,
 } from "@mui/material";
-import { TransparaAppBar } from "../AppBar/TransparaAppBar";
+import { TransparaAppBar } from "../AppBar/AppBar";
 import Sidebar from "../AppBar/Sidebar";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../../firebase";
