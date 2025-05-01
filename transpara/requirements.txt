@@ -1,0 +1,36 @@
+# Web Framework
+fastapi
+uvicorn
+
+# Machine Learning & Data Science
+scikit-learn
+pandas
+numpy
+joblib
+shap
+tqdm
+torch
+transformers
+matplotlib
+
+# NLP (Natural Language Processing)
+nltk
+regex
+spacy[en]  # Includes en_core_web_sm model automatically
+
+# PDF & Image Parsing
+pdfplumber
+pytesseract
+pdf2image
+fpdf
+fpdf2
+bs4
+
+# AI & OpenAI
+openai
+
+# Firebase Integration
+firebase-admin
+
+# Environment Configuration
+python-dotenv
