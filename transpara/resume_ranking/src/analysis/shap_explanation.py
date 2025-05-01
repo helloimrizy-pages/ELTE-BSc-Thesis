@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import shap
@@ -150,3 +151,18 @@ def _format_factors(title: str, factors: List[Dict[str, Any]], sign: str = "+") 
         impact = abs(factor["impact"])
         output += f"• {factor['feature']}: {'Contributes +' if sign == '+' else 'Decreases by '}{impact:.3f}\n"
     return output
+
+def save_shap_summary_plot(shap_values: np.ndarray, X: pd.DataFrame, output_path: str):
+    plt.figure()
+    shap.summary_plot(shap_values, X, plot_type="bar", show=False)
+    plt.tight_layout()
+    plt.savefig(output_path.replace(".png", "_bar.png"), dpi=300)
+    plt.close()
+
+    plt.figure()
+    shap.summary_plot(shap_values, X, show=False)
+    plt.tight_layout()
+    plt.savefig(output_path.replace(".png", "_dot.png"), dpi=300)
+    plt.close()
+
+    print(f"SHAP summary plots saved to: {output_path.replace('.png', '_bar.png')} and _dot.png")
