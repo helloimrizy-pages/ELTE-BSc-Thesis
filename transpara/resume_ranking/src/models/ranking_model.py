@@ -3,6 +3,7 @@ import json
 import numpy as np
 import tempfile
 import json
+import matplotlib.pyplot as plt
 
 from typing import Optional, Dict, Any
 from firebase_admin import storage
@@ -12,7 +13,7 @@ from typing import List
 from src.data.embeddings import get_text_embedding, create_feature_vectors_dataset
 from src.models.linguistic_debiasing import mitigate_gender_bias
 from src.models.embedding_debiasing import compute_gender_subspace
-from src.analysis.shap_explanation import generate_model_explanations
+from src.analysis.shap_explanation import generate_model_explanations, save_shap_summary_plot
 from api.openai_client import initialize_openai_client
 from src.utils.file_utils import save_to_json, load_from_json, extract_user_id, clean_html
 from src.utils.firebase_utils import get_candidate_id_from_firestore, get_candidate_name_from_firestore, load_json_from_firebase
@@ -66,6 +67,19 @@ def rank_candidates(
 
     print("Predicting match scores...\n")
     predictions, results_df = predict_with_ranking_model(ranking_model, test_features)
+
+    plt.figure(figsize=(8, 5))
+    plt.hist(predictions, bins=20, edgecolor='black', alpha=0.75)
+    plt.xlabel("Predicted Match Score")
+    plt.ylabel("Number of Candidates")
+    plt.title("Distribution of Predicted Candidate Scores")
+    plt.tight_layout()
+
+    score_hist_path = os.path.join(output_folders['reports'], "predicted_score_distribution.png")
+    plt.savefig(score_hist_path, dpi=300)
+    plt.close()
+    print(f"📊 Prediction score distribution plot saved to {score_hist_path}")
+
     if os.getenv("SAVE_TEST_FEATURES") == "1":
         test_features.to_json("tests/sample_data/test_features.json", orient="records", indent=2)
 
@@ -134,6 +148,8 @@ def rank_candidates(
     explanations, shap_values, shap_df = generate_model_explanations(
         ranking_model, feature_names, test_features
     )
+
+    save_shap_summary_plot(shap_values, test_features, os.path.join(output_folders["reports"], "shap_summary.png"))
 
     return {
         "model": ranking_model,
