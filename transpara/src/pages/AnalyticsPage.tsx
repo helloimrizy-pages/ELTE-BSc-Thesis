@@ -999,10 +999,10 @@ export const AnalyticsPage = () => {
                           key={`cell-${index}`}
                           fill={
                             index === 0
-                              ? "#4caf50"
+                              ? "#6A80B9"
                               : index === 1
-                              ? "#ff9800"
-                              : "#f44336"
+                              ? "#6A80B9"
+                              : "#F6C794"
                           }
                         />
                       ))}
