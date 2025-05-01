@@ -60,7 +60,7 @@ import {
   Tooltip as ChartTooltip,
   Legend as ChartLegend,
 } from "chart.js";
-import { TransparaAppBar } from "../components/AppBar/TransparaAppBar";
+import { TransparaAppBar } from "../components/AppBar/AppBar";
 import Sidebar from "../components/AppBar/Sidebar";
 import { signOut } from "firebase/auth";
 import { ShapFeature } from "../pages/ShapFeature";
